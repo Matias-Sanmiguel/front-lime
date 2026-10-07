@@ -1,111 +1,81 @@
+@import 'tailwindcss';
+
+/*
+ * Tokens de marca — fuente de verdad: back-lime/docs/brand-identity.md
+ * Dirección "Editorial Lime". No inventar ni ajustar estos valores sin
+ * actualizar ese documento primero.
+ */
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --background: #f7f7f4; /* paper */
+  --surface: #ffffff; /* white */
+  --foreground: #1d1d1f; /* ink */
+  --muted-foreground: #6b6b67; /* muted */
+  --border: #e8e8e3; /* mist */
+  --primary: #1d1d1f; /* ink — CTA primario, "lima no carga texto" */
+  --primary-foreground: #ffffff;
+  --accent: #b8f34b; /* lime — firma, selección, highlight puntual */
+  --accent-foreground: #1d1d1f;
+  --accent-ink: #326b2f; /* deep-lime — links, mark en superficies claras */
+  --danger: #c74646;
+  --warning: #b25e09;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+/*
+ * El dark mode de la marca es secundario y opt-in (clase `.dark` en <html>),
+ * nunca automático por prefers-color-scheme: la experiencia principal de
+ * Lime es clara. Todavía no hay ningún toggle que aplique esta clase.
+ */
+:root.dark {
+  --background: #121212; /* bg-dark */
+  --surface: #1c1c1e; /* surface-dark */
+  --foreground: #f4f4f1; /* text-dark */
+  --muted-foreground: #9a9a96;
+  --border: #2c2c2e;
+  --primary: #f4f4f1;
+  --primary-foreground: #121212;
+  --accent: #b8f34b; /* el lima sube de intensidad en oscuro, deep-lime desaparece */
+  --accent-foreground: #121212;
+  --accent-ink: #b8f34b;
+  color-scheme: dark;
+}
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+@theme {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-ink: var(--accent-ink);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-pill: 999px;
+
+  --font-sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Newsreader', 'Source Serif 4', ui-serif, serif;
 }
 
 body {
   margin: 0;
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
 }
