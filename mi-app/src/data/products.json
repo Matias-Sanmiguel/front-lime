@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "title": "Departamento en Palermo",
+    "description": "Tres ambientes con balcón a la calle, living luminoso y cocina separada. A dos cuadras del parque.",
+    "price": 185000,
+    "currency": "USD",
+    "city": "Palermo",
+    "operation": "Venta",
+    "entregaGratis": true,
+    "compraInternacional": false,
+    "images": [
+      { "src": "/photos/palermo-1.jpg", "alt": "Living del departamento en Palermo" },
+      { "src": "/photos/palermo-2.jpg", "alt": "Otro ambiente del departamento en Palermo" }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Casa en Martínez",
+    "description": "Casa de cuatro dormitorios sobre lote propio, jardín y quincho. Escritura lista para comprador del exterior.",
+    "price": 420000,
+    "currency": "USD",
+    "city": "Martínez",
+    "operation": "Venta",
+    "entregaGratis": false,
+    "compraInternacional": true,
+    "images": [
+      { "src": "/photos/martinez-1.jpg", "alt": "Frente de la casa en Martínez" },
+      { "src": "/photos/martinez-2.jpg", "alt": "Otra vista de la casa en Martínez" }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Local en San Telmo",
+    "description": "Planta libre sobre Defensa, vidriera a la calle y depósito atrás. Apto para showroom.",
+    "price": 980000,
+    "currency": "ARS",
+    "city": "San Telmo",
+    "operation": "Alquiler",
+    "entregaGratis": true,
+    "compraInternacional": true,
+    "images": [
+      { "src": "/photos/san-telmo-1.jpg", "alt": "Local en San Telmo" },
+      { "src": "/photos/san-telmo-2.jpg", "alt": "Interior del local en San Telmo" }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Monoambiente en Almagro",
+    "description": "Unidad reciclada, piso de madera y cocina integrada. Edificio con encargada y terraza.",
+    "price": 78000,
+    "currency": "USD",
+    "city": "Almagro",
+    "operation": "Venta",
+    "entregaGratis": false,
+    "compraInternacional": false,
+    "images": [
+      { "src": "/photos/almagro-1.jpg", "alt": "Monoambiente en Almagro" },
+      { "src": "/photos/almagro-2.jpg", "alt": "Cocina del monoambiente en Almagro" }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "PH en Villa Crespo",
+    "description": "Planta baja con patio propio y parrilla. Dos dormitorios, uno con salida al exterior.",
+    "price": 165000,
+    "currency": "USD",
+    "city": "Villa Crespo",
+    "operation": "Venta",
+    "entregaGratis": true,
+    "compraInternacional": true,
+    "images": [
+      { "src": "/photos/crespo-1.jpg", "alt": "PH en Villa Crespo" },
+      { "src": "/photos/crespo-2.jpg", "alt": "Interior del PH en Villa Crespo" }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Departamento temporal en Recoleta",
+    "description": "Dos ambientes amueblados, por semana o por mes. Check-in sin cargo y contrato en dólares.",
+    "price": 900,
+    "currency": "USD",
+    "city": "Recoleta",
+    "operation": "Alquiler temporal",
+    "entregaGratis": true,
+    "compraInternacional": false,
+    "images": [
+      { "src": "/photos/recoleta-1.jpg", "alt": "Departamento temporal en Recoleta" },
+      { "src": "/photos/recoleta-2.jpg", "alt": "Dormitorio del departamento en Recoleta" }
+    ]
+  }
+]

@@ -1,122 +1,52 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { Carousel_004 } from '@/components/ui/skiper-ui/skiper50'
+import { ProductList } from './components/ProductList.jsx'
+import products from './data/products.json'
 
-function App() {
-  const [count, setCount] = useState(0)
+const photos = products.flatMap((product) => product.images)
 
+function LimeMark() {
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+    <svg className="mark" viewBox="0 0 64 64" aria-hidden="true">
+      <g fill="currentColor">
+        <path
+          fillRule="evenodd"
+          d="M32 1a31 31 0 1 0 0 62 31 31 0 1 0 0-62zm0 6a25 25 0 1 1 0 50 25 25 0 1 1 0-50z"
+        />
+        <path d="M34.366 26.054L40.948 9.515A24.2 24.2 0 0 1 53.843 21.582L37.777 29.245A6.4 6.4 0 0 0 34.366 26.054Z" />
+        <path d="M37.93 29.592L54.422 22.895A24.2 24.2 0 0 1 54.638 40.554L37.987 34.262A6.4 6.4 0 0 0 37.93 29.592Z" />
+        <path d="M37.842 34.613L54.091 41.882A24.2 24.2 0 0 1 41.495 54.26L34.511 37.887A6.4 6.4 0 0 0 37.842 34.613Z" />
+        <path d="M34.157 38.025L40.158 54.784A24.2 24.2 0 0 1 22.505 54.26L29.489 37.887A6.4 6.4 0 0 0 34.157 38.025Z" />
+        <path d="M29.144 37.728L21.202 53.657A24.2 24.2 0 0 1 9.362 40.554L26.013 34.262A6.4 6.4 0 0 0 29.144 37.728Z" />
+        <path d="M25.89 33.903L8.895 39.196A24.2 24.2 0 0 1 10.157 21.582L26.223 29.245A6.4 6.4 0 0 0 25.89 33.903Z" />
+        <path d="M26.397 28.907L10.814 20.305A24.2 24.2 0 0 1 24.401 9.024L29.99 25.924A6.4 6.4 0 0 0 26.397 28.907Z" />
+        <rect x="29.15" y="8.2" width="5.7" height="16.6" rx="1.15" />
+        <rect x="29.6" y="29.6" width="4.8" height="4.8" rx="0.7" />
+      </g>
+    </svg>
   )
 }
 
-export default App
+export default function App() {
+  return (
+    <>
+      <header className="topbar">
+        <a className="brand" href="/">
+          <LimeMark />
+          <span>Lime</span>
+        </a>
+      </header>
+      <main className="home">
+        <section className="hero">
+          <h1>Encontrá dónde vivir, alquilar o abrir tu local</h1>
+          <p className="lead">
+            {products.length} avisos publicados en Buenos Aires, con fotos y precio final.
+          </p>
+        </section>
+        <div className="gallery">
+          <Carousel_004 images={photos} showPagination loop />
+        </div>
+        <ProductList />
+      </main>
+    </>
+  )
+}
