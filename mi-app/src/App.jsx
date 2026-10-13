@@ -1,6 +1,8 @@
+import { Routes, Route } from 'react-router-dom'
 import { Carousel_004 } from '@/components/ui/skiper-ui/skiper50'
 import { ProductList } from './components/ProductList.jsx'
 import products from './data/products.json'
+import { PropertyDetail } from './pages/PropertyDetail.tsx'
 
 const photos = products.flatMap((product) => product.images)
 
@@ -26,27 +28,39 @@ function LimeMark() {
   )
 }
 
+function Home() {
+  return (
+    <main className="home">
+      <section className="hero">
+        <h1>Encontrá dónde vivir, alquilar o abrir tu local</h1>
+        <p className="lead">
+          {products.length} avisos publicados en Buenos Aires, con fotos y precio final.
+        </p>
+      </section>
+      <div className="gallery">
+        <Carousel_004 images={photos} showPagination loop />
+      </div>
+      <ProductList />
+    </main>
+  )
+}
+
 export default function App() {
   return (
     <>
+      {/* El Header queda afuera de Routes para que se vea en todas las páginas */}
       <header className="topbar">
         <a className="brand" href="/">
           <LimeMark />
           <span>Lime</span>
         </a>
       </header>
-      <main className="home">
-        <section className="hero">
-          <h1>Encontrá dónde vivir, alquilar o abrir tu local</h1>
-          <p className="lead">
-            {products.length} avisos publicados en Buenos Aires, con fotos y precio final.
-          </p>
-        </section>
-        <div className="gallery">
-          <Carousel_004 images={photos} showPagination loop />
-        </div>
-        <ProductList />
-      </main>
+
+      {/*renderizar */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/propiedad/:id" element={<PropertyDetail />} /> 
+      </Routes>
     </>
   )
 }
