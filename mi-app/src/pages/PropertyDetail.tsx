@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { InquiryForm } from '@/components/InquiryForm';
 
 interface PropertyImage {
   id: number;
@@ -167,9 +168,7 @@ export function PropertyDetail() {
           <p className="text-4xl font-bold mb-6">
             USD {property.price.toLocaleString()}
           </p>
-          <button className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-800 transition cursor-pointer">
-            Consultar anunciante
-          </button>
+          <InquiryForm propertyId={property.id} />
         </div>
       </div>
 
