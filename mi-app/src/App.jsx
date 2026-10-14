@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
+import { Route, Routes } from 'react-router'
 import { ApiError } from './api/client'
 import { getProperties } from './api/properties'
+import EditPropertyPage from './panel/EditPropertyPage.jsx'
+import NewPropertyPage from './panel/NewPropertyPage.jsx'
+import PanelLayout from './panel/PanelLayout.jsx'
 import './App.css'
 
 function PropertiesSmokeTest() {
@@ -38,12 +42,24 @@ function PropertiesSmokeTest() {
   return <pre>{JSON.stringify(state.data, null, 2)}</pre>
 }
 
-function App() {
+function ApiSmokeTest() {
   return (
     <main>
       <h1>Lime — prueba de API</h1>
       <PropertiesSmokeTest />
     </main>
+  )
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<ApiSmokeTest />} />
+      <Route path="/panel" element={<PanelLayout />}>
+        <Route path="nuevo" element={<NewPropertyPage />} />
+        <Route path=":id/editar" element={<EditPropertyPage />} />
+      </Route>
+    </Routes>
   )
 }
 
