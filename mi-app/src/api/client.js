@@ -16,9 +16,17 @@ export class ApiError extends Error {
 
 export async function apiFetch(path, { method = 'GET', body } = {}) {
   const token = getToken()
-  const headers = { 'Content-Type': 'application/json' }
+  // Con FormData (subida de fotos) el navegador arma el Content-Type multipart
+  // con su boundary; si lo forzamos a JSON el backend no encuentra el archivo.
+  const isFormData = body instanceof FormData
+  const headers = isFormData ? {} : { 'Content-Type': 'application/json' }
   if (token) {
     headers.Authorization = `Bearer ${token}`
+  }
+
+  let payload = body
+  if (body !== undefined && !isFormData) {
+    payload = JSON.stringify(body)
   }
 
   let response
@@ -26,7 +34,7 @@ export async function apiFetch(path, { method = 'GET', body } = {}) {
     response = await fetch(`${BASE_URL}${path}`, {
       method,
       headers,
-      body: body !== undefined ? JSON.stringify(body) : undefined,
+      body: payload,
     })
   } catch {
     throw new ApiError(0, 'No se pudo conectar con el servidor')
