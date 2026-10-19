@@ -57,4 +57,4 @@ npm run build
 npm audit
 ```
 
-Las pruebas incluyen contratos JSON, permisos, registro, duplicados, edición/publicación/pausa/eliminación, envío/lectura de consultas, validaciones, gestión de imágenes y actualización de perfil. Ver [VALIDACION.md](VALIDACION.md) para los resultados y límites de la revisión.
+Las pruebas incluyen contratos JSON, permisos, registro, duplicados, edición/publicación/pausa/eliminación, envío/lectura de consultas, validaciones, gestión de imágenes y actualización de perfil.
