@@ -1,4 +1,4 @@
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext.jsx'
 import { ErrorState } from './ui.jsx'
 import './panel.css'
@@ -10,6 +10,8 @@ const PANEL_ROLES = ['AGENCY', 'ADMIN']
 // Que el aviso sea del usuario lo resuelve cada pantalla contra el backend.
 export default function PanelLayout() {
   const { isAuthenticated, user } = useAuth()
+  const { pathname } = useLocation()
+  const requiresAgency = !['/panel/consultas', '/panel/perfil'].includes(pathname)
 
   let content = <Outlet />
   if (!isAuthenticated) {
@@ -21,7 +23,7 @@ export default function PanelLayout() {
         </Link>
       </ErrorState>
     )
-  } else if (!PANEL_ROLES.includes(user?.role)) {
+  } else if (requiresAgency && !PANEL_ROLES.includes(user?.role)) {
     content = (
       <ErrorState code={403} title="Solo para inmobiliarias">
         <p>Tu cuenta no puede publicar avisos: esta sección es para inmobiliarias y administradores.</p>
@@ -32,5 +34,5 @@ export default function PanelLayout() {
     )
   }
 
-  return <main className="panel">{content}</main>
+  return <div className="panel">{content}</div>
 }
