@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, useLocation, useParams } from 'react-router'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { ApiError } from '../api/client'
 import {
   getProperty,

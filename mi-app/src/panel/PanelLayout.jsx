@@ -1,4 +1,4 @@
-import { Link, Outlet } from 'react-router'
+import { Link, Outlet } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext.jsx'
 import { ErrorState } from './ui.jsx'
 import './panel.css'

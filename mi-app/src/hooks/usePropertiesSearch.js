@@ -1,14 +1,12 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { getProperties } from '@/api/properties'
 
 const FILTER_KEYS = ['city', 'province', 'type', 'operation', 'minPrice', 'maxPrice', 'minBedrooms', 'minBathrooms']
+const PAGE_SIZE = 8
 
-// Sincroniza los filtros de /buscar con la query string. No hace ningún
-// fetch: la integración real con GET /api/v1/properties depende de
-// src/api/properties.js (hoy solo en origin/busse/cliente-api-sesion, no
-// mergeado a esta rama). Para no duplicar ese trabajo ni reimplementar su
-// manejo de errores/sesión, queda un único punto de integración marcado
-// abajo con TODO(LIM-37) — conectarlo ahí cuando el cliente esté disponible.
+// Sincroniza los filtros de /buscar con la query string y pide el listado
+// a GET /api/v1/properties (en esta entrega, servido desde /public/data).
 export function usePropertiesSearch() {
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -44,12 +42,37 @@ export function usePropertiesSearch() {
     [searchParams, setSearchParams],
   )
 
-  // TODO(LIM-37): reemplazar por la llamada real, ej.
-  //   const { data, status, error } = useQueryProperties({ ...filters, page })
-  //   usando getProperties de src/api/properties.js
-  const status = 'empty'
-  const properties = []
-  const pageInfo = null
+  const [status, setStatus] = useState('loading')
+  const [properties, setProperties] = useState([])
+  const [pageInfo, setPageInfo] = useState(null)
+  const [error, setError] = useState(null)
 
-  return { filters, page, applyFilters, goToPage, status, properties, pageInfo }
+  // Clave estable para no volver a pedir si los filtros no cambiaron.
+  const queryKey = searchParams.toString()
+
+  useEffect(() => {
+    let cancelled = false
+    setStatus('loading')
+
+    getProperties({ ...filters, page, size: PAGE_SIZE })
+      .then((data) => {
+        if (cancelled) return
+        setProperties(data.content)
+        setPageInfo({ totalPages: data.totalPages, totalElements: data.totalElements })
+        setError(null)
+        setStatus(data.content.length === 0 ? 'empty' : 'success')
+      })
+      .catch((err) => {
+        if (cancelled) return
+        setError(err.detail ?? err.message)
+        setStatus('error')
+      })
+
+    return () => {
+      cancelled = true
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryKey])
+
+  return { filters, page, applyFilters, goToPage, status, properties, error, pageInfo }
 }
