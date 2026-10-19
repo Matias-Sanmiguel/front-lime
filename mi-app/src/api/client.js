@@ -39,6 +39,38 @@ export async function apiFetch(path, { method = 'GET', body } = {}) {
   const [pathname, query = ''] = path.split('?')
   const params = new URLSearchParams(query)
 
+  // POST /api/v1/auth/login: cualquier email, contraseña 12345678
+  if (pathname === '/api/v1/auth/login' && method === 'POST') {
+    if (!body?.email || !body?.password) throw new ApiError(400, 'Email y contraseña son obligatorios')
+    if (body.password !== '12345678') throw new ApiError(401, 'Credenciales inválidas')
+    return readJson('auth.json')
+  }
+
+  // POST /api/v1/auth/register
+  if (pathname === '/api/v1/auth/register' && method === 'POST') {
+    const session = await readJson('auth.json')
+    return {
+      ...session,
+      user: {
+        ...session.user,
+        email: body.email,
+        name: body.name,
+        role: body.role ?? 'USER',
+        agencyName: body.agencyName ?? null,
+      },
+    }
+  }
+
+  // POST /api/v1/auth/logout
+  if (pathname === '/api/v1/auth/logout' && method === 'POST') return null
+
+  // GET /api/v1/me/properties: los avisos del usuario logueado (cualquier estado)
+  if (pathname === '/api/v1/me/properties' && method === 'GET') {
+    const data = await readJson('properties.json')
+    const mine = data.content.filter((p) => p.owner.id === 1)
+    return { content: mine, page: 0, size: 20, totalElements: mine.length, totalPages: 1 }
+  }
+
   // GET /api/v1/me
   if (pathname === '/api/v1/me' && method === 'GET') return readJson('me.json')
 
