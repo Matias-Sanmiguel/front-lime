@@ -1,11 +1,10 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { Link, createBrowserRouter } from 'react-router-dom'
 
 import App from '@/App'
 import { Home } from '@/pages/Home'
 import { Search } from '@/pages/Search'
 import { Register } from '@/pages/Register'
 import { Login } from '@/pages/Login'
-import { HomeAnterior } from '@/pages/HomeAnterior'
 import { PropertyDetail } from '@/pages/PropertyDetail.tsx'
 
 import ProfilePage from '@/panel/ProfilePage.jsx'
@@ -20,6 +19,7 @@ export const router = createBrowserRouter([
     path: '/',
     element: <App />,
     children: [
+      {path:'*',element:<section className="mx-auto max-w-6xl px-4 py-16"><h1 className="text-3xl">Página no encontrada</h1><Link to="/" className="text-accent-ink underline">Volver al inicio</Link></section>},
       {
         index: true,
         element: <Home />,
@@ -38,15 +38,12 @@ export const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: 'home-anterior',
-        element: <HomeAnterior />,
-      },
-      {
         path: 'panel',
         element: <PanelLayout />,
         children: [
           { path: 'perfil', element: <ProfilePage /> },
           { path: 'consultas', element: <InquiriesPage /> },
+          { path: 'consultas/:inquiryId', element: <InquiriesPage /> },
           {
             index: true,
             element: <MyPropertiesPage />,

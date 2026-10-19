@@ -22,10 +22,10 @@ export function SearchFilters({ filters, onSubmit }) {
       onSubmit={handleSubmit}
       className="grid grid-cols-2 gap-3 rounded-lg border border-border bg-surface p-4 shadow-[0_1px_2px_rgba(29,29,31,0.06)] sm:grid-cols-4"
     >
-      <Input name="city" placeholder="Ciudad" defaultValue={filters.city ?? ''} className="col-span-2 sm:col-span-1" />
-      <Input name="province" placeholder="Provincia" defaultValue={filters.province ?? ''} className="col-span-2 sm:col-span-1" />
+      <Input name="city" aria-label="Ciudad" placeholder="Ciudad" defaultValue={filters.city ?? ''} className="col-span-2 sm:col-span-1" />
+      <Input name="province" aria-label="Provincia" placeholder="Provincia" defaultValue={filters.province ?? ''} className="col-span-2 sm:col-span-1" />
 
-      <Select name="operation" defaultValue={filters.operation ?? ''}>
+      <Select name="operation" aria-label="Operación" defaultValue={filters.operation ?? ''}>
         <option value="">Operación</option>
         {OPERATION_TYPES.map((o) => (
           <option key={o.value} value={o.value}>
@@ -34,7 +34,7 @@ export function SearchFilters({ filters, onSubmit }) {
         ))}
       </Select>
 
-      <Select name="type" defaultValue={filters.type ?? ''}>
+      <Select name="type" aria-label="Tipo" defaultValue={filters.type ?? ''}>
         <option value="">Tipo</option>
         {PROPERTY_TYPES.map((t) => (
           <option key={t.value} value={t.value}>
@@ -43,17 +43,17 @@ export function SearchFilters({ filters, onSubmit }) {
         ))}
       </Select>
 
-      <Input name="minPrice" type="number" min="0" placeholder="Precio mín." defaultValue={filters.minPrice ?? ''} />
-      <Input name="maxPrice" type="number" min="0" placeholder="Precio máx." defaultValue={filters.maxPrice ?? ''} />
+      <Input name="minPrice" aria-label="Precio mínimo" type="number" min="0" placeholder="Precio mín." defaultValue={filters.minPrice ?? ''} />
+      <Input name="maxPrice" aria-label="Precio máximo" type="number" min="0" placeholder="Precio máx." defaultValue={filters.maxPrice ?? ''} />
       <Input
-        name="minBedrooms"
+        name="minBedrooms" aria-label="Dormitorios mínimos"
         type="number"
         min="0"
         placeholder="Dormitorios mín."
         defaultValue={filters.minBedrooms ?? ''}
       />
       <Input
-        name="minBathrooms"
+        name="minBathrooms" aria-label="Baños mínimos"
         type="number"
         min="0"
         placeholder="Baños mín."

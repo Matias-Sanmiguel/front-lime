@@ -20,18 +20,20 @@ export default function MyPropertiesPage() {
       .catch((err) => {
         if (!cancelled) setError(err)
       })
-    async function remove(property) {
-    if (!window.confirm(`¿Eliminar el aviso «${property.title}»?`)) return
-    try {
-      await apiFetch(`/api/v1/properties/${property.id}`, {method:'DELETE'})
-      setProperties(previous=>previous.filter(item=>item.id!==property.id))
-    } catch(err) { setError(err) }
-  }
-
-  return () => {
+    return () => {
       cancelled = true
     }
   }, [])
+
+  async function remove(property) {
+    if (!window.confirm(`¿Eliminar el aviso «${property.title}»?`)) return
+    try {
+      await apiFetch(`/api/v1/properties/${property.id}`, { method: 'DELETE' })
+      setProperties((previous) => previous.filter((item) => item.id !== property.id))
+    } catch (err) {
+      setError(err)
+    }
+  }
 
   return (
     <>
@@ -90,7 +92,9 @@ export default function MyPropertiesPage() {
             <Link className="btn btn-secondary" to={`/panel/${property.id}/editar`}>
               Editar
             </Link>
-            <button type="button" className="btn btn-danger" onClick={()=>remove(property)}>Eliminar</button>
+            <button type="button" className="btn btn-danger" onClick={() => remove(property)}>
+              Eliminar
+            </button>
           </div>
         </section>
       ))}

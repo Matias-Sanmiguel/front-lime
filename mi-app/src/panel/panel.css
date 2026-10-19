@@ -25,19 +25,6 @@
   text-align: left;
 }
 
-@media (prefers-color-scheme: dark) {
-  .panel {
-    --ink: #f4f4f1;
-    --paper: #121212;
-    --surface: #1c1c1e;
-    --deep-lime: #b8f34b;
-    --mist: #2c2c2e;
-    --muted: #a3a39e;
-    --danger: #ef7d7d;
-    --warning: #e8a25a;
-    --on-ink: #121212;
-  }
-}
 
 .panel *,
 .panel *::before,

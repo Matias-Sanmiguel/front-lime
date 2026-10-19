@@ -83,6 +83,7 @@ export function PropertyDetail() {
     if (!id) return
 
     let cancelled = false
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Reinicia la carga al navegar a otro ID.
     setLoading(true)
     setError(null)
     apiFetch(`/api/v1/properties/${id}`)
@@ -113,7 +114,7 @@ export function PropertyDetail() {
       <div className="p-12 text-center">
         <h1 className="mb-4 text-4xl font-bold">404 - Propiedad no encontrada</h1>
         <p className="mb-6 text-gray-600">El aviso que buscás no existe o ya no está publicado.</p>
-        <Link to="/" className="rounded bg-blue-600 px-6 py-2 text-white hover:bg-blue-700">
+        <Link to="/" className="rounded bg-primary px-6 py-2 text-white hover:opacity-90">
           Volver al inicio
         </Link>
       </div>
@@ -124,7 +125,7 @@ export function PropertyDetail() {
     <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 p-4 md:grid-cols-3 md:p-8">
       {/* Izquierda: galería y descripción */}
       <div className="space-y-6 md:col-span-2">
-        <PropertyGallery images={property.images} />
+        <PropertyGallery key={property.id} images={property.images} />
 
         <div>
           <h1 className="mb-2 text-2xl font-bold sm:text-3xl">{property.title}</h1>
@@ -133,7 +134,7 @@ export function PropertyDetail() {
           </p>
 
           <div className="mb-6 flex flex-wrap gap-3">
-            <span className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700">
+            <span className="rounded-full border border-border bg-accent/20 px-3 py-1 text-sm font-medium text-accent-ink">
               {operationTypeLabel(property.operation)}
             </span>
             <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700">

@@ -10,7 +10,7 @@ export function Search() {
     <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8">
       <h1 className="font-display text-2xl font-semibold text-foreground">Buscar propiedades</h1>
 
-      <SearchFilters filters={filters} onSubmit={applyFilters} />
+      <SearchFilters key={JSON.stringify(filters)} filters={filters} onSubmit={applyFilters} />
 
       <PropertyGrid status={status} properties={properties} error={error} />
 

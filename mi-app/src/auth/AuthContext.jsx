@@ -37,11 +37,7 @@ function setSession(session) {
   listeners.forEach((listener) => listener(session))
 }
 
-export function getToken() {
-  return currentSession?.token ?? null
-}
-
-export function clearSession() {
+function clearSession() {
   setSession(null)
 }
 
@@ -72,6 +68,7 @@ export function AuthProvider({ children }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- Hook compartido del mismo contexto.
 export function useAuth() {
   const context = useContext(AuthContext)
   if (!context) {

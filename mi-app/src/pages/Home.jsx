@@ -67,8 +67,8 @@ export function Home() {
             onSubmit={handleQuickSearch}
             className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4 shadow-[0_1px_2px_rgba(29,29,31,0.06)] sm:flex-row sm:p-3"
           >
-            <Input name="city" placeholder="¿En qué ciudad buscás?" className="sm:flex-1" />
-            <Select name="operation" className="sm:w-48">
+            <Input name="city" aria-label="Ciudad" placeholder="¿En qué ciudad buscás?" className="sm:flex-1" />
+            <Select name="operation" aria-label="Operación" className="sm:w-48">
               <option value="">Operación</option>
               {OPERATION_TYPES.map((o) => (
                 <option key={o.value} value={o.value}>

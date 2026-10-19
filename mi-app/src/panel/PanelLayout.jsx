@@ -11,7 +11,7 @@ const PANEL_ROLES = ['AGENCY', 'ADMIN']
 export default function PanelLayout() {
   const { isAuthenticated, user } = useAuth()
   const { pathname } = useLocation()
-  const requiresAgency = !['/panel/consultas', '/panel/perfil'].includes(pathname)
+  const requiresAgency = !(pathname.startsWith('/panel/consultas') || pathname === '/panel/perfil')
 
   let content = <Outlet />
   if (!isAuthenticated) {
