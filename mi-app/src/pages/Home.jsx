@@ -1,12 +1,35 @@
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { PropertyGrid } from '@/components/properties/PropertyGrid'
+import { getProperties } from '@/api/properties'
 import { OPERATION_TYPES } from '@/lib/property-enums'
 
 export function Home() {
   const navigate = useNavigate()
+  const [status, setStatus] = useState('loading')
+  const [properties, setProperties] = useState([])
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    let cancelled = false
+    getProperties({ size: 4 })
+      .then((data) => {
+        if (cancelled) return
+        setProperties(data.content)
+        setStatus(data.content.length === 0 ? 'empty' : 'success')
+      })
+      .catch((err) => {
+        if (cancelled) return
+        setError(err.detail ?? err.message)
+        setStatus('error')
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   function handleQuickSearch(event) {
     event.preventDefault()
@@ -62,7 +85,7 @@ export function Home() {
 
       <section className="mx-auto w-full max-w-6xl px-4">
         <h2 className="mb-4 font-display text-2xl font-semibold text-foreground">Propiedades destacadas</h2>
-        <PropertyGrid status="empty" properties={[]} />
+        <PropertyGrid status={status} properties={properties} error={error} skeletonCount={4} />
       </section>
     </div>
   )
