@@ -1,16 +1,38 @@
-# React + Vite
+# Aplicación Lime
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Ver [README principal](../README.md) para alcance, Figma, rutas y contratos.
 
-Currently, two official plugins are available:
+## Desarrollo y compilación
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```sh
+npm ci
+npm run dev
+npm test
+npm run typecheck
+npm run lint
+npm run build
+npm run preview
+```
 
-## React Compiler
+`build` genera `dist/`. Un servidor de producción debe devolver `index.html` para las rutas de React Router que no correspondan a archivos estáticos.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Datos estáticos y API real
 
-## Expanding the Oxlint configuration
+Por defecto se usa `src/api/mock.js`. Los componentes acceden a `apiFetch` y conservan las mismas rutas, métodos y cuerpos del backend. La simulación implementa respuestas 400, 401, 403, 404 y 409 para los casos principales y devuelve las operaciones asíncronamente.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Para iniciar la integración real, crear `.env.local`:
+
+```dotenv
+VITE_USE_MOCK=false
+VITE_API_URL=http://localhost:8080
+```
+
+El transporte HTTP envía el token Bearer, soporta JSON y multipart de imágenes, y maneja respuestas vacías 204 y Problem Details. La integración real requiere iniciar Java, configurar SQL Server y habilitar el origen del frontend en CORS. Los datos mock no se sincronizan con Java; sus cuentas y tokens no sirven en modo real.
+
+## Pruebas
+
+- `tests/mock.test.js`: comportamientos del adaptador y contratos de datos.
+- `tests/registration.test.js`: validación del formulario de registro.
+- `tests/flows.test.jsx`: flujos con React y el adaptador real de datos ficticios. Solo se reemplaza la lectura HTTP por los mismos JSON del disco; no se simulan las respuestas de negocio.
+
+Las pruebas de React usan jsdom. La revisión visual se hace además en navegador, en escritorio y móvil. Fotos elegidas por el usuario solo se guardan en su demostración local; el mock no las sube a un servidor.
