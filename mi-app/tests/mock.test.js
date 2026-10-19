@@ -155,3 +155,46 @@ test('parallel consultations are not lost', async () => {
   const inbox = await apiFetch('/api/v1/me/inquiries')
   assert.equal(inbox.totalElements, 5)
 })
+
+test('deleted property IDs are not reused and inquiries never transfer to another owner', async () => {
+  await login()
+  const created = await apiFetch('/api/v1/properties', {
+    method: 'POST',
+    body: {
+      title: 'Privado',
+      type: 'HOUSE',
+      operation: 'SALE',
+      price: 100,
+      currency: 'USD',
+      city: 'CABA',
+    },
+  })
+  await apiFetch(`/api/v1/properties/${created.id}/publish`, { method: 'POST' })
+  await apiFetch(`/api/v1/properties/${created.id}/inquiries`, {
+    method: 'POST',
+    body: {
+      name: 'Cliente',
+      email: 'cliente@example.com',
+      message: 'Consulta para el dueño original',
+    },
+  })
+  await apiFetch(`/api/v1/properties/${created.id}`, { method: 'DELETE' })
+  await apiFetch('/api/v1/auth/register', {
+    method: 'POST',
+    body: {
+      name: 'Otra agencia',
+      email: 'otra@example.com',
+      password: 'password123',
+      birthDate: '2000-01-01',
+      sex: 'OTHER',
+      role: 'AGENCY',
+      agencyName: 'Otra',
+    },
+  })
+  const next = await apiFetch('/api/v1/properties', {
+    method: 'POST',
+    body: { title: 'Nuevo dueño' },
+  })
+  assert.notEqual(next.id, created.id)
+  assert.equal((await apiFetch('/api/v1/me/inquiries')).totalElements, 0)
+})

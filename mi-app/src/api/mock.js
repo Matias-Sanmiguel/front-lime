@@ -30,7 +30,13 @@ async function database() {
   }
   if (stored) {
     try {
-      return JSON.parse(stored)
+      const db = JSON.parse(stored)
+      // Migrar demostraciones previas reservando también IDs de avisos eliminados.
+      db.nextPropertyId ??= nextId([
+        ...db.properties,
+        ...db.inquiries.map((i) => ({ id: i.propertyId })),
+      ])
+      return db
     } catch {
       /* restaurar semilla */
     }
@@ -44,6 +50,7 @@ async function database() {
     await Promise.all(properties.content.map(async (p) => [p.id, await json(`images-${p.id}`)])),
   )
   return {
+    nextPropertyId: nextId(properties.content),
     properties: properties.content,
     inquiries: inquiries.content,
     images,
@@ -267,7 +274,7 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
       agency()
       const { id, name, role, agencyName } = user
       const p = {
-        id: nextId(db.properties),
+        id: db.nextPropertyId++,
         ...Object.fromEntries(fields.map((k) => [k, null])),
         ...propertyChanges(body),
         status: 'DRAFT',
