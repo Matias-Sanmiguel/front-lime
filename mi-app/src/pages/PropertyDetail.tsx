@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { InquiryForm } from '@/components/InquiryForm'
 import { apiFetch, ApiError } from '@/api/client'
 import { formatPrice, formatArea } from '@/lib/format'
+import { getPropertyImages, imageUrl } from '@/api/properties.js'
 import { operationTypeLabel, propertyTypeLabel } from '@/lib/property-enums'
 
 interface PropertyImage {
@@ -44,7 +45,7 @@ function PropertyGallery({ images }: { images: PropertyImage[] }) {
   return (
     <div className="relative h-64 w-full overflow-hidden rounded-lg bg-gray-100 sm:h-96">
       <img
-        src={images[currentIndex].url}
+        src={imageUrl(images[currentIndex])}
         alt={`Foto ${currentIndex + 1}`}
         className="h-full w-full object-cover"
       />
@@ -81,23 +82,31 @@ export function PropertyDetail() {
   useEffect(() => {
     if (!id) return
 
+    let cancelled = false
     setLoading(true)
+    setError(null)
     apiFetch(`/api/v1/properties/${id}`)
-      .then((data: Property) => {
-        setProperty(data)
+      .then(async (data: Property) => {
+        const images = await getPropertyImages(id)
+        if (cancelled) return
+        setProperty({ ...data, images })
         setError(null)
       })
       .catch((err) => {
+        if (cancelled) return
         setError(err instanceof ApiError && err.status === 404 ? '404' : 'error')
       })
       .finally(() => {
-        setLoading(false)
+        if (!cancelled) setLoading(false)
       })
+    return () => { cancelled = true }
   }, [id])
 
   if (loading) {
     return <div className="p-12 text-center text-xl text-gray-500">Buscando propiedad...</div>
   }
+
+  if (error === 'error') return <div role="alert" className="p-12 text-center">No pudimos cargar el aviso. Intentá nuevamente.</div>
 
   if (error === '404' || !property) {
     return (

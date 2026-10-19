@@ -1,8 +1,12 @@
 import { apiFetch } from './client'
 
-export function getProperties(params = {}) {
+export async function getProperties(params = {}) {
   const query = new URLSearchParams(params).toString()
-  return apiFetch(`/api/v1/properties${query ? `?${query}` : ''}`)
+  const page = await apiFetch(`/api/v1/properties${query ? `?${query}` : ''}`)
+  // Modelo de vista: las fotos se leen de su endpoint; no alteran PropertyResponse.
+  return { ...page, content: await Promise.all(page.content.map(async property => ({
+    ...property, images: await getPropertyImages(property.id),
+  }))) }
 }
 
 export function getProperty(id) {
@@ -48,7 +52,7 @@ export function deletePropertyImage(id, imageId) {
 
 // El backend devuelve la ruta relativa (/uploads/...); el <img> necesita la URL completa.
 export function imageUrl(image) {
-  return `${import.meta.env.VITE_API_URL}${image.url}`
+  return /^(https?:|data:|blob:)/.test(image.url) ? image.url : `${import.meta.env.VITE_API_URL || ''}${image.url}`
 }
 
 function imageForm(file) {

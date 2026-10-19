@@ -1,3 +1,4 @@
+import { imageUrl } from '@/api/properties.js'
 import { Link } from 'react-router-dom'
 import { BedDouble, Bath, MapPin, Ruler } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
@@ -36,7 +37,7 @@ export function PropertyCard({ property }) {
 
   const location = [city, province].filter(Boolean).join(', ')
   const area = formatArea(coveredArea ?? totalArea)
-  const cover = images?.[0]?.url
+  const cover = images?.[0] ? imageUrl(images[0]) : null
 
   return (
     <Link to={`/propiedad/${id}`} className="block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2">
