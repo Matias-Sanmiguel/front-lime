@@ -53,6 +53,9 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-accent-ink: var(--accent-ink);
   --color-danger: var(--danger);
+  --color-destructive: var(--danger);
+  --color-input: var(--border);
+  --color-ring: var(--accent-ink);
   --color-warning: var(--warning);
 
   --radius-sm: 6px;
@@ -79,3 +82,7 @@ h3 {
   font-family: var(--font-display);
   font-weight: 600;
 }
+
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+input[type="radio"], input[type="checkbox"] { accent-color: var(--foreground); }
+:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }

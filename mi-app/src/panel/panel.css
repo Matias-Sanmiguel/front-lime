@@ -25,19 +25,6 @@
   text-align: left;
 }
 
-@media (prefers-color-scheme: dark) {
-  .panel {
-    --ink: #f4f4f1;
-    --paper: #121212;
-    --surface: #1c1c1e;
-    --deep-lime: #b8f34b;
-    --mist: #2c2c2e;
-    --muted: #a3a39e;
-    --danger: #ef7d7d;
-    --warning: #e8a25a;
-    --on-ink: #121212;
-  }
-}
 
 .panel *,
 .panel *::before,
@@ -510,3 +497,15 @@
     flex: 1;
   }
 }
+
+.inbox-filters, .inbox-pagination { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:20px; }
+.inbox-check { display:flex; align-items:center; gap:8px; font-size:14px; }
+.panel .inbox-check input { width:16px; height:16px; accent-color:var(--ink); }
+.inquiry-card { margin-bottom:20px; overflow-wrap:anywhere; }
+.inquiry-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
+.inquiry-heading h2 { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.inquiry-heading time { flex-shrink:0; font-size:12px; }
+.inquiry-new { padding:2px 8px; background:var(--lime); color:var(--ink); border-radius:999px; font:500 11px/1.4 var(--sans); }
+.panel .inquiry-message { margin:12px 0; white-space:pre-wrap; font-size:14px; }
+.inquiry-contact a:hover { text-decoration:underline; }
+@media(max-width:640px) { .inquiry-heading { flex-direction:column; gap:8px; } .inquiry-card { padding:20px; } }

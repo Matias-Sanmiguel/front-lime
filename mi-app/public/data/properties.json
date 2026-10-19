@@ -16,13 +16,14 @@
       "coveredArea": 70,
       "totalArea": 75,
       "status": "PUBLISHED",
-      "owner": { "id": 1, "name": "Lime", "role": "AGENCY", "agencyName": "Lime Inmuebles" },
-      "images": [
-        { "id": 1, "url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200" },
-        { "id": 2, "url": "https://images.unsplash.com/photo-1502672260266-1c1c29408447?w=1200" }
-      ],
-      "createdAt": "2026-10-01T10:00:00",
-      "updatedAt": "2026-10-05T12:30:00"
+      "owner": {
+        "id": 1,
+        "name": "Lime",
+        "role": "AGENCY",
+        "agencyName": "Lime Inmuebles"
+      },
+      "createdAt": "2026-10-01T10:00:00Z",
+      "updatedAt": "2026-10-05T12:30:00Z"
     },
     {
       "id": 2,
@@ -40,12 +41,14 @@
       "coveredArea": 220,
       "totalArea": 450,
       "status": "PUBLISHED",
-      "owner": { "id": 1, "name": "Lime", "role": "AGENCY", "agencyName": "Lime Inmuebles" },
-      "images": [
-        { "id": 3, "url": "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1200" }
-      ],
-      "createdAt": "2026-10-02T10:00:00",
-      "updatedAt": "2026-10-06T09:00:00"
+      "owner": {
+        "id": 1,
+        "name": "Lime",
+        "role": "AGENCY",
+        "agencyName": "Lime Inmuebles"
+      },
+      "createdAt": "2026-10-02T10:00:00Z",
+      "updatedAt": "2026-10-06T09:00:00Z"
     },
     {
       "id": 3,
@@ -63,10 +66,14 @@
       "coveredArea": 90,
       "totalArea": 90,
       "status": "PAUSED",
-      "owner": { "id": 1, "name": "Lime", "role": "AGENCY", "agencyName": "Lime Inmuebles" },
-      "images": [],
-      "createdAt": "2026-10-03T10:00:00",
-      "updatedAt": "2026-10-07T18:00:00"
+      "owner": {
+        "id": 1,
+        "name": "Lime",
+        "role": "AGENCY",
+        "agencyName": "Lime Inmuebles"
+      },
+      "createdAt": "2026-10-03T10:00:00Z",
+      "updatedAt": "2026-10-07T18:00:00Z"
     },
     {
       "id": 4,
@@ -84,16 +91,168 @@
       "coveredArea": 30,
       "totalArea": 30,
       "status": "PUBLISHED",
-      "owner": { "id": 1, "name": "Lime", "role": "AGENCY", "agencyName": "Lime Inmuebles" },
-      "images": [
-        { "id": 4, "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200" }
-      ],
-      "createdAt": "2026-10-04T10:00:00",
-      "updatedAt": "2026-10-08T11:00:00"
+      "owner": {
+        "id": 1,
+        "name": "Lime",
+        "role": "AGENCY",
+        "agencyName": "Lime Inmuebles"
+      },
+      "createdAt": "2026-10-04T10:00:00Z",
+      "updatedAt": "2026-10-08T11:00:00Z"
+    },
+    {
+      "id": 5,
+      "title": "Lote en barrio cerrado Pilar",
+      "description": "Aviso ficticio para demostrar la búsqueda de propiedades de Lime.",
+      "type": "LAND",
+      "operation": "SALE",
+      "price": 85000,
+      "currency": "USD",
+      "address": "Calle de ejemplo 100",
+      "city": "Pilar",
+      "province": "Buenos Aires",
+      "bedrooms": 0,
+      "bathrooms": 0,
+      "coveredArea": 0,
+      "totalArea": 600,
+      "status": "PUBLISHED",
+      "owner": {
+        "id": 2,
+        "name": "Agencia Demo",
+        "role": "AGENCY",
+        "agencyName": "Agencia Demo"
+      },
+      "createdAt": "2026-09-05T10:00:00Z",
+      "updatedAt": "2026-09-05T10:00:00Z"
+    },
+    {
+      "id": 6,
+      "title": "Dos ambientes en Caballito",
+      "description": "Aviso ficticio para demostrar la búsqueda de propiedades de Lime.",
+      "type": "APARTMENT",
+      "operation": "RENT",
+      "price": 540000,
+      "currency": "ARS",
+      "address": "Calle de ejemplo 100",
+      "city": "Caballito",
+      "province": "Buenos Aires",
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "coveredArea": 45,
+      "totalArea": 50,
+      "status": "PUBLISHED",
+      "owner": {
+        "id": 2,
+        "name": "Agencia Demo",
+        "role": "AGENCY",
+        "agencyName": "Agencia Demo"
+      },
+      "createdAt": "2026-09-06T10:00:00Z",
+      "updatedAt": "2026-09-06T10:00:00Z"
+    },
+    {
+      "id": 7,
+      "title": "Casa en Adrogué con patio",
+      "description": "Aviso ficticio para demostrar la búsqueda de propiedades de Lime.",
+      "type": "HOUSE",
+      "operation": "SALE",
+      "price": 210000,
+      "currency": "USD",
+      "address": "Calle de ejemplo 100",
+      "city": "Adrogué",
+      "province": "Buenos Aires",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "coveredArea": 150,
+      "totalArea": 220,
+      "status": "PUBLISHED",
+      "owner": {
+        "id": 2,
+        "name": "Agencia Demo",
+        "role": "AGENCY",
+        "agencyName": "Agencia Demo"
+      },
+      "createdAt": "2026-09-07T10:00:00Z",
+      "updatedAt": "2026-09-07T10:00:00Z"
+    },
+    {
+      "id": 8,
+      "title": "Cabaña cerca del río",
+      "description": "Aviso ficticio para demostrar la búsqueda de propiedades de Lime.",
+      "type": "HOUSE",
+      "operation": "TEMPORARY_RENT",
+      "price": 185000,
+      "currency": "ARS",
+      "address": "Calle de ejemplo 100",
+      "city": "Tigre",
+      "province": "Buenos Aires",
+      "bedrooms": 2,
+      "bathrooms": 1,
+      "coveredArea": 70,
+      "totalArea": 110,
+      "status": "PUBLISHED",
+      "owner": {
+        "id": 2,
+        "name": "Agencia Demo",
+        "role": "AGENCY",
+        "agencyName": "Agencia Demo"
+      },
+      "createdAt": "2026-09-08T10:00:00Z",
+      "updatedAt": "2026-09-08T10:00:00Z"
+    },
+    {
+      "id": 9,
+      "title": "Monoambiente luminoso en Villa Gesell",
+      "description": "Aviso ficticio para demostrar la búsqueda de propiedades de Lime.",
+      "type": "APARTMENT",
+      "operation": "TEMPORARY_RENT",
+      "price": 65000,
+      "currency": "ARS",
+      "address": "Calle de ejemplo 100",
+      "city": "Villa Gesell",
+      "province": "Buenos Aires",
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "coveredArea": 32,
+      "totalArea": 36,
+      "status": "PUBLISHED",
+      "owner": {
+        "id": 2,
+        "name": "Agencia Demo",
+        "role": "AGENCY",
+        "agencyName": "Agencia Demo"
+      },
+      "createdAt": "2026-09-09T10:00:00Z",
+      "updatedAt": "2026-09-09T10:00:00Z"
+    },
+    {
+      "id": 10,
+      "title": "Oficina en el centro",
+      "description": "Aviso ficticio para demostrar la búsqueda de propiedades de Lime.",
+      "type": "COMMERCIAL",
+      "operation": "RENT",
+      "price": 420000,
+      "currency": "ARS",
+      "address": "Calle de ejemplo 100",
+      "city": "Córdoba",
+      "province": "Buenos Aires",
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "coveredArea": 60,
+      "totalArea": 60,
+      "status": "PUBLISHED",
+      "owner": {
+        "id": 2,
+        "name": "Agencia Demo",
+        "role": "AGENCY",
+        "agencyName": "Agencia Demo"
+      },
+      "createdAt": "2026-09-10T10:00:00Z",
+      "updatedAt": "2026-09-10T10:00:00Z"
     }
   ],
   "page": 0,
   "size": 20,
-  "totalElements": 4,
+  "totalElements": 10,
   "totalPages": 1
 }

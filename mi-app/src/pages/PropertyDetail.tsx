@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { InquiryForm } from '@/components/InquiryForm'
 import { apiFetch, ApiError } from '@/api/client'
 import { formatPrice, formatArea } from '@/lib/format'
+import { getPropertyImages, imageUrl } from '@/api/properties.js'
 import { operationTypeLabel, propertyTypeLabel } from '@/lib/property-enums'
 
 interface PropertyImage {
@@ -44,7 +45,7 @@ function PropertyGallery({ images }: { images: PropertyImage[] }) {
   return (
     <div className="relative h-64 w-full overflow-hidden rounded-lg bg-gray-100 sm:h-96">
       <img
-        src={images[currentIndex].url}
+        src={imageUrl(images[currentIndex])}
         alt={`Foto ${currentIndex + 1}`}
         className="h-full w-full object-cover"
       />
@@ -81,30 +82,39 @@ export function PropertyDetail() {
   useEffect(() => {
     if (!id) return
 
+    let cancelled = false
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Reinicia la carga al navegar a otro ID.
     setLoading(true)
+    setError(null)
     apiFetch(`/api/v1/properties/${id}`)
-      .then((data: Property) => {
-        setProperty(data)
+      .then(async (data: Property) => {
+        const images = await getPropertyImages(id)
+        if (cancelled) return
+        setProperty({ ...data, images })
         setError(null)
       })
       .catch((err) => {
+        if (cancelled) return
         setError(err instanceof ApiError && err.status === 404 ? '404' : 'error')
       })
       .finally(() => {
-        setLoading(false)
+        if (!cancelled) setLoading(false)
       })
+    return () => { cancelled = true }
   }, [id])
 
   if (loading) {
     return <div className="p-12 text-center text-xl text-gray-500">Buscando propiedad...</div>
   }
 
+  if (error === 'error') return <div role="alert" className="p-12 text-center">No pudimos cargar el aviso. Intentá nuevamente.</div>
+
   if (error === '404' || !property) {
     return (
       <div className="p-12 text-center">
         <h1 className="mb-4 text-4xl font-bold">404 - Propiedad no encontrada</h1>
         <p className="mb-6 text-gray-600">El aviso que buscás no existe o ya no está publicado.</p>
-        <Link to="/" className="rounded bg-blue-600 px-6 py-2 text-white hover:bg-blue-700">
+        <Link to="/" className="rounded bg-primary px-6 py-2 text-white hover:opacity-90">
           Volver al inicio
         </Link>
       </div>
@@ -115,7 +125,7 @@ export function PropertyDetail() {
     <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 p-4 md:grid-cols-3 md:p-8">
       {/* Izquierda: galería y descripción */}
       <div className="space-y-6 md:col-span-2">
-        <PropertyGallery images={property.images} />
+        <PropertyGallery key={property.id} images={property.images} />
 
         <div>
           <h1 className="mb-2 text-2xl font-bold sm:text-3xl">{property.title}</h1>
@@ -124,7 +134,7 @@ export function PropertyDetail() {
           </p>
 
           <div className="mb-6 flex flex-wrap gap-3">
-            <span className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700">
+            <span className="rounded-full border border-border bg-accent/20 px-3 py-1 text-sm font-medium text-accent-ink">
               {operationTypeLabel(property.operation)}
             </span>
             <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700">

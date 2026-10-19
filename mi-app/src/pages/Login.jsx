@@ -16,7 +16,7 @@ export function Login() {
 
   async function handleSubmit(event) {
     event.preventDefault()
-    if (!email.trim() || !password) {
+    if (!/^\S+@\S+\.\S+$/.test(email.trim()) || !password) {
       setError('Ingresá tu email y tu contraseña')
       return
     }
@@ -28,7 +28,7 @@ export function Login() {
         body: { email: email.trim(), password },
       })
       login(session.token, session.user)
-      navigate('/panel')
+      navigate(session.user.role === 'USER' ? '/buscar' : '/panel')
     } catch (err) {
       setError(err instanceof ApiError && err.detail ? err.detail : 'No pudimos iniciar sesión')
       setSending(false)

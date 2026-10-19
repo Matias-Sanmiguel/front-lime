@@ -146,7 +146,7 @@ export function InquiryForm({ propertyId }: Props) {
       </Button>
 
       {sent && (
-        <p role="status" className="rounded-lg bg-[var(--lime)] px-3 py-2 text-sm font-medium text-[var(--ink)]">
+        <p role="status" className="rounded-lg bg-accent px-3 py-2 text-sm font-medium text-foreground">
           ¡Consulta enviada! El anunciante se va a comunicar con vos.
         </p>
       )}
