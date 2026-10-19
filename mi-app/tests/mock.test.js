@@ -56,3 +56,20 @@ test('sending a consultation returns the complete InquiryResponse and appears in
  await login()
  assert.ok((await apiFetch('/api/v1/me/inquiries')).content.some(x=>x.id===inquiry.id))
 })
+test('registration creates a distinct account, persists login and rejects duplicate emails', async()=>{
+ const body={name:'Ana',email:'ana@example.com',password:'password123',birthDate:'2000-01-01',sex:'FEMALE',role:'AGENCY',agencyName:'Ana Propiedades'}
+ const session=await apiFetch('/api/v1/auth/register',{method:'POST',body})
+ assert.notEqual(session.user.id,1)
+ assert.equal((await apiFetch('/api/v1/me/properties')).totalElements,0)
+ await assert.rejects(apiFetch('/api/v1/properties/1',{method:'PATCH',body:{title:'Ajeno'}}),{status:403})
+ await apiFetch('/api/v1/auth/logout',{method:'POST'})
+ assert.equal((await apiFetch('/api/v1/auth/login',{method:'POST',body})).user.email,body.email)
+ await assert.rejects(apiFetch('/api/v1/auth/register',{method:'POST',body}),{status:409})
+})
+test('parallel consultations are not lost',async()=>{
+ const before=await login()
+ assert.ok(before.token)
+ await Promise.all(['Ana','Pedro'].map(name=>apiFetch('/api/v1/properties/1/inquiries',{method:'POST',body:{name,email:`${name}@example.com`,message:'Visita'}})))
+ const inbox=await apiFetch('/api/v1/me/inquiries')
+ assert.equal(inbox.totalElements,5)
+})

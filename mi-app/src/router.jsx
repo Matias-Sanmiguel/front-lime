@@ -8,6 +8,7 @@ import { Login } from '@/pages/Login'
 import { HomeAnterior } from '@/pages/HomeAnterior'
 import { PropertyDetail } from '@/pages/PropertyDetail.tsx'
 
+import ProfilePage from '@/panel/ProfilePage.jsx'
 import InquiriesPage from '@/panel/InquiriesPage.jsx'
 import PanelLayout from '@/panel/PanelLayout.jsx'
 import MyPropertiesPage from '@/panel/MyPropertiesPage.jsx'
@@ -44,6 +45,7 @@ export const router = createBrowserRouter([
         path: 'panel',
         element: <PanelLayout />,
         children: [
+          { path: 'perfil', element: <ProfilePage /> },
           { path: 'consultas', element: <InquiriesPage /> },
           {
             index: true,

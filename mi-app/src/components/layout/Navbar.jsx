@@ -1,4 +1,7 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useAuth } from '@/auth/AuthContext.jsx'
+import { apiFetch } from '@/api/client'
 
 function LimeMark() {
   return (
@@ -16,23 +19,39 @@ const navLinkClassName = ({ isActive }) =>
   `text-sm font-medium transition-colors ${isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`
 
 export function Navbar() {
+  const { isAuthenticated, user, logout } = useAuth()
+  const navigate = useNavigate()
+  const [error,setError] = useState(null)
+  const [busy,setBusy] = useState(false)
+  async function signOut() {
+    setBusy(true);setError(null)
+    try { await apiFetch('/api/v1/auth/logout',{method:'POST'}); logout();navigate('/') }
+    catch(err) { if(err.status===401) {logout();navigate('/')} else setError('No pudimos cerrar sesión. Intentá nuevamente.') }
+    finally {setBusy(false)}
+  }
   return (
     <header className="sticky top-0 z-10 border-b border-border bg-surface/90 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+      <div className="mx-auto flex min-h-16 max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
         <NavLink to="/" className="flex items-center gap-2.5">
           <LimeMark />
           <span className="font-display text-xl font-semibold text-foreground">Lime</span>
         </NavLink>
 
-        <nav className="flex items-center gap-8">
+        <nav className="flex flex-wrap items-center gap-3 sm:gap-6">
           <NavLink to="/" end className={navLinkClassName}>
             Home
           </NavLink>
           <NavLink to="/buscar" className={navLinkClassName}>
             Buscar
           </NavLink>
+          {isAuthenticated ? <>
+            <NavLink to={user?.role === 'USER' ? '/panel/perfil' : '/panel'} className={navLinkClassName}>Mi panel</NavLink>
+            <NavLink to="/panel/perfil" className={navLinkClassName}>Perfil</NavLink>
+            <button type="button" onClick={signOut} disabled={busy} className="text-sm text-muted-foreground hover:text-foreground">{busy?'Saliendo…':'Salir'}</button>
+          </> : <NavLink to="/login" className={navLinkClassName}>Ingresar</NavLink>}
         </nav>
       </div>
+      {error && <p role="alert" className="px-4 pb-2 text-sm text-danger">{error}</p>}
     </header>
   )
 }
