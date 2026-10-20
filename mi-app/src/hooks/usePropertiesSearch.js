@@ -6,7 +6,7 @@ const FILTER_KEYS = ['city', 'province', 'type', 'operation', 'minPrice', 'maxPr
 const PAGE_SIZE = 8
 
 // Sincroniza los filtros de /buscar con la query string y pide el listado
-// a GET /api/v1/properties (en esta entrega, servido desde /public/data).
+// a GET /api/v1/properties (con VITE_USE_MOCK=true, servido desde /public/data).
 export function usePropertiesSearch() {
   const [searchParams, setSearchParams] = useSearchParams()
 

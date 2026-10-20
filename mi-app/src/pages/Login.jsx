@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { apiFetch, ApiError } from '@/api/client'
+import { apiFetch, ApiError, USE_MOCK } from '@/api/client'
 import { useAuth } from '@/auth/AuthContext.jsx'
 
 export function Login() {
@@ -79,9 +79,12 @@ export function Login() {
           {sending ? 'Ingresando...' : 'Ingresar'}
         </Button>
 
-        <p className="text-sm text-muted-foreground">
-          Datos de prueba: <strong>lime@test.com</strong> y la contraseña <strong>12345678</strong>.
-        </p>
+        {/* La cuenta de prueba solo existe en los JSON del mock. */}
+        {USE_MOCK && (
+          <p className="text-sm text-muted-foreground">
+            Datos de prueba: <strong>lime@test.com</strong> y la contraseña <strong>12345678</strong>.
+          </p>
+        )}
       </form>
 
       <p className="text-sm text-muted-foreground">

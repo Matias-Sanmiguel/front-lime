@@ -4,5 +4,6 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   plugins: [react()],
   resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
-  test: { environment: 'jsdom', include: ['tests/**/*.test.jsx'] },
+  // Los tests corren contra los JSON de public/data, no contra el back.
+  test: { environment: 'jsdom', include: ['tests/**/*.test.jsx'], env: { VITE_USE_MOCK: 'true' } },
 })

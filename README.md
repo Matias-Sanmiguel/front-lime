@@ -1,6 +1,6 @@
 # Lime — Frontend React
 
-Interfaz de un portal inmobiliario para la tercera actividad obligatoria de Aplicaciones Interactivas. Implementa navegación, formularios y operaciones con **JSON locales y datos ficticios**. No requiere iniciar Java ni una base de datos para la entrega estática.
+Interfaz de un portal inmobiliario para Aplicaciones Interactivas. Por defecto consume la **API real de Spring Boot** ([back-lime](https://github.com/Matias-Sanmiguel/back-lime)). La versión estática de la tercera actividad obligatoria, con **JSON locales y datos ficticios**, sigue disponible con `VITE_USE_MOCK=true` y no requiere Java ni base de datos.
 
 - [Diseño y wireflow en Figma](https://www.figma.com/design/bgyy8ucpBeyVH17eAapO7G/Lime?node-id=11-787)
 - [Backend Java](https://github.com/Matias-Sanmiguel/back-lime)
@@ -10,13 +10,30 @@ Interfaz de un portal inmobiliario para la tercera actividad obligatoria de Apli
 
 Requiere Node.js 22.12 o posterior y npm.
 
+Primero levantar el backend (en `back-lime`):
+
+```sh
+docker compose up -d --build
+```
+
+Después el front:
+
 ```sh
 cd mi-app
 npm ci
 npm run dev
 ```
 
-Abrir la dirección que muestra Vite. Cuenta ficticia inicial: **lime@test.com / 12345678** (inmobiliaria).
+Abrir `http://localhost:5173` (el puerto que habilita el CORS del backend). La API se toma de `VITE_API_URL`, por defecto `http://localhost:8080`. Con una base nueva no hay avisos ni cuentas: crear una inmobiliaria en `/registro` y publicar desde `/panel`.
+
+### Versión estática (TPO 3)
+
+```sh
+cd mi-app
+VITE_USE_MOCK=true npm run dev
+```
+
+En Windows (PowerShell): `$env:VITE_USE_MOCK="true"; npm run dev`, o poner `VITE_USE_MOCK=true` en `mi-app/.env.local`. Cuenta ficticia inicial: **lime@test.com / 12345678** (inmobiliaria).
 
 ## Pantallas
 

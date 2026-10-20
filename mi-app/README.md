@@ -16,20 +16,21 @@ npm run preview
 
 `build` genera `dist/`. Un servidor de producción debe devolver `index.html` para las rutas de React Router que no correspondan a archivos estáticos.
 
-## Datos estáticos y API real
+## API real y datos estáticos
 
-Por defecto se usa `src/api/mock.js`. Los componentes acceden a `apiFetch` y conservan las mismas rutas, métodos y cuerpos del backend. La simulación implementa respuestas 400, 401, 403, 404 y 409 para los casos principales y devuelve las operaciones asíncronamente.
+Por defecto `apiFetch` (`src/api/client.js`) pega a la API real en `VITE_API_URL` (default `http://localhost:8080`). El transporte HTTP envía el token Bearer, soporta JSON y multipart de imágenes, y maneja respuestas vacías 204 y Problem Details. Requiere el backend levantado (`docker compose up` en back-lime) y servir el front en `http://localhost:5173`, que es el origen habilitado en CORS.
 
-Para iniciar la integración real, crear `.env.local`:
+Con `VITE_USE_MOCK=true` se usa `src/api/mock.js`, la versión estática del TPO 3. Los componentes no cambian: conservan las mismas rutas, métodos y cuerpos del backend. La simulación implementa respuestas 400, 401, 403, 404 y 409 para los casos principales y devuelve las operaciones asíncronamente. Para dejarlo fijo, crear `.env.local`:
 
 ```dotenv
-VITE_USE_MOCK=false
-VITE_API_URL=http://localhost:8080
+VITE_USE_MOCK=true
 ```
 
-El transporte HTTP envía el token Bearer, soporta JSON y multipart de imágenes, y maneja respuestas vacías 204 y Problem Details. La integración real requiere iniciar Java, configurar SQL Server y habilitar el origen del frontend en CORS. Los datos mock no se sincronizan con Java; sus cuentas y tokens no sirven en modo real.
+Los datos mock no se sincronizan con Java; sus cuentas y tokens no sirven en modo real.
 
 ## Pruebas
+
+Los tests corren siempre contra los JSON de `public/data` (`VITE_USE_MOCK=true` vía `tests/test.env` y `vitest.config.js`), no necesitan el backend.
 
 - `tests/mock.test.js`: comportamientos del adaptador y contratos de datos.
 - `tests/registration.test.js`: validación del formulario de registro.

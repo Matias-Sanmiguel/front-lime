@@ -1,4 +1,4 @@
-import { apiFetch } from './client'
+import { API_URL, apiFetch } from './client'
 
 export async function getProperties(params = {}) {
   const query = new URLSearchParams(params).toString()
@@ -52,7 +52,7 @@ export function deletePropertyImage(id, imageId) {
 
 // El backend devuelve la ruta relativa (/uploads/...); el <img> necesita la URL completa.
 export function imageUrl(image) {
-  return /^(https?:|data:|blob:)/.test(image.url) ? image.url : `${import.meta.env.VITE_API_URL || ''}${image.url}`
+  return /^(https?:|data:|blob:)/.test(image.url) ? image.url : `${API_URL}${image.url}`
 }
 
 function imageForm(file) {
