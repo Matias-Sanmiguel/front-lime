@@ -1,6 +1,8 @@
 import { ApiError } from './errors.js'
 
-const KEY = 'lime.mock.v1'
+const DATA_VERSION = '2026-10-20-v2'
+const KEY = `lime.mock.${DATA_VERSION}`
+
 let fallback = null
 const now = () => new Date().toISOString()
 const fail = (status, detail) => {
