@@ -6,7 +6,7 @@
       "propertyTitle": "Departamento de 3 ambientes en Palermo",
       "name": "Sofía Gómez",
       "email": "sofia.gomez@example.com",
-      "phone": null,
+      "phone": "1189457834",
       "message": "Hola, ¿el departamento admite mascotas? ¿Se puede visitar este fin de semana?",
       "createdAt": "2026-10-18T17:30:00Z",
       "readAt": null
@@ -17,20 +17,20 @@
       "propertyTitle": "Casa con jardín en Martínez",
       "name": "Tomás Pérez",
       "email": "tomas.perez@example.com",
-      "phone": null,
+      "phone": "1123456789",
       "message": "Quisiera saber si aceptan permuta por un departamento en CABA.",
       "createdAt": "2026-10-17T17:30:00Z",
       "readAt": null
     },
     {
       "id": 3,
-      "propertyId": 1,
-      "propertyTitle": "Departamento de 3 ambientes en Palermo",
+      "propertyId": 4,
+      "propertyTitle": "Monoambiente temporario en Villa Gesell",
       "name": "Lucía Fernández",
       "email": "lucia.f@example.com",
-      "phone": null,
+      "phone": "1186937766",
       "message": "¿Está disponible la primera quincena de enero?",
-      "createdAt": "2026-10-16T17:30:00Z",
+      "createdAt": "2026-10-11T17:30:00Z",
       "readAt": "2026-10-12T21:40:00Z"
     }
   ],
