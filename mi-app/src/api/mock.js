@@ -2,6 +2,7 @@ import { ApiError } from './errors.js'
 
 const KEY = 'lime.mock.v1'
 let fallback = null
+let pending = Promise.resolve()
 const now = () => new Date().toISOString()
 const fail = (status, detail) => {
   throw new ApiError(status, detail)
@@ -36,22 +37,30 @@ async function database() {
         ...db.properties,
         ...db.inquiries.map((i) => ({ id: i.propertyId })),
       ])
+      db.nextImageId ??= nextId(Object.values(db.images).flat())
+      db.deletedPropertyIds ??= []
       return db
     } catch {
       /* restaurar semilla */
     }
   }
-  const [properties, inquiries, auth] = await Promise.all([
+  const [properties, mine, inquiries, auth] = await Promise.all([
     json('properties'),
+    json('me-properties'),
     json('inquiries'),
     json('auth'),
   ])
+  const allProperties = [
+    ...new Map([...properties.content, ...mine.content].map((p) => [p.id, p])).values(),
+  ]
   const images = Object.fromEntries(
-    await Promise.all(properties.content.map(async (p) => [p.id, await json(`images-${p.id}`)])),
+    await Promise.all(allProperties.map(async (p) => [p.id, await json(`images-${p.id}`)])),
   )
   return {
-    nextPropertyId: nextId(properties.content),
-    properties: properties.content,
+    nextPropertyId: nextId(allProperties),
+    nextImageId: nextId(Object.values(images).flat()),
+    deletedPropertyIds: [],
+    properties: allProperties,
     inquiries: inquiries.content,
     images,
     users: [auth.user],
@@ -64,7 +73,9 @@ function page(items, params) {
     size = Number(params.get('size') || 20)
   if (!Number.isInteger(index) || index < 0 || !Number.isInteger(size) || size < 1 || size > 100)
     fail(400, 'Paginación inválida')
-  const sorted = [...items].sort((a, b) => b.createdAt.localeCompare(a.createdAt) || b.id - a.id)
+  const sorted = [...items].sort(
+    (a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt) || b.id - a.id,
+  )
   return {
     content: sorted.slice(index * size, (index + 1) * size),
     page: index,
@@ -73,7 +84,25 @@ function page(items, params) {
     totalPages: Math.ceil(items.length / size),
   }
 }
-function filterProperties(items, params) {
+function filterProperties(items, params, publicOnly = false) {
+  const enums = {
+    type: ['APARTMENT', 'HOUSE', 'LAND', 'COMMERCIAL', 'OTHER'],
+    operation: ['SALE', 'RENT', 'TEMPORARY_RENT'],
+    status: ['DRAFT', 'PUBLISHED', 'PAUSED'],
+  }
+  for (const [key, allowed] of Object.entries(enums))
+    if (params.get(key) && !allowed.includes(params.get(key))) fail(400, `${key}: valor inválido`)
+  for (const key of ['minPrice', 'maxPrice', 'minBedrooms', 'minBathrooms']) {
+    const raw = params.get(key)
+    if (
+      raw != null &&
+      raw !== '' &&
+      (!Number.isFinite(Number(raw)) ||
+        Number(raw) < 0 ||
+        (['minBedrooms', 'minBathrooms'].includes(key) && !Number.isInteger(Number(raw))))
+    )
+      fail(400, `${key}: valor inválido`)
+  }
   if (
     params.has('minPrice') &&
     params.has('maxPrice') &&
@@ -82,17 +111,18 @@ function filterProperties(items, params) {
     fail(400, 'El precio mínimo no puede superar al máximo')
   return items.filter((p) => {
     for (const key of ['city', 'province'])
-      if (params.get(key) && !(p[key] || '').toLowerCase().includes(params.get(key).toLowerCase()))
+      if (params.get(key)?.trim() && p[key]?.toLowerCase() !== params.get(key).trim().toLowerCase())
         return false
     for (const key of ['type', 'operation', 'status'])
-      if (params.get(key) && p[key] !== params.get(key)) return false
+      if (!(publicOnly && key === 'status') && params.get(key) && p[key] !== params.get(key))
+        return false
     for (const [key, field] of [
       ['minPrice', 'price'],
       ['minBedrooms', 'bedrooms'],
       ['minBathrooms', 'bathrooms'],
     ])
-      if (params.has(key) && p[field] < Number(params.get(key))) return false
-    return !params.has('maxPrice') || p.price <= Number(params.get('maxPrice'))
+      if (params.get(key) && (p[field] == null || p[field] < Number(params.get(key)))) return false
+    return !params.get('maxPrice') || (p.price != null && p.price <= Number(params.get('maxPrice')))
   })
 }
 const fields =
@@ -104,9 +134,14 @@ function propertyChanges(body) {
   for (const k of ['price', 'bedrooms', 'bathrooms', 'coveredArea', 'totalArea'])
     if (result[k] != null && (!Number.isFinite(result[k]) || result[k] < 0))
       fail(400, 'Los valores numéricos deben ser positivos o cero')
-  if (result.type && !['APARTMENT', 'HOUSE', 'LAND', 'COMMERCIAL', 'OTHER'].includes(result.type))
+  for (const k of ['bedrooms', 'bathrooms'])
+    if (result[k] != null && !Number.isInteger(result[k])) fail(400, `${k}: debe ser entero`)
+  if (
+    result.type != null &&
+    !['APARTMENT', 'HOUSE', 'LAND', 'COMMERCIAL', 'OTHER'].includes(result.type)
+  )
     fail(400, 'Tipo inválido')
-  if (result.operation && !['SALE', 'RENT', 'TEMPORARY_RENT'].includes(result.operation))
+  if (result.operation != null && !['SALE', 'RENT', 'TEMPORARY_RENT'].includes(result.operation))
     fail(400, 'Operación inválida')
   for (const [key, max] of Object.entries({
     title: 120,
@@ -116,19 +151,34 @@ function propertyChanges(body) {
     city: 100,
     province: 100,
   }))
-    if (result[key]?.length > max) fail(400, `${key}: máximo ${max} caracteres`)
+    if (result[key] != null && (typeof result[key] !== 'string' || result[key].length > max))
+      fail(400, `${key}: texto de hasta ${max} caracteres`)
+  if (result.currency != null) result.currency = result.currency.trim().toUpperCase()
   return result
 }
 async function digest(password) {
   const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password))
   return Array.from(new Uint8Array(bytes), (b) => b.toString(16).padStart(2, '0')).join('')
 }
-export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
+export function mockFetch(path, options) {
+  // Las cargas de fotos son asíncronas: evitar que dos escrituras se pisen.
+  const result = pending.then(() => handleMockFetch(path, options))
+  pending = result.catch(() => {})
+  return result
+}
+async function handleMockFetch(path, { method = 'GET', body = {} } = {}) {
   await new Promise((resolve) => setTimeout(resolve, 80))
   const db = await database()
   const [pathname, query = ''] = path.split('?'),
     params = new URLSearchParams(query)
   const user = db.session
+  const active = (p) => !db.deletedPropertyIds.includes(p.id)
+  const propertyResponse = (p) => {
+    const owner = db.users.find((u) => u.id === p.owner.id)
+    if (!owner) return p
+    const { id, name, role, agencyName } = owner
+    return { ...p, owner: { id, name, role, agencyName } }
+  }
   const signed = () => {
     if (!user) fail(401, 'Iniciá sesión para continuar')
     return user
@@ -221,7 +271,7 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
     return finish(
       page(
         filterProperties(
-          db.properties.filter((p) => p.owner.id === user.id),
+          db.properties.filter((p) => active(p) && p.owner.id === user.id).map(propertyResponse),
           params,
         ),
         params,
@@ -237,7 +287,7 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
       if (
         params.get('propertyId') &&
         !db.properties.some(
-          (p) => p.id === Number(params.get('propertyId')) && p.owner.id === user.id,
+          (p) => active(p) && p.id === Number(params.get('propertyId')) && p.owner.id === user.id,
         )
       )
         fail(404, 'Aviso no encontrado')
@@ -259,12 +309,14 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
   }
   if (pathname === '/api/v1/properties') {
     if (method === 'GET') {
-      params.delete('status')
       return finish(
         page(
           filterProperties(
-            db.properties.filter((p) => p.status === 'PUBLISHED'),
+            db.properties
+              .filter((p) => active(p) && p.status === 'PUBLISHED')
+              .map(propertyResponse),
             params,
+            true,
           ),
           params,
         ),
@@ -291,8 +343,9 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
     /^\/api\/v1\/properties\/(\d+)(?:\/(images|inquiries|publish|pause))?(?:\/(\d+))?$/,
   )
   if (match) {
-    const [, id, sub, imageId] = match,
-      p = db.properties.find((p) => String(p.id) === id)
+    const [, id, sub, imageId] = match
+    if (method !== 'GET' && sub !== 'inquiries') agency()
+    const p = db.properties.find((p) => active(p) && String(p.id) === id)
     if (!p) fail(404, 'Aviso no encontrado')
     if (sub === 'inquiries' && method === 'POST') {
       if (p.status !== 'PUBLISHED') fail(409, 'El aviso no está publicado')
@@ -322,19 +375,30 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
     }
     if (method === 'GET') {
       if (p.status !== 'PUBLISHED' && p.owner.id !== user?.id) fail(404, 'Aviso no encontrado')
-      if (!sub) return finish(p)
-      if (sub === 'images' && !imageId) return finish(db.images[id] || [])
+      if (!sub) return finish(propertyResponse(p))
+      if (sub === 'images' && !imageId)
+        return finish(
+          [...(db.images[id] || [])].sort(
+            (a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt),
+          ),
+        )
     }
     owns(p)
     if (!sub && method === 'PATCH') {
-      Object.assign(p, propertyChanges(body), { updatedAt: now() })
-      return finish(p)
+      const changes = propertyChanges(body)
+      if (Object.keys(changes).length) Object.assign(p, changes, { updatedAt: now() })
+      if (changes.title != null)
+        for (const inquiry of db.inquiries)
+          if (inquiry.propertyId === p.id) inquiry.propertyTitle = p.title
+      return finish(propertyResponse(p))
     }
     if (!sub && method === 'DELETE') {
-      db.properties = db.properties.filter((x) => x !== p)
+      db.deletedPropertyIds.push(p.id)
+      p.updatedAt = now()
       return finish(null)
     }
     if (sub === 'publish' && method === 'POST') {
+      if (!['DRAFT', 'PAUSED'].includes(p.status)) fail(409, 'El aviso ya está publicado')
       if (
         ['title', 'currency', 'city', 'type', 'operation'].some((k) => !p[k]?.trim()) ||
         p.price == null
@@ -342,13 +406,13 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
         fail(400, 'Completá título, precio, moneda, ciudad, tipo y operación')
       p.status = 'PUBLISHED'
       p.updatedAt = now()
-      return finish(p)
+      return finish(propertyResponse(p))
     }
     if (sub === 'pause' && method === 'POST') {
       if (p.status !== 'PUBLISHED') fail(409, 'Solo podés pausar un aviso publicado')
       p.status = 'PAUSED'
       p.updatedAt = now()
-      return finish(p)
+      return finish(propertyResponse(p))
     }
     if (sub === 'images') {
       const photos = (db.images[id] ||= []),
@@ -362,6 +426,7 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
         const file = body.get?.('file')
         if (
           !file ||
+          file.size === 0 ||
           !['image/jpeg', 'image/png', 'image/webp'].includes(file.type) ||
           file.size > 5 * 1024 * 1024
         )
@@ -372,7 +437,7 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
           reader.onerror = () => reject(new ApiError(400, 'No se pudo leer la foto'))
           reader.readAsDataURL(file)
         })
-        const img = existing || { id: nextId(photos), createdAt: now() }
+        const img = existing || { id: db.nextImageId++, createdAt: now() }
         Object.assign(img, { url, updatedAt: now() })
         if (!existing) photos.push(img)
         return finish(img)

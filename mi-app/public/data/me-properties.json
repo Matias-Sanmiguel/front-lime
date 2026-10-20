@@ -1,0 +1,108 @@
+{
+  "content": [
+    {
+      "id": 4,
+      "title": "Monoambiente temporario en Villa Gesell",
+      "description": "A dos cuadras del mar, ideal para la temporada.",
+      "type": "APARTMENT",
+      "operation": "TEMPORARY_RENT",
+      "price": 60000,
+      "currency": "ARS",
+      "address": "Av. 3 y Paseo 105",
+      "city": "Villa Gesell",
+      "province": "Buenos Aires",
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "coveredArea": 30,
+      "totalArea": 30,
+      "status": "PUBLISHED",
+      "owner": {
+        "id": 1,
+        "name": "Lime",
+        "role": "AGENCY",
+        "agencyName": "Lime Inmuebles"
+      },
+      "createdAt": "2026-10-04T10:00:00Z",
+      "updatedAt": "2026-10-08T11:00:00Z"
+    },
+    {
+      "id": 3,
+      "title": "Local en San Telmo (pausado)",
+      "description": "Planta libre sobre Defensa con vidriera a la calle.",
+      "type": "COMMERCIAL",
+      "operation": "RENT",
+      "price": 980000,
+      "currency": "ARS",
+      "address": "Defensa 900",
+      "city": "San Telmo",
+      "province": "CABA",
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "coveredArea": 90,
+      "totalArea": 90,
+      "status": "PAUSED",
+      "owner": {
+        "id": 1,
+        "name": "Lime",
+        "role": "AGENCY",
+        "agencyName": "Lime Inmuebles"
+      },
+      "createdAt": "2026-10-03T10:00:00Z",
+      "updatedAt": "2026-10-07T18:00:00Z"
+    },
+    {
+      "id": 2,
+      "title": "Casa con jardín en Martínez",
+      "description": "Casa de cuatro dormitorios sobre lote propio, con jardín y quincho.",
+      "type": "HOUSE",
+      "operation": "SALE",
+      "price": 420000,
+      "currency": "USD",
+      "address": "Libertador 800",
+      "city": "Martínez",
+      "province": "Buenos Aires",
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "coveredArea": 220,
+      "totalArea": 450,
+      "status": "PUBLISHED",
+      "owner": {
+        "id": 1,
+        "name": "Lime",
+        "role": "AGENCY",
+        "agencyName": "Lime Inmuebles"
+      },
+      "createdAt": "2026-10-02T10:00:00Z",
+      "updatedAt": "2026-10-06T09:00:00Z"
+    },
+    {
+      "id": 1,
+      "title": "Departamento de 3 ambientes en Palermo",
+      "description": "Luminoso departamento al frente con balcón, cocina integrada y seguridad 24hs.\n\nIdeal para estudiantes.",
+      "type": "APARTMENT",
+      "operation": "SALE",
+      "price": 120000,
+      "currency": "USD",
+      "address": "Thames 1500",
+      "city": "Palermo",
+      "province": "CABA",
+      "bedrooms": 3,
+      "bathrooms": 1,
+      "coveredArea": 70,
+      "totalArea": 75,
+      "status": "PUBLISHED",
+      "owner": {
+        "id": 1,
+        "name": "Lime",
+        "role": "AGENCY",
+        "agencyName": "Lime Inmuebles"
+      },
+      "createdAt": "2026-10-01T10:00:00Z",
+      "updatedAt": "2026-10-05T12:30:00Z"
+    }
+  ],
+  "page": 0,
+  "size": 20,
+  "totalElements": 4,
+  "totalPages": 1
+}

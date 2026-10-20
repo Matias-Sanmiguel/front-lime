@@ -1,13 +1,13 @@
 [
   {
     "id": 1,
-    "url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200",
+    "url": "/photos/palermo-1.jpg",
     "createdAt": "2026-10-01T10:00:00Z",
     "updatedAt": "2026-10-05T12:30:00Z"
   },
   {
     "id": 2,
-    "url": "https://images.unsplash.com/photo-1502672260266-1c1c29408447?w=1200",
+    "url": "/photos/palermo-2.jpg",
     "createdAt": "2026-10-01T10:00:00Z",
     "updatedAt": "2026-10-05T12:30:00Z"
   }
