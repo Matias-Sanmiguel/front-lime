@@ -5,6 +5,8 @@ import { AuthProvider } from '../src/auth/AuthContext.jsx'
 import { Register } from '../src/pages/Register.jsx'
 import MyPropertiesPage from '../src/panel/MyPropertiesPage.jsx'
 import InquiriesPage from '../src/panel/InquiriesPage.jsx'
+import PropertyImages from '../src/panel/PropertyImages.jsx'
+import { useState } from 'react'
 import { apiFetch } from '../src/api/client.js'
 import { readFile } from 'node:fs/promises'
 import { webcrypto } from 'node:crypto'
@@ -129,4 +131,22 @@ test('profile edits persist and password change rejects wrong current password',
       })
     ).user.name,
   ).toBe('Nombre editado')
+})
+
+test('photo deletion preserves the image on cancel and removes it after confirmation', async () => {
+  await signIn()
+  const initialImages = await apiFetch('/api/v1/properties/1/images')
+  function Photos() {
+    const [images, setImages] = useState(initialImages)
+    return <PropertyImages propertyId={1} images={images} setImages={setImages} onForbidden={vi.fn()} />
+  }
+  const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
+  mount(<Photos />)
+  fireEvent.click(screen.getAllByRole('button', { name: 'Eliminar' })[0])
+  expect(screen.getAllByRole('img')).toHaveLength(initialImages.length)
+  expect(await apiFetch('/api/v1/properties/1/images')).toHaveLength(initialImages.length)
+  confirm.mockReturnValue(true)
+  fireEvent.click(screen.getAllByRole('button', { name: 'Eliminar' })[0])
+  await waitFor(() => expect(screen.getAllByRole('img')).toHaveLength(initialImages.length - 1))
+  expect((await apiFetch('/api/v1/properties/1/images')).some(image => image.id === initialImages[0].id)).toBe(false)
 })
