@@ -23,9 +23,9 @@ interface Property {
   address: string
   city: string
   province: string
-  bedrooms: number
-  bathrooms: number
-  coveredArea: number
+  bedrooms: number | null
+  bathrooms: number | null
+  coveredArea: number | null
   totalArea: number
   status: string
   images: PropertyImage[]
@@ -140,15 +140,21 @@ export function PropertyDetail() {
             <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700">
               {propertyTypeLabel(property.type)}
             </span>
-            <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700">
-              {property.bedrooms} dormitorios
-            </span>
-            <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700">
-              {property.bathrooms} baños
-            </span>
-            <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700">
-              {formatArea(property.coveredArea)} cubiertos
-            </span>
+            {property.bedrooms != null && (
+              <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700">
+                {property.bedrooms} {property.bedrooms === 1 ? 'dormitorio' : 'dormitorios'}
+              </span>
+            )}
+            {property.bathrooms != null && (
+              <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700">
+                {property.bathrooms} {property.bathrooms === 1 ? 'baño' : 'baños'}
+              </span>
+            )}
+            {property.coveredArea != null && (
+              <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700">
+                {formatArea(property.coveredArea)} cubiertos
+              </span>
+            )}
           </div>
 
           <h2 className="mb-3 text-xl font-bold">Descripción</h2>
