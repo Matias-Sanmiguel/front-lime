@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "id": 9,
+    "url": "/photos/adrogue-1.jpg",
+    "createdAt": "2026-10-04T10:00:00Z",
+    "updatedAt": "2026-10-08T11:00:00Z"
+  },
+  {
+    "id": 10,
+    "url": "/photos/adrogue-2.jpg",
+    "createdAt": "2026-10-04T10:00:00Z",
+    "updatedAt": "2026-10-08T11:00:00Z"
+  }
+]

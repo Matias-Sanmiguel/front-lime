@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "id": 16,
+    "url": "/photos/cordoba-1.jpg",
+    "createdAt": "2026-09-10T10:00:00Z",
+    "updatedAt": "2026-09-10T10:00:00Z"
+  },
+  {
+    "id": 17,
+    "url": "/photos/cordoba-2.jpg",
+    "createdAt": "2026-09-10T10:00:00Z",
+    "updatedAt": "2026-09-10T10:00:00Z"
+  }
+]

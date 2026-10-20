@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "id": 5,
+    "url": "/photos/san-telmo-1.jpg",
+    "createdAt": "2026-10-03T10:00:00Z",
+    "updatedAt": "2026-10-07T10:30:00Z"
+  },
+  {
+    "id": 6,
+    "url": "/photos/san-telmo-2.jpg",
+    "createdAt": "2026-10-03T10:00:00Z",
+    "updatedAt": "2026-10-07T10:30:00Z"
+  }
+]
