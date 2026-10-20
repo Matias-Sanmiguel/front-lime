@@ -86,3 +86,34 @@ h3 {
 button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 input[type="radio"], input[type="checkbox"] { accent-color: var(--foreground); }
 :focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
+
+@media (max-width: 640px) {
+  button,
+  .panel .btn,
+  header nav a,
+  .back-link,
+  .inbox-check {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  header nav a,
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .panel .btn {
+    min-width: max-content;
+  }
+
+  input:not([type='checkbox']):not([type='radio']),
+  select,
+  textarea,
+  .panel input:not([type='checkbox']):not([type='radio']),
+  .panel select,
+  .panel textarea {
+    min-height: 44px;
+    font-size: 16px;
+  }
+}
