@@ -21,6 +21,23 @@ const login = () =>
     body: { email: 'lime@test.com', password: '12345678' },
   })
 
+test('public price filtering requires a currency and sorting happens before pagination', async () => {
+  await assert.rejects(apiFetch('/api/v1/properties?minPrice=0'), { status: 400 })
+  await assert.rejects(apiFetch('/api/v1/properties?sort=price_asc'), { status: 400 })
+  await assert.rejects(apiFetch('/api/v1/properties?currency=EUR'), { status: 400 })
+  const all = await apiFetch('/api/v1/properties?currency=USD&sort=price_asc')
+  assert.ok(all.content.length > 1)
+  assert.ok(all.content.every((property) => property.currency === 'USD'))
+  assert.deepEqual(
+    all.content.map((property) => property.price),
+    all.content.map((property) => property.price).sort((first, second) => first - second),
+  )
+  const secondPage = await apiFetch('/api/v1/properties?currency=USD&sort=price_asc&size=1&page=1')
+  assert.equal(secondPage.content[0].id, all.content[1].id)
+  const descending = await apiFetch('/api/v1/properties?currency=USD&sort=price_desc&size=1')
+  assert.equal(descending.content[0].price, all.content.at(-1).price)
+})
+
 test('PropertyResponse has exactly the Java DTO fields, with photos separate', async () => {
   const p = await apiFetch('/api/v1/properties/1')
   assert.deepEqual(

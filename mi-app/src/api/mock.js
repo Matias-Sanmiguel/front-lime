@@ -1,4 +1,5 @@
 import { ApiError } from './errors.js'
+import { readSearchFilters, validateSearch } from '../lib/property-search.js'
 
 const DATA_VERSION = '2026-10-20-v2'
 const KEY = `lime.mock.${DATA_VERSION}`
@@ -61,12 +62,16 @@ async function database() {
     session: null,
   }
 }
-function page(items, params) {
+function page(items, params, sort = 'newest') {
   const index = Number(params.get('page') || 0),
     size = Number(params.get('size') || 20)
   if (!Number.isInteger(index) || index < 0 || !Number.isInteger(size) || size < 1 || size > 100)
     fail(400, 'Paginación inválida')
-  const sorted = [...items].sort((a, b) => b.createdAt.localeCompare(a.createdAt) || b.id - a.id)
+  const sorted = [...items].sort((first, second) => {
+    if (sort === 'price_asc') return first.price - second.price || second.id - first.id
+    if (sort === 'price_desc') return second.price - first.price || second.id - first.id
+    return second.createdAt.localeCompare(first.createdAt) || second.id - first.id
+  })
   return {
     content: sorted.slice(index * size, (index + 1) * size),
     page: index,
@@ -86,7 +91,7 @@ function filterProperties(items, params) {
     for (const key of ['city', 'province'])
       if (params.get(key) && !(p[key] || '').toLowerCase().includes(params.get(key).toLowerCase()))
         return false
-    for (const key of ['type', 'operation', 'status'])
+    for (const key of ['type', 'operation', 'status', 'currency'])
       if (params.get(key) && p[key] !== params.get(key)) return false
     for (const [key, field] of [
       ['minPrice', 'price'],
@@ -261,6 +266,8 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
   }
   if (pathname === '/api/v1/properties') {
     if (method === 'GET') {
+      const error = validateSearch(readSearchFilters(params))
+      if (error) fail(400, error)
       params.delete('status')
       return finish(
         page(
@@ -269,6 +276,7 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
             params,
           ),
           params,
+          params.get('sort') || 'newest',
         ),
       )
     }

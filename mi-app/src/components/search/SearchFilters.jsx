@@ -1,68 +1,126 @@
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { OPERATION_TYPES, PROPERTY_TYPES } from '@/lib/property-enums'
-
-const FIELDS = ['city', 'province', 'type', 'operation', 'minPrice', 'maxPrice', 'minBedrooms', 'minBathrooms']
+import { readSearchFilters, SORT_OPTIONS, validateSearch } from '@/lib/property-search'
 
 export function SearchFilters({ filters, onSubmit }) {
+  const [error, setError] = useState(null)
+  const advanced = [
+    'province',
+    'currency',
+    'minPrice',
+    'maxPrice',
+    'minBedrooms',
+    'minBathrooms',
+    'sort',
+  ].some((field) => filters[field])
+
   function handleSubmit(event) {
     event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-    const next = {}
-    for (const field of FIELDS) {
-      const value = formData.get(field)
-      if (value) next[field] = value
-    }
-    onSubmit(next)
+    const next = readSearchFilters(new FormData(event.currentTarget))
+    const message = validateSearch(next)
+    setError(message)
+    if (!message) onSubmit(next)
   }
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid grid-cols-2 gap-3 rounded-lg border border-border bg-surface p-4 shadow-[0_1px_2px_rgba(29,29,31,0.06)] sm:grid-cols-4"
+      className="rounded-lg border border-border bg-surface p-4 sm:p-5"
+      aria-label="Filtros de propiedades"
     >
-      <Input name="city" aria-label="Ciudad" placeholder="Ciudad" defaultValue={filters.city ?? ''} className="col-span-2 sm:col-span-1" />
-      <Input name="province" aria-label="Provincia" placeholder="Provincia" defaultValue={filters.province ?? ''} className="col-span-2 sm:col-span-1" />
-
-      <Select name="operation" aria-label="Operación" defaultValue={filters.operation ?? ''}>
-        <option value="">Operación</option>
-        {OPERATION_TYPES.map((o) => (
-          <option key={o.value} value={o.value}>
-            {o.label}
-          </option>
-        ))}
-      </Select>
-
-      <Select name="type" aria-label="Tipo" defaultValue={filters.type ?? ''}>
-        <option value="">Tipo</option>
-        {PROPERTY_TYPES.map((t) => (
-          <option key={t.value} value={t.value}>
-            {t.label}
-          </option>
-        ))}
-      </Select>
-
-      <Input name="minPrice" aria-label="Precio mínimo" type="number" min="0" placeholder="Precio mín." defaultValue={filters.minPrice ?? ''} />
-      <Input name="maxPrice" aria-label="Precio máximo" type="number" min="0" placeholder="Precio máx." defaultValue={filters.maxPrice ?? ''} />
-      <Input
-        name="minBedrooms" aria-label="Dormitorios mínimos"
-        type="number"
-        min="0"
-        placeholder="Dormitorios mín."
-        defaultValue={filters.minBedrooms ?? ''}
-      />
-      <Input
-        name="minBathrooms" aria-label="Baños mínimos"
-        type="number"
-        min="0"
-        placeholder="Baños mín."
-        defaultValue={filters.minBathrooms ?? ''}
-      />
-
-      <Button type="submit" className="col-span-2 sm:col-span-4">
-        Buscar
-      </Button>
+      <div className="grid gap-4 sm:grid-cols-[1fr_2fr_1fr_auto] sm:items-end">
+        <label className="grid gap-1.5 text-sm font-medium">
+          Operación
+          <Select name="operation" defaultValue={filters.operation ?? ''}>
+            <option value="">Todas las operaciones</option>
+            {OPERATION_TYPES.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Select>
+        </label>
+        <label className="grid gap-1.5 text-sm font-medium">
+          Ciudad
+          <Input
+            name="city"
+            placeholder="Por ejemplo, La Plata"
+            defaultValue={filters.city ?? ''}
+          />
+        </label>
+        <label className="grid gap-1.5 text-sm font-medium">
+          Tipo de propiedad
+          <Select name="type" defaultValue={filters.type ?? ''}>
+            <option value="">Todos los tipos</option>
+            {PROPERTY_TYPES.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Select>
+        </label>
+        <Button type="submit">Buscar</Button>
+      </div>
+      <details open={advanced || undefined} className="mt-4 border-t border-border pt-3">
+        <summary className="w-fit cursor-pointer rounded-sm py-1 text-sm font-medium text-accent-ink">
+          Más filtros y orden
+        </summary>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <label className="grid gap-1.5 text-sm font-medium">
+            Provincia
+            <Input name="province" defaultValue={filters.province ?? ''} />
+          </label>
+          <label className="grid gap-1.5 text-sm font-medium">
+            Moneda
+            <Select name="currency" defaultValue={filters.currency ?? ''}>
+              <option value="">Todas las monedas</option>
+              <option value="ARS">Pesos (ARS)</option>
+              <option value="USD">Dólares (USD)</option>
+            </Select>
+          </label>
+          {[
+            ['minPrice', 'Precio mínimo'],
+            ['maxPrice', 'Precio máximo'],
+            ['minBedrooms', 'Dormitorios mínimos'],
+            ['minBathrooms', 'Baños mínimos'],
+          ].map(([field, label]) => (
+            <label key={field} className="grid gap-1.5 text-sm font-medium">
+              {label}
+              <Input
+                name={field}
+                type="number"
+                min="0"
+                step={field.endsWith('Price') ? '0.01' : '1'}
+                defaultValue={filters[field] ?? ''}
+              />
+            </label>
+          ))}
+          <label className="grid gap-1.5 text-sm font-medium">
+            Ordenar por
+            <Select name="sort" defaultValue={filters.sort ?? 'newest'}>
+              {SORT_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </Select>
+          </label>
+          <p className="self-end text-sm text-muted-foreground">
+            Para comparar precios, elegí una moneda. Los importes no se convierten.
+          </p>
+        </div>
+        <Button type="submit" variant="secondary" className="mt-4">
+          Aplicar filtros
+        </Button>
+      </details>
+      {error && (
+        <p role="alert" className="mt-3 text-sm text-danger">
+          {error}
+        </p>
+      )}
     </form>
   )
 }

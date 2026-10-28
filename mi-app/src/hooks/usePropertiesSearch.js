@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { getProperties } from '@/api/properties'
+import { readSearchFilters, searchParamsFor, validateSearch } from '@/lib/property-search'
 
-const FILTER_KEYS = ['city', 'province', 'type', 'operation', 'minPrice', 'maxPrice', 'minBedrooms', 'minBathrooms']
 const PAGE_SIZE = 8
 
 // Sincroniza los filtros de /buscar con la query string y pide el listado
@@ -10,25 +10,14 @@ const PAGE_SIZE = 8
 export function usePropertiesSearch() {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const filters = useMemo(() => {
-    const result = {}
-    for (const key of FILTER_KEYS) {
-      const value = searchParams.get(key)
-      if (value) result[key] = value
-    }
-    return result
-  }, [searchParams])
+  const filters = useMemo(() => readSearchFilters(searchParams), [searchParams])
 
-  const page = Number(searchParams.get('page') ?? 0)
+  const requestedPage = Number(searchParams.get('page') ?? 0)
+  const page = Number.isSafeInteger(requestedPage) && requestedPage >= 0 ? requestedPage : 0
 
   const applyFilters = useCallback(
     (nextFilters) => {
-      const next = new URLSearchParams()
-      for (const key of FILTER_KEYS) {
-        if (nextFilters[key]) next.set(key, nextFilters[key])
-      }
-      next.set('page', '0')
-      setSearchParams(next)
+      setSearchParams(searchParamsFor(nextFilters))
     },
     [setSearchParams],
   )
@@ -46,6 +35,8 @@ export function usePropertiesSearch() {
   const [properties, setProperties] = useState([])
   const [pageInfo, setPageInfo] = useState(null)
   const [error, setError] = useState(null)
+  const [attempt, setAttempt] = useState(0)
+  const retry = () => setAttempt((value) => value + 1)
 
   // Clave estable para no volver a pedir si los filtros no cambiaron.
   const queryKey = searchParams.toString()
@@ -53,6 +44,14 @@ export function usePropertiesSearch() {
   useEffect(() => {
     let cancelled = false
     setStatus('loading')
+    setPageInfo(null)
+    const validationError = validateSearch(filters)
+    if (validationError) {
+      setError(validationError)
+      setProperties([])
+      setStatus('error')
+      return
+    }
 
     getProperties({ ...filters, page, size: PAGE_SIZE })
       .then((data) => {
@@ -72,7 +71,7 @@ export function usePropertiesSearch() {
       cancelled = true
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryKey])
+  }, [queryKey, attempt])
 
-  return { filters, page, applyFilters, goToPage, status, properties, error, pageInfo }
+  return { filters, page, applyFilters, goToPage, status, properties, error, pageInfo, retry }
 }
