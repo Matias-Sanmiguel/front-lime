@@ -1,18 +1,15 @@
 /* Pantallas del panel (alta y edición de avisos). Tokens de docs/brand-identity.md
    (Editorial Lime) con scope en .panel, para no pisar estilos del resto de la app. */
 .panel {
-  --ink: #1d1d1f;
-  --paper: #f7f7f4;
-  --surface: #ffffff;
-  --lime: #b8f34b;
-  --deep-lime: #326b2f;
-  --mist: #e8e8e3;
-  --muted: #6b6b67;
-  --danger: #c74646;
-  --warning: #b25e09;
-  --on-ink: #ffffff;
-  --serif: 'Newsreader', 'Source Serif 4', Georgia, serif;
-  --sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --ink: var(--foreground);
+  --paper: var(--background);
+  --lime: var(--accent);
+  --deep-lime: var(--accent-ink);
+  --mist: var(--border);
+  --muted: var(--muted-foreground);
+  --on-ink: var(--primary-foreground);
+  --serif: var(--font-display);
+  --sans: var(--font-sans);
 
   flex: 1;
   box-sizing: border-box;
@@ -24,7 +21,6 @@
   letter-spacing: 0;
   text-align: left;
 }
-
 
 .panel *,
 .panel *::before,
@@ -377,7 +373,8 @@
 }
 
 .alert-success {
-  border-left: 3px solid var(--deep-lime);
+  border-color: var(--deep-lime);
+  background: color-mix(in srgb, var(--lime) 10%, var(--surface));
 }
 
 .alert-error {
@@ -498,14 +495,66 @@
   }
 }
 
-.inbox-filters, .inbox-pagination { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:20px; }
-.inbox-check { display:flex; align-items:center; gap:8px; font-size:14px; }
-.panel .inbox-check input { width:16px; height:16px; accent-color:var(--ink); }
-.inquiry-card { margin-bottom:20px; overflow-wrap:anywhere; }
-.inquiry-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
-.inquiry-heading h2 { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
-.inquiry-heading time { flex-shrink:0; font-size:12px; }
-.inquiry-new { padding:2px 8px; background:var(--lime); color:var(--ink); border-radius:999px; font:500 11px/1.4 var(--sans); }
-.panel .inquiry-message { margin:12px 0; white-space:pre-wrap; font-size:14px; }
-.inquiry-contact a:hover { text-decoration:underline; }
-@media(max-width:640px) { .inquiry-heading { flex-direction:column; gap:8px; } .inquiry-card { padding:20px; } }
+.inbox-filters,
+.inbox-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.inbox-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.panel .inbox-check input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--ink);
+}
+.inquiry-card {
+  margin-bottom: 20px;
+  overflow-wrap: anywhere;
+}
+.inquiry-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+.inquiry-heading h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.inquiry-heading time {
+  flex-shrink: 0;
+  font-size: 12px;
+}
+.inquiry-new {
+  padding: 2px 8px;
+  background: var(--lime);
+  color: var(--ink);
+  border-radius: 999px;
+  font: 500 11px/1.4 var(--sans);
+}
+.panel .inquiry-message {
+  margin: 12px 0;
+  white-space: pre-wrap;
+  font-size: 14px;
+}
+.inquiry-contact a:hover {
+  text-decoration: underline;
+}
+@media (max-width: 640px) {
+  .inquiry-heading {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .inquiry-card {
+    padding: 20px;
+  }
+}

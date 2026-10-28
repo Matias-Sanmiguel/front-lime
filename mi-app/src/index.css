@@ -76,16 +76,42 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1,
-h2,
-h3 {
-  font-family: var(--font-display);
-  font-weight: 600;
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
 }
 
-button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
-input[type="radio"], input[type="checkbox"] { accent-color: var(--foreground); }
-:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
+::selection {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+input,
+textarea {
+  caret-color: var(--accent-ink);
+}
+summary {
+  min-height: 44px;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+input[type='radio'],
+input[type='checkbox'] {
+  accent-color: var(--foreground);
+}
+:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
+}
 
 @media (max-width: 640px) {
   button,
