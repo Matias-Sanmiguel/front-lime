@@ -31,7 +31,7 @@ export function SearchFilters({ filters, onSubmit }) {
       className="rounded-lg border border-border bg-surface p-4 sm:p-5"
       aria-label="Filtros de propiedades"
     >
-      <div className="grid gap-4 sm:grid-cols-[1fr_2fr_1fr_auto] sm:items-end">
+      <div className="grid gap-4 sm:grid-cols-2 sm:items-end lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)_minmax(0,1fr)_auto]">
         <label className="grid gap-1.5 text-sm font-medium">
           Operación
           <Select name="operation" defaultValue={filters.operation ?? ''}>
