@@ -38,17 +38,39 @@ test('public price filtering requires a currency and sorting happens before pagi
   assert.equal(descending.content[0].price, all.content.at(-1).price)
 })
 
-test('PropertyResponse has exactly the Java DTO fields, with photos separate', async () => {
+test('PropertyResponse has exactly the Java DTO fields, with full gallery separate', async () => {
   const p = await apiFetch('/api/v1/properties/1')
   assert.deepEqual(
     Object.keys(p).sort(),
-    'id title description type operation price currency address city province bedrooms bathrooms coveredArea totalArea status owner createdAt updatedAt'
+    'id title description type operation price currency address city province bedrooms bathrooms coveredArea totalArea status owner createdAt updatedAt coverImage'
       .split(' ')
       .sort(),
   )
   assert.match(p.createdAt, /Z$/)
+  assert.equal(p.coverImage, null)
   const photos = await apiFetch('/api/v1/properties/1/images')
   assert.deepEqual(Object.keys(photos[0]).sort(), ['id', 'url', 'createdAt', 'updatedAt'].sort())
+})
+
+test('public listings include the first image and null for an ad without images', async () => {
+  const list = await apiFetch('/api/v1/properties')
+  const photos = await apiFetch('/api/v1/properties/1/images')
+  assert.deepEqual(list.content.find((property) => property.id === 1).coverImage, photos[0])
+  await login()
+  const created = await apiFetch('/api/v1/properties', {
+    method: 'POST',
+    body: {
+      title: 'Sin fotos',
+      currency: 'USD',
+      price: 10,
+      city: 'CABA',
+      type: 'HOUSE',
+      operation: 'SALE',
+    },
+  })
+  await apiFetch(`/api/v1/properties/${created.id}/publish`, { method: 'POST' })
+  const updated = await apiFetch('/api/v1/properties')
+  assert.equal(updated.content.find((property) => property.id === created.id).coverImage, null)
 })
 test('inbox supports filters, pagination and idempotent marking as read', async () => {
   await login()

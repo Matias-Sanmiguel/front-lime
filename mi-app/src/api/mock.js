@@ -153,6 +153,7 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
     save(db)
     return structuredClone(result)
   }
+  const propertyResponse = (property) => ({ ...property, coverImage: null })
 
   if (pathname === '/api/v1/auth/register' && method === 'POST') {
     const role = body.role || 'USER',
@@ -228,7 +229,7 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
     return finish(
       page(
         filterProperties(
-          db.properties.filter((p) => p.owner.id === user.id),
+          db.properties.filter((p) => p.owner.id === user.id).map(propertyResponse),
           params,
         ),
         params,
@@ -272,7 +273,12 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
       return finish(
         page(
           filterProperties(
-            db.properties.filter((p) => p.status === 'PUBLISHED'),
+            db.properties
+              .filter((p) => p.status === 'PUBLISHED')
+              .map((property) => ({
+                ...property,
+                coverImage: db.images[property.id]?.[0] ?? null,
+              })),
             params,
           ),
           params,
@@ -294,7 +300,7 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
       }
       db.properties.push(p)
       db.images[p.id] = []
-      return finish(p)
+      return finish(propertyResponse(p))
     }
   }
   const match = pathname.match(
@@ -332,13 +338,13 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
     }
     if (method === 'GET') {
       if (p.status !== 'PUBLISHED' && p.owner.id !== user?.id) fail(404, 'Aviso no encontrado')
-      if (!sub) return finish(p)
+      if (!sub) return finish(propertyResponse(p))
       if (sub === 'images' && !imageId) return finish(db.images[id] || [])
     }
     owns(p)
     if (!sub && method === 'PATCH') {
       Object.assign(p, propertyChanges(body), { updatedAt: now() })
-      return finish(p)
+      return finish(propertyResponse(p))
     }
     if (!sub && method === 'DELETE') {
       db.properties = db.properties.filter((x) => x !== p)
@@ -352,13 +358,13 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
         fail(400, 'Completá título, precio, moneda, ciudad, tipo y operación')
       p.status = 'PUBLISHED'
       p.updatedAt = now()
-      return finish(p)
+      return finish(propertyResponse(p))
     }
     if (sub === 'pause' && method === 'POST') {
       if (p.status !== 'PUBLISHED') fail(409, 'Solo podés pausar un aviso publicado')
       p.status = 'PAUSED'
       p.updatedAt = now()
-      return finish(p)
+      return finish(propertyResponse(p))
     }
     if (sub === 'images') {
       const photos = (db.images[id] ||= []),

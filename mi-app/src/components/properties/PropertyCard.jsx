@@ -32,12 +32,12 @@ export function PropertyCard({ property }) {
     bathrooms,
     coveredArea,
     totalArea,
-    images,
+    coverImage,
   } = property
 
   const location = [city, province].filter(Boolean).join(', ')
   const area = formatArea(coveredArea ?? totalArea)
-  const cover = images?.[0] ? imageUrl(images[0]) : null
+  const cover = coverImage ? imageUrl(coverImage) : null
 
   return (
     <Link to={`/propiedad/${id}`} className="block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2">
