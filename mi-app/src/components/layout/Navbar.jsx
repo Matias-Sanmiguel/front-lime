@@ -3,26 +3,10 @@ import { useState } from 'react'
 import { useAuth } from '@/auth/AuthContext.jsx'
 import { apiFetch } from '@/api/client'
 import { FavoritesCounter } from '@/components/favorites/FavoritesCounter'
-
-function LimeMark() {
-  return (
-    <span className="flex h-9 w-9 items-center justify-center rounded-md bg-accent/20">
-      <svg
-        viewBox="0 0 64 64"
-        className="h-5 w-5 text-accent-ink"
-        fill="currentColor"
-        aria-hidden="true"
-      >
-        <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" strokeWidth="4" />
-        <rect x="27" y="8" width="10" height="14" rx="2" />
-        <rect x="29" y="29" width="6" height="6" />
-      </svg>
-    </span>
-  )
-}
+import { Brand } from './Brand'
 
 const navLinkClassName = ({ isActive }) =>
-  `text-sm font-medium transition-colors ${isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`
+  `inline-flex min-h-10 items-center rounded-full px-2 text-xs font-medium transition-colors sm:px-3 sm:text-[13px] ${isActive ? 'bg-background text-foreground' : 'text-muted-foreground hover:text-foreground'}`
 
 export function Navbar() {
   const { isAuthenticated, user, logout } = useAuth()
@@ -46,17 +30,16 @@ export function Navbar() {
     }
   }
   return (
-    <header className="sticky top-0 z-10 border-b border-border bg-surface/90 backdrop-blur-md">
-      <div className="mx-auto flex min-h-16 max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
-        <NavLink to="/" className="flex items-center gap-2.5">
-          <LimeMark />
-          <span className="font-display text-xl font-semibold text-foreground">Lime</span>
+    <header className="sticky top-0 z-10 border-b border-border/60 bg-surface/95 backdrop-blur-md">
+      <div className="mx-auto flex min-h-20 max-w-6xl flex-wrap items-center justify-between gap-x-2 gap-y-2 px-4 py-3 sm:gap-x-4 sm:px-6">
+        <NavLink to="/" className="inline-flex min-h-11 items-center" aria-label="Lime, inicio">
+          <Brand />
         </NavLink>
 
-        <nav className="flex flex-wrap items-center gap-3 sm:gap-6">
-          <NavLink to="/" end className={navLinkClassName}>
-            Home
-          </NavLink>
+        <nav
+          aria-label="Navegación principal"
+          className="flex flex-wrap items-center gap-1 sm:gap-2"
+        >
           <NavLink to="/buscar" className={navLinkClassName}>
             Buscar
           </NavLink>
@@ -72,9 +55,11 @@ export function Navbar() {
               >
                 Mi panel
               </NavLink>
-              <NavLink to="/panel/perfil" className={navLinkClassName}>
-                Perfil
-              </NavLink>
+              {user?.role !== 'USER' && (
+                <NavLink to="/panel/perfil" className={navLinkClassName}>
+                  Perfil
+                </NavLink>
+              )}
               <button
                 type="button"
                 onClick={signOut}
@@ -85,7 +70,10 @@ export function Navbar() {
               </button>
             </>
           ) : (
-            <NavLink to="/login" className={navLinkClassName}>
+            <NavLink
+              to="/login"
+              className="inline-flex min-h-10 items-center rounded-full bg-primary px-3 text-xs font-medium text-primary-foreground hover:opacity-85 sm:px-4 sm:text-[13px]"
+            >
               Ingresar
             </NavLink>
           )}

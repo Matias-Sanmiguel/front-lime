@@ -1,22 +1,20 @@
 @import 'tailwindcss';
 
 /*
- * Tokens de marca — fuente de verdad: back-lime/docs/brand-identity.md
- * Dirección "Editorial Lime". No inventar ni ajustar estos valores sin
- * actualizar ese documento primero.
+ * Tokens de marca — fuente de verdad: front-lime/DESIGN.md.
  */
 :root {
-  --background: #f7f7f4; /* paper */
+  --background: #f5f5f7;
   --surface: #ffffff; /* white */
   --foreground: #1d1d1f; /* ink */
-  --muted-foreground: #6b6b67; /* muted */
-  --border: #e8e8e3; /* mist */
+  --muted-foreground: #65656b;
+  --border: #dcdce1;
   --primary: #1d1d1f; /* ink — CTA primario, "lima no carga texto" */
   --primary-foreground: #ffffff;
-  --accent: #b8f34b; /* lime — firma, selección, highlight puntual */
+  --accent: #d5eeaa;
   --accent-foreground: #1d1d1f;
-  --accent-ink: #326b2f; /* deep-lime — links, mark en superficies claras */
-  --danger: #c74646;
+  --accent-ink: #527a24;
+  --danger: #b72e35;
   --warning: #b25e09;
 
   color-scheme: light;
@@ -58,13 +56,13 @@
   --color-ring: var(--accent-ink);
   --color-warning: var(--warning);
 
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 10px;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
   --radius-pill: 999px;
 
   --font-sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
-  --font-display: 'Newsreader', 'Source Serif 4', ui-serif, serif;
+  --font-display: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
@@ -82,6 +80,26 @@ body {
   h3 {
     font-family: var(--font-display);
     font-weight: 600;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+}
+
+.property-card {
+  transition:
+    box-shadow 200ms ease,
+    transform 200ms ease;
+}
+.property-card:hover {
+  box-shadow: 0 10px 30px rgb(29 29 31 / 8%);
+  transform: translateY(-2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .property-card {
+    transition: none;
+  }
+  .property-card:hover {
+    transform: none;
   }
 }
 

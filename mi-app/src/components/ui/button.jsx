@@ -12,7 +12,8 @@ const buttonVariants = cva(
         link: 'text-accent-ink underline-offset-4 hover:underline',
       },
       size: {
-        default: 'h-10 px-4',
+        default: 'h-11 px-5',
+        lg: 'h-12 px-6',
         sm: 'h-9 px-3 text-sm',
         icon: 'h-10 w-10',
       },
@@ -24,6 +25,6 @@ const buttonVariants = cva(
   },
 )
 
-export function Button({ className = "", variant = "default", size = "default", ...props }) {
+export function Button({ className = '', variant = 'default', size = 'default', ...props }) {
   return <button className={cn(buttonVariants({ variant, size }), className)} {...props} />
 }
