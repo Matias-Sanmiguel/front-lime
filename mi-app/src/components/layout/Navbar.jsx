@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { useAuth } from '@/auth/AuthContext.jsx'
 import { apiFetch } from '@/api/client'
+import { FavoritesCounter } from '@/components/favorites/FavoritesCounter'
 
 function LimeMark() {
   return (
@@ -58,6 +59,10 @@ export function Navbar() {
           </NavLink>
           <NavLink to="/buscar" className={navLinkClassName}>
             Buscar
+          </NavLink>
+          <NavLink to="/favoritos" className={navLinkClassName}>
+            Favoritos
+            <FavoritesCounter />
           </NavLink>
           {isAuthenticated ? (
             <>
