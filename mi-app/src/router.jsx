@@ -6,6 +6,7 @@ import { Search } from '@/pages/Search'
 import { Register } from '@/pages/Register'
 import { Login } from '@/pages/Login'
 import { PropertyDetail } from '@/pages/PropertyDetail.tsx'
+import { Favorites } from '@/pages/Favorites'
 
 import ProfilePage from '@/panel/ProfilePage.jsx'
 import InquiriesPage from '@/panel/InquiriesPage.jsx'
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
       {
         path: 'propiedad/:id',
         element: <PropertyDetail />,
+      },
+      {
+        path: 'favoritos',
+        element: <Favorites />,
       },
       { path: 'registro', element: <Register /> },
       {

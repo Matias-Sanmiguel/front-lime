@@ -1,5 +1,6 @@
 import { useParams, useLocation, Link } from 'react-router-dom'
 import { InquiryForm } from '@/components/InquiryForm'
+import { FavoriteButton } from '@/components/favorites/FavoriteButton'
 import { PropertyGallery } from '@/components/properties/PropertyGallery'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -55,6 +56,7 @@ export function PropertyDetail() {
           Volver a resultados
         </Link>
         <div className="flex flex-wrap gap-2">
+          <FavoriteButton property={{ ...property, coverImage: images[0] ?? null }} />
           <Badge className="">{operationTypeLabel(property.operation)}</Badge>
           <Badge className="">{propertyTypeLabel(property.type)}</Badge>
         </div>

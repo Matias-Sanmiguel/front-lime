@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { MemoryRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { readFile } from 'node:fs/promises'
 import { Search } from '../src/pages/Search.jsx'
+import { TestStore } from './TestStore'
 
 beforeEach(() => {
   sessionStorage.clear()
@@ -29,13 +30,15 @@ function Navigation() {
 
 function mount(initial = '/buscar') {
   render(
-    <MemoryRouter initialEntries={[initial]}>
-      <Navigation />
-      <Routes>
-        <Route path="/buscar" element={<Search />} />
-        <Route path="/propiedad/:id" element={<p>Detalle del aviso</p>} />
-      </Routes>
-    </MemoryRouter>,
+    <TestStore>
+      <MemoryRouter initialEntries={[initial]}>
+        <Navigation />
+        <Routes>
+          <Route path="/buscar" element={<Search />} />
+          <Route path="/propiedad/:id" element={<p>Detalle del aviso</p>} />
+        </Routes>
+      </MemoryRouter>
+    </TestStore>,
   )
 }
 

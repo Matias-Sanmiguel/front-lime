@@ -2,6 +2,7 @@ import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { PropertyDetail } from '../src/pages/PropertyDetail'
+import { TestStore } from './TestStore'
 import { PropertyGallery } from '../src/components/properties/PropertyGallery'
 import { getProperty, getPropertyImages } from '../src/api/properties'
 import { createInquiry } from '../src/api/inquiries'
@@ -59,11 +60,13 @@ afterEach(() => {
 })
 const mountDetail = (state) =>
   render(
-    <MemoryRouter initialEntries={[{ pathname: '/propiedad/7', state }]}>
-      <Routes>
-        <Route path="/propiedad/:id" element={<PropertyDetail />} />
-      </Routes>
-    </MemoryRouter>,
+    <TestStore>
+      <MemoryRouter initialEntries={[{ pathname: '/propiedad/7', state }]}>
+        <Routes>
+          <Route path="/propiedad/:id" element={<PropertyDetail />} />
+        </Routes>
+      </MemoryRouter>
+    </TestStore>,
   )
 
 test('detail return link preserves the original filters and page', async () => {
