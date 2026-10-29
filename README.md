@@ -36,7 +36,17 @@ Abrir la dirección que muestra Vite. Cuenta ficticia inicial: **lime@test.com /
 
 Los archivos `mi-app/public/data/` conservan la forma de los DTOs Java. `properties.json` es `PageResponse<PropertyResponse>`, `inquiries.json` es `InquiryInboxResponse`, `auth.json` es `AuthResponse` y `me.json` es `UserResponse`. Cada `images-ID.json` es una lista de `ImageResponse` (incluye `createdAt` y `updatedAt`). Las fechas de respuestas usan ISO-8601 UTC.
 
-Las imágenes **no** pertenecen a `PropertyResponse`: se consultan mediante `GET /properties/{id}/images`. La capa de presentación las combina con las propiedades para mostrar las tarjetas.
+El listado público devuelve `coverImage` (`ImageResponse` o `null`) dentro de cada `PropertyResponse`, sin peticiones adicionales por tarjeta. La galería completa se consulta mediante `GET /api/v1/properties/{id}/images`. El detalle y las respuestas de edición devuelven `coverImage: null`; el mock agrega el campo a partir de las imágenes de la semilla.
+
+## Búsqueda y organización de la UI
+
+Los filtros aplicados y la página viven en la URL. `src/lib/property-search.js` centraliza su lectura, serialización y validación; el formulario conserva un borrador hasta pulsar Buscar o Aplicar filtros. Moneda admite ARS/USD y es obligatoria para límites de precio y orden por precio. `sort` admite `newest`, `price_asc` y `price_desc`; el backend ordena antes de paginar, sin convertir monedas. Quitar la moneda también quita límites y orden de precio.
+
+Las páginas componen componentes; los hooks coordinan cargas y las funciones de `src/api/` conocen los endpoints. El detalle carga fotos independientemente: un error de galería no bloquea la consulta. Su enlace de regreso conserva la búsqueda de origen. La galería ampliada usa un diálogo nativo con cierre por Escape y retorno del foco.
+
+Los tokens de `src/index.css` son compartidos por el catálogo y el panel; `panel.css` conserva solamente alias y distribución propios. Para nuevas pantallas, reutilizar las primitivas de `components/ui` y extraer componentes por responsabilidad, evitando variantes que mezclen pantallas completas.
+
+Desplegar primero el backend con filtros de moneda/orden y portadas, y luego este frontend. El modo demo implementa el mismo contrato. Un backend anterior no entiende estos filtros ni devuelve portadas.
 
 Todos los nombres, cuentas, avisos y consultas son ficticios. Las fotos externas son ilustrativas; no representan anuncios reales. Algunas propiedades no tienen fotos, para mostrar también ese estado.
 
@@ -44,7 +54,9 @@ El mock conserva los cambios de demostración en `sessionStorage` durante la pes
 
 ## Figma y compatibilidad
 
-Se mantienen la paleta Editorial Lime, tipografías Inter/Newsreader, tarjetas claras, botones oscuros y acentos lima. Registro y consultas siguen los marcos Desktop del archivo. Los formularios y tarjetas se reorganizan en celular. El registro incluye fecha de nacimiento y sexo porque son obligatorios en Java, aunque no figuran en el marco de registro. Se agregaron perfil, detalle de consulta y eliminación para cubrir los endpoints existentes.
+La identidad vigente está documentada en [DESIGN.md](./DESIGN.md): Inter, superficies blancas y grises, tipografía grafito, acento lima discreto y un símbolo L propio. El archivo de Figma y la identidad Editorial Lime quedan como referencias históricas. Los formularios y tarjetas se reorganizan en celular. El registro incluye fecha de nacimiento y sexo porque son obligatorios en Java. Se agregaron perfil, detalle de consulta y eliminación para cubrir los endpoints existentes.
+
+Los favoritos usan Redux Toolkit (`favoritesSlice`) y persistencia local en el navegador; no se sincronizan con una cuenta del backend.
 
 ## Verificación
 

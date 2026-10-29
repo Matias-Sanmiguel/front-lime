@@ -14,6 +14,7 @@ function toFavorite(property) {
     bathrooms: property.bathrooms ?? null,
     coveredArea: property.coveredArea ?? null,
     totalArea: property.totalArea ?? null,
+    coverImage: property.coverImage ?? property.images?.[0] ?? null,
     images: property.images?.slice(0, 1) ?? [],
   }
 }

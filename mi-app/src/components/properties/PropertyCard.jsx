@@ -1,25 +1,24 @@
 import { imageUrl } from '@/api/properties.js'
-import { Link } from 'react-router-dom'
-import { BedDouble, Bath, MapPin, Ruler } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
+import { FavoriteButton } from '@/components/favorites/FavoriteButton'
+import { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { BedDouble, Bath, MapPin, Ruler, ImageOff } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { formatArea, formatPrice } from '@/lib/format'
 import { operationTypeLabel, propertyTypeLabel } from '@/lib/property-enums'
-import { FavoriteButton } from '@/components/favorites/FavoriteButton'
 
 function ImagePlaceholder() {
   return (
-    <div className="flex aspect-[4/3] items-center justify-center rounded-t-lg bg-background">
-      <svg viewBox="0 0 64 64" className="h-10 w-10 text-border" fill="currentColor" aria-hidden="true">
-        <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" strokeWidth="2" />
-        <rect x="26" y="10" width="12" height="16" rx="2" />
-        <rect x="28" y="30" width="8" height="8" />
-      </svg>
+    <div className="flex aspect-[4/3] flex-col items-center justify-center gap-2 rounded-t-lg bg-background text-muted-foreground">
+      <ImageOff className="h-8 w-8" aria-hidden="true" />
+      <span className="text-sm">Foto no disponible</span>
     </div>
   )
 }
 
 export function PropertyCard({ property }) {
+  const route = useLocation()
+  const [failedCover, setFailedCover] = useState(null)
   const {
     id,
     title,
@@ -33,68 +32,75 @@ export function PropertyCard({ property }) {
     bathrooms,
     coveredArea,
     totalArea,
-    images,
+    coverImage,
   } = property
 
   const location = [city, province].filter(Boolean).join(', ')
   const area = formatArea(coveredArea ?? totalArea)
-  const cover = images?.[0] ? imageUrl(images[0]) : null
+  const image = coverImage ?? property.images?.[0]
+  const cover = image ? imageUrl(image) : null
 
   return (
-    <div className="relative">
-      <Link to={`/propiedad/${id}`} className="block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2">
-        <Card className="h-full overflow-hidden transition-shadow hover:shadow-[0_1px_2px_rgba(29,29,31,0.06)]">
-          {cover ? (
+    <div className="relative h-full">
+      <Link
+        to={`/propiedad/${id}`}
+        state={{ search: route.pathname === '/buscar' ? `/buscar${route.search}` : '/buscar' }}
+        className="group block h-full rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2"
+      >
+        <Card className="property-card h-full overflow-hidden border-0">
+          {cover && failedCover !== cover ? (
             <img
               src={cover}
               alt={title}
               loading="lazy"
+              onError={() => setFailedCover(cover)}
               className="aspect-[4/3] w-full rounded-t-lg object-cover"
             />
           ) : (
             <ImagePlaceholder />
           )}
-          <CardContent className="flex flex-col gap-2">
-            <div className="flex flex-wrap items-center gap-2">
-              {operation != null && <Badge>{operationTypeLabel(operation)}</Badge>}
-              {type != null && <Badge>{propertyTypeLabel(type)}</Badge>}
-            </div>
-
-            <p className="font-display text-lg font-semibold text-foreground">
+          <CardContent className="flex flex-col gap-3 p-5 sm:p-6">
+            <p className="font-sans text-2xl font-semibold tracking-[-0.02em] tabular-nums text-foreground">
               {formatPrice(price, currency) ?? 'Precio a consultar'}
             </p>
 
-            <h3 className="line-clamp-2 text-sm font-medium text-foreground">{title}</h3>
-
             {location && (
-              <p className="flex items-center gap-1 text-sm text-muted-foreground">
+              <p className="flex items-start gap-1 text-sm font-medium text-foreground">
                 <MapPin className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                 {location}
               </p>
             )}
 
             {(bedrooms != null || bathrooms != null || area) && (
-              <div className="flex items-center gap-3 border-t border-border pt-2 text-sm text-muted-foreground">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2 py-1 text-sm tabular-nums text-muted-foreground">
                 {bedrooms != null && (
                   <span className="flex items-center gap-1">
                     <BedDouble className="h-4 w-4" aria-hidden="true" />
-                    {bedrooms}
+                    {bedrooms} dorm.
                   </span>
                 )}
                 {bathrooms != null && (
                   <span className="flex items-center gap-1">
                     <Bath className="h-4 w-4" aria-hidden="true" />
-                    {bathrooms}
+                    {bathrooms} {bathrooms === 1 ? 'baño' : 'baños'}
                   </span>
                 )}
                 {area && (
                   <span className="flex items-center gap-1">
                     <Ruler className="h-4 w-4" aria-hidden="true" />
-                    {area}
+                    {area} {coveredArea != null ? 'cubiertos' : 'totales'}
                   </span>
                 )}
               </div>
             )}
+            <h3 className="line-clamp-2 font-sans text-sm font-normal text-muted-foreground">
+              {title}
+            </h3>
+            <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+              {operation != null && <span>{operationTypeLabel(operation)}</span>}
+              {operation != null && type != null && <span aria-hidden="true">·</span>}
+              {type != null && <span>{propertyTypeLabel(type)}</span>}
+            </div>
           </CardContent>
         </Card>
       </Link>

@@ -1,0 +1,335 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-29T00:25:06.084Z",
+  "title": "Design System: Lime",
+  "extensions": {
+    "colorMeta": {
+      "background": {
+        "role": "neutral",
+        "displayName": "Gris frío",
+        "tonalRamp": [
+          "oklch(15% 0.003 285)",
+          "oklch(26% 0.003 285)",
+          "oklch(38% 0.003 285)",
+          "oklch(49% 0.003 285)",
+          "oklch(61% 0.003 285)",
+          "oklch(72% 0.003 285)",
+          "oklch(84% 0.003 285)",
+          "oklch(95% 0.003 285)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Blanco",
+        "tonalRamp": [
+          "oklch(15% 0.003 285)",
+          "oklch(26% 0.003 285)",
+          "oklch(38% 0.003 285)",
+          "oklch(49% 0.003 285)",
+          "oklch(61% 0.003 285)",
+          "oklch(72% 0.003 285)",
+          "oklch(84% 0.003 285)",
+          "oklch(95% 0.003 285)"
+        ]
+      },
+      "foreground": {
+        "role": "neutral",
+        "displayName": "Grafito",
+        "tonalRamp": [
+          "oklch(15% 0.003 285)",
+          "oklch(26% 0.003 285)",
+          "oklch(38% 0.003 285)",
+          "oklch(49% 0.003 285)",
+          "oklch(61% 0.003 285)",
+          "oklch(72% 0.003 285)",
+          "oklch(84% 0.003 285)",
+          "oklch(95% 0.003 285)"
+        ]
+      },
+      "muted-foreground": {
+        "role": "neutral",
+        "displayName": "Gris secundario",
+        "tonalRamp": [
+          "oklch(15% 0.003 285)",
+          "oklch(26% 0.003 285)",
+          "oklch(38% 0.003 285)",
+          "oklch(49% 0.003 285)",
+          "oklch(61% 0.003 285)",
+          "oklch(72% 0.003 285)",
+          "oklch(84% 0.003 285)",
+          "oklch(95% 0.003 285)"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Gris de borde",
+        "tonalRamp": [
+          "oklch(15% 0.003 285)",
+          "oklch(26% 0.003 285)",
+          "oklch(38% 0.003 285)",
+          "oklch(49% 0.003 285)",
+          "oklch(61% 0.003 285)",
+          "oklch(72% 0.003 285)",
+          "oklch(84% 0.003 285)",
+          "oklch(95% 0.003 285)"
+        ]
+      },
+      "primary": {
+        "role": "primary",
+        "displayName": "Grafito de acción",
+        "tonalRamp": [
+          "oklch(15% 0.003 285)",
+          "oklch(26% 0.003 285)",
+          "oklch(38% 0.003 285)",
+          "oklch(49% 0.003 285)",
+          "oklch(61% 0.003 285)",
+          "oklch(72% 0.003 285)",
+          "oklch(84% 0.003 285)",
+          "oklch(95% 0.003 285)"
+        ]
+      },
+      "primary-foreground": {
+        "role": "neutral",
+        "displayName": "Blanco sobre acción",
+        "tonalRamp": [
+          "oklch(15% 0.003 285)",
+          "oklch(26% 0.003 285)",
+          "oklch(38% 0.003 285)",
+          "oklch(49% 0.003 285)",
+          "oklch(61% 0.003 285)",
+          "oklch(72% 0.003 285)",
+          "oklch(84% 0.003 285)",
+          "oklch(95% 0.003 285)"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Lima suave",
+        "tonalRamp": [
+          "oklch(15% 0.09 125)",
+          "oklch(26% 0.09 125)",
+          "oklch(38% 0.09 125)",
+          "oklch(49% 0.09 125)",
+          "oklch(61% 0.09 125)",
+          "oklch(72% 0.09 125)",
+          "oklch(84% 0.09 125)",
+          "oklch(95% 0.09 125)"
+        ]
+      },
+      "accent-foreground": {
+        "role": "neutral",
+        "displayName": "Grafito sobre lima",
+        "tonalRamp": [
+          "oklch(15% 0.003 285)",
+          "oklch(26% 0.003 285)",
+          "oklch(38% 0.003 285)",
+          "oklch(49% 0.003 285)",
+          "oklch(61% 0.003 285)",
+          "oklch(72% 0.003 285)",
+          "oklch(84% 0.003 285)",
+          "oklch(95% 0.003 285)"
+        ]
+      },
+      "accent-ink": {
+        "role": "primary",
+        "displayName": "Verde de contraste",
+        "tonalRamp": [
+          "oklch(15% 0.11 125)",
+          "oklch(26% 0.11 125)",
+          "oklch(38% 0.11 125)",
+          "oklch(49% 0.11 125)",
+          "oklch(61% 0.11 125)",
+          "oklch(72% 0.11 125)",
+          "oklch(84% 0.11 125)",
+          "oklch(95% 0.11 125)"
+        ]
+      },
+      "danger": {
+        "role": "semantic",
+        "displayName": "Rojo de error",
+        "tonalRamp": [
+          "oklch(15% 0.17 23)",
+          "oklch(26% 0.17 23)",
+          "oklch(38% 0.17 23)",
+          "oklch(49% 0.17 23)",
+          "oklch(61% 0.17 23)",
+          "oklch(72% 0.17 23)",
+          "oklch(84% 0.17 23)",
+          "oklch(95% 0.17 23)"
+        ]
+      },
+      "warning": {
+        "role": "semantic",
+        "displayName": "Ámbar de aviso",
+        "tonalRamp": [
+          "oklch(15% 0.14 62)",
+          "oklch(26% 0.14 62)",
+          "oklch(38% 0.14 62)",
+          "oklch(49% 0.14 62)",
+          "oklch(61% 0.14 62)",
+          "oklch(72% 0.14 62)",
+          "oklch(84% 0.14 62)",
+          "oklch(95% 0.14 62)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Título de inicio."
+      },
+      "headline": {
+        "displayName": "Títulos",
+        "purpose": "Jerarquía de secciones."
+      },
+      "price": {
+        "displayName": "Precio",
+        "purpose": "Precio de propiedad con números tabulares."
+      },
+      "body": {
+        "displayName": "Cuerpo",
+        "purpose": "Texto introductorio."
+      },
+      "label": {
+        "displayName": "Etiqueta",
+        "purpose": "Etiquetas de formulario y botones."
+      }
+    },
+    "shadows": [
+      {
+        "name": "property-card-hover",
+        "value": "0 10px 30px rgb(29 29 31 / 8%)",
+        "purpose": "Profundidad de tarjeta al pasar el puntero."
+      }
+    ],
+    "motion": [
+      {
+        "name": "property-card-transition",
+        "value": "box-shadow 200ms ease, transform 200ms ease",
+        "purpose": "Transición de tarjeta."
+      },
+      {
+        "name": "property-card-hover",
+        "value": "translateY(-2px)",
+        "purpose": "Desplazamiento de tarjeta al pasar el puntero."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "@media (prefers-reduced-motion: reduce) { .property-card { transition: none; } .property-card:hover { transform: none; } }",
+        "purpose": "Desactiva movimiento de tarjeta para la preferencia de movimiento reducido."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Variante existente del botón compartido.",
+      "html": "<button class=\"ds-button\">Explorar propiedades</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;border:0;border-radius:var(--radius-sm,10px);height:44px;padding:0 20px;transition:color 150ms,background-color 150ms;font-family:var(--font-sans, Inter, system-ui, sans-serif);font-size:14px;font-weight:500;}.ds-button:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}.ds-button:disabled{pointer-events:none;opacity:.5}.ds-button{background:var(--primary);color:var(--primary-foreground);}.ds-button:hover{opacity:.9}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Variante existente del botón compartido.",
+      "html": "<button class=\"ds-button\">Explorar propiedades</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;border:0;border-radius:var(--radius-sm,10px);height:44px;padding:0 20px;transition:color 150ms,background-color 150ms;font-family:var(--font-sans, Inter, system-ui, sans-serif);font-size:14px;font-weight:500;}.ds-button:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}.ds-button:disabled{pointer-events:none;opacity:.5}.ds-button{background:transparent;color:var(--foreground);border:1px solid var(--border);}.ds-button:hover{background:color-mix(in srgb,var(--border) 40%,transparent)}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Variante existente del botón compartido.",
+      "html": "<button class=\"ds-button\">Explorar propiedades</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;border:0;border-radius:var(--radius-sm,10px);height:44px;padding:0 20px;transition:color 150ms,background-color 150ms;font-family:var(--font-sans, Inter, system-ui, sans-serif);font-size:14px;font-weight:500;}.ds-button:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}.ds-button:disabled{pointer-events:none;opacity:.5}.ds-button{background:transparent;color:var(--foreground);}.ds-button:hover{background:color-mix(in srgb,var(--border) 40%,transparent)}"
+    },
+    {
+      "name": "Link Button",
+      "kind": "button",
+      "refersTo": "button-link",
+      "description": "Variante existente del botón compartido.",
+      "html": "<button class=\"ds-button\">Explorar propiedades</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;border:0;border-radius:var(--radius-sm,10px);height:44px;padding:0 20px;transition:color 150ms,background-color 150ms;font-family:var(--font-sans, Inter, system-ui, sans-serif);font-size:14px;font-weight:500;}.ds-button:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}.ds-button:disabled{pointer-events:none;opacity:.5}.ds-button{background:transparent;color:var(--accent-ink);text-underline-offset:4px;}.ds-button:hover{text-decoration:underline}"
+    },
+    {
+      "name": "Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Campo de ciudad con etiqueta visible.",
+      "html": "<label class=\"ds-label\">Ciudad<input class=\"ds-input\" placeholder=\"¿En qué ciudad buscás?\"></label>",
+      "css": ".ds-label{display:grid;gap:6px;color:var(--foreground);font-family:var(--font-sans, Inter, system-ui, sans-serif);font-size:14px;font-weight:500;}.ds-input{min-width:0;width:100%;height:44px;border:1px solid var(--border);border-radius:var(--radius-sm,10px);background:var(--surface);color:var(--foreground);padding:0 12px;font-family:var(--font-sans);font-size:14px;transition:border-color 150ms}.ds-input::placeholder{color:var(--muted-foreground)}.ds-input:hover{border-color:color-mix(in srgb,var(--muted-foreground) 50%,transparent)}.ds-input:focus-visible{outline:none;border-color:var(--accent-ink);box-shadow:0 0 0 1px var(--accent-ink)}@media(max-width:640px){.ds-input{font-size:16px}}"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "description": "Enlaces de navegación y ruta activa.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Navegación principal\"><a class=\"ds-nav-link ds-current\" aria-current=\"page\" href=\"#buscar\">Buscar</a><a class=\"ds-nav-link\" href=\"#favoritos\">Favoritos</a></nav>",
+      "css": ".ds-nav{display:flex;flex-wrap:wrap;gap:4px;background:var(--surface);font-family:var(--font-sans)}.ds-nav-link{display:inline-flex;align-items:center;min-height:40px;padding:0 8px;border-radius:9999px;font-size:12px;font-weight:500;text-decoration:none;color:var(--muted-foreground);transition:color 150ms}.ds-nav-link:hover{color:var(--foreground)}.ds-current{background:var(--background);color:var(--foreground)}.ds-nav-link:focus-visible{outline:2px solid var(--accent-ink);outline-offset:3px}@media(min-width:640px){.ds-nav{gap:8px}.ds-nav-link{padding:0 12px;font-size:13px}}@media(max-width:640px){.ds-nav-link{min-height:44px;min-width:44px}}"
+    },
+    {
+      "name": "Badge",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Etiqueta informativa sin estado interactivo.",
+      "html": "<span class=\"ds-badge\">Departamento</span>",
+      "css": ".ds-badge{display:inline-flex;align-items:center;border:1px solid var(--border);border-radius:var(--radius-pill,999px);padding:2px 10px;color:var(--foreground);font-family:var(--font-sans);font-size:12px;line-height:16px;font-weight:500}"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Contenedor genérico compartido; las propiedades quitan el borde.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-content\">Detalles de la propiedad</div></div>",
+      "css": ".ds-card{border:1px solid var(--border);border-radius:var(--radius-lg,16px);background:var(--surface);color:var(--foreground);font-family:var(--font-sans)}.ds-card-content{padding:16px}"
+    },
+    {
+      "name": "Brand",
+      "kind": "custom",
+      "description": "Marca propia: L abierta con esquina verde y nombre en minúsculas.",
+      "html": "<span class=\"ds-brand\" aria-label=\"Lime\"><svg viewBox=\"0 0 40 40\" fill=\"none\" class=\"ds-mark\" aria-hidden=\"true\"><path d=\"M9 8v18a6 6 0 0 0 6 6h17\" stroke=\"currentColor\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M25 8h7v7\" stroke=\"var(--accent-ink)\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg><span class=\"ds-wordmark\">lime</span></span>",
+      "css": ".ds-brand{display:inline-flex;align-items:center;gap:10px;color:var(--foreground);font-family:var(--font-sans)}.ds-mark{width:32px;height:32px;flex-shrink:0}.ds-wordmark{font-size:1.6rem;font-weight:600;line-height:1;letter-spacing:-.04em}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Claridad para encontrar tu lugar",
+    "overview": "Este nombre describe la implementación; no se presenta como una elección textual del usuario. La dirección confirmada es una identidad nueva, minimalista y linda, con referencia estética Apple y logo propio. Reemplaza el mundo editorial anterior: blancos y grises fríos, tipografía sans serif y fotografías de propiedades como protagonistas.\n\nLa calma visual surge del espacio, de una jerarquía breve y de controles familiares. El lima suave y su verde de contraste son una elección de implementación pendiente de la preferencia cromática del usuario. Este documento es la referencia visual del frontend; los valores normativos están en el frontmatter y se corresponden con el código actual.",
+    "keyCharacteristics": [
+      "Superficies claras y contraste de grafito.",
+      "Una sola familia tipográfica: Inter.",
+      "Fotografías protagonistas y datos fáciles de comparar.",
+      "Logo geométrico propio, abierto y de trazos redondeados.",
+      "Movimiento breve y profundidad discreta."
+    ],
+    "rules": [
+      {
+        "name": "The Contrast Rule",
+        "body": "Usar grafito para la acción primaria y verde de contraste para el texto acentuado; el lima suave no funciona como texto sobre blanco.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do usar los tokens compartidos para color, radio y tipografía.",
+      "Do mantener los precios y las fotografías como información principal de las tarjetas.",
+      "Do comprobar el diseño a 390 px y 1440 px, con teclado y movimiento reducido.",
+      "Do conservar los estados de carga, vacío, error y fotografía ausente."
+    ],
+    "donts": [
+      "Don't reintroducir la identidad editorial anterior como norma del frontend.",
+      "Don't copiar logotipos ni activos propietarios de Apple.",
+      "Don't presentar el acento lima como una preferencia confirmada del usuario.",
+      "Don't inventar métricas, testimonios o garantías para completar una composición."
+    ]
+  }
+}
