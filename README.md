@@ -54,7 +54,9 @@ El mock conserva los cambios de demostración en `sessionStorage` durante la pes
 
 ## Figma y compatibilidad
 
-Se mantienen la paleta Editorial Lime, tipografías Inter/Newsreader, tarjetas claras, botones oscuros y acentos lima. Registro y consultas siguen los marcos Desktop del archivo. Los formularios y tarjetas se reorganizan en celular. El registro incluye fecha de nacimiento y sexo porque son obligatorios en Java, aunque no figuran en el marco de registro. Se agregaron perfil, detalle de consulta y eliminación para cubrir los endpoints existentes.
+La identidad vigente está documentada en [DESIGN.md](./DESIGN.md): Inter, superficies blancas y grises, tipografía grafito, acento lima discreto y un símbolo L propio. El archivo de Figma y la identidad Editorial Lime quedan como referencias históricas. Los formularios y tarjetas se reorganizan en celular. El registro incluye fecha de nacimiento y sexo porque son obligatorios en Java. Se agregaron perfil, detalle de consulta y eliminación para cubrir los endpoints existentes.
+
+Los favoritos usan Redux Toolkit (`favoritesSlice`) y persistencia local en el navegador; no se sincronizan con una cuenta del backend.
 
 ## Verificación
 

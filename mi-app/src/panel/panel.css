@@ -1,5 +1,5 @@
-/* Pantallas del panel (alta y edición de avisos). Tokens de docs/brand-identity.md
-   (Editorial Lime) con scope en .panel, para no pisar estilos del resto de la app. */
+/* Pantallas del panel (alta y edición de avisos). Tokens de DESIGN.md
+   con scope en .panel, para no pisar estilos del resto de la app. */
 .panel {
   --ink: var(--foreground);
   --paper: var(--background);
