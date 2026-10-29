@@ -41,8 +41,8 @@ export function PropertyCard({ property }) {
   const cover = images?.[0] ? imageUrl(images[0]) : null
 
   return (
-    <div className="relative">
-      <Link to={`/propiedad/${id}`} className="block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2">
+    <div className="relative h-full">
+      <Link to={`/propiedad/${id}`} className="block h-full rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2">
         <Card className="h-full overflow-hidden transition-shadow hover:shadow-[0_1px_2px_rgba(29,29,31,0.06)]">
           {cover ? (
             <img

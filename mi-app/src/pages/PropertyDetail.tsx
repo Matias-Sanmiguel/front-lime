@@ -129,9 +129,9 @@ export function PropertyDetail() {
         <PropertyGallery key={property.id} images={property.images} />
 
         <div>
-         <div className="mb-2 flex items-start justify-between gap-4">
-          <h1 className="text-2xl font-bold sm:text-3xl">{property.title}</h1>
-          <FavoriteButton property={property} className={undefined} />
+          <div className="mb-2 flex items-start justify-between gap-4">
+            <h1 className="text-2xl font-bold sm:text-3xl">{property.title}</h1>
+            <FavoriteButton property={property} />
           </div>
           <p className="mb-4 text-gray-500">
             {property.address}, {property.city}, {property.province}
