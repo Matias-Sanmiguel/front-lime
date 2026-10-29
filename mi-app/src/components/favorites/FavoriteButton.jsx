@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectIsFavorite, toggleFavorite } from '@/store/favoritesSlice'
 import { cn } from '@/lib/utils'
 
-export function FavoriteButton({ property, className }) {
+export function FavoriteButton({ property, className = '' }) {
   const dispatch = useDispatch()
   const isFavorite = useSelector(selectIsFavorite(property.id))
 
