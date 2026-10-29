@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectIsFavorite, toggleFavorite } from '@/store/favoritesSlice'
 import { cn } from '@/lib/utils'
 
-export function FavoriteButton({ property, className }) {
+export function FavoriteButton({ property, className = '' }) {
   const dispatch = useDispatch()
   const isFavorite = useSelector(selectIsFavorite(property.id))
 
@@ -14,12 +14,15 @@ export function FavoriteButton({ property, className }) {
       aria-pressed={isFavorite}
       aria-label={isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
       className={cn(
-        'flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow transition-colors hover:bg-white',
+        'flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border/60 bg-surface text-foreground transition-colors hover:bg-background',
         className,
       )}
     >
       <Heart
-        className={cn('h-5 w-5', isFavorite ? 'fill-danger text-danger' : 'text-muted-foreground')}
+        className={cn(
+          'h-[18px] w-[18px]',
+          isFavorite ? 'fill-foreground text-foreground' : 'text-foreground',
+        )}
         aria-hidden="true"
       />
     </button>

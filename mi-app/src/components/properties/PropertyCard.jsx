@@ -3,7 +3,6 @@ import { FavoriteButton } from '@/components/favorites/FavoriteButton'
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { BedDouble, Bath, MapPin, Ruler, ImageOff } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { formatArea, formatPrice } from '@/lib/format'
 import { operationTypeLabel, propertyTypeLabel } from '@/lib/property-enums'
@@ -48,7 +47,7 @@ export function PropertyCard({ property }) {
         state={{ search: route.pathname === '/buscar' ? `/buscar${route.search}` : '/buscar' }}
         className="group block h-full rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2"
       >
-        <Card className="h-full overflow-hidden transition-colors group-hover:border-accent-ink">
+        <Card className="property-card h-full overflow-hidden border-0">
           {cover && failedCover !== cover ? (
             <img
               src={cover}
@@ -60,8 +59,8 @@ export function PropertyCard({ property }) {
           ) : (
             <ImagePlaceholder />
           )}
-          <CardContent className="flex flex-col gap-2">
-            <p className="font-sans text-xl font-semibold tabular-nums text-foreground">
+          <CardContent className="flex flex-col gap-3 p-5 sm:p-6">
+            <p className="font-sans text-2xl font-semibold tracking-[-0.02em] tabular-nums text-foreground">
               {formatPrice(price, currency) ?? 'Precio a consultar'}
             </p>
 
@@ -97,9 +96,10 @@ export function PropertyCard({ property }) {
             <h3 className="line-clamp-2 font-sans text-sm font-normal text-muted-foreground">
               {title}
             </h3>
-            <div className="mt-1 flex flex-wrap items-center gap-2 border-t border-border pt-3">
-              {operation != null && <Badge>{operationTypeLabel(operation)}</Badge>}
-              {type != null && <Badge>{propertyTypeLabel(type)}</Badge>}
+            <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+              {operation != null && <span>{operationTypeLabel(operation)}</span>}
+              {operation != null && type != null && <span aria-hidden="true">·</span>}
+              {type != null && <span>{propertyTypeLabel(type)}</span>}
             </div>
           </CardContent>
         </Card>

@@ -28,7 +28,7 @@ export function SearchFilters({ filters, onSubmit }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-lg border border-border bg-surface p-4 sm:p-5"
+      className="rounded-lg bg-surface p-5 sm:p-6"
       aria-label="Filtros de propiedades"
     >
       <div className="grid gap-4 sm:grid-cols-2 sm:items-end lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)_minmax(0,1fr)_auto]">

@@ -23,8 +23,10 @@ export function Search() {
   }
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8">
-      <h1 className="font-display text-2xl font-semibold text-foreground">Buscar propiedades</h1>
+    <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-10 sm:px-6 sm:py-12">
+      <h1 className="font-display text-3xl font-semibold text-foreground sm:text-4xl">
+        Buscar propiedades
+      </h1>
 
       <SearchFilters key={JSON.stringify(filters)} filters={filters} onSubmit={applyFilters} />
 

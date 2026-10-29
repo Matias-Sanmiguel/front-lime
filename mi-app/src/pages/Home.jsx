@@ -16,7 +16,7 @@ export function Home() {
 
   useEffect(() => {
     let cancelled = false
-    getProperties({ size: 4 })
+    getProperties({ size: 3 })
       .then((data) => {
         if (cancelled) return
         setProperties(data.content)
@@ -40,26 +40,30 @@ export function Home() {
   }
 
   return (
-    <div className="flex flex-col gap-8 pb-12">
-      <section className="bg-background">
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 pt-10 pb-2 sm:pt-14">
-          <div className="max-w-2xl">
-            <h1 className="text-balance font-display text-[2.5rem] font-semibold leading-[1.15] tracking-[-0.03em] text-foreground sm:text-[3.25rem]">
+    <div className="pb-16">
+      <section className="bg-surface">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-5 pt-12 pb-10 sm:px-6 sm:pt-16 sm:pb-14">
+          <div className="max-w-3xl text-center">
+            <h1 className="text-balance font-display text-[clamp(2.5rem,5vw,4rem)] font-semibold leading-[1.06] tracking-[-0.04em] text-foreground">
               Encontrá tu próximo lugar
             </h1>
-            <p className="mt-4 max-w-lg text-base text-muted-foreground">
+            <p className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
               Casas, departamentos y más. Elegí dónde querés vivir y compará las opciones.
             </p>
           </div>
 
           <form
             onSubmit={handleQuickSearch}
-            className="grid gap-4 rounded-lg border border-border bg-surface p-4 sm:grid-cols-2 sm:items-end sm:p-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)_minmax(0,1fr)_auto]"
+            className="grid w-full grid-cols-2 items-end gap-4 rounded-lg bg-background p-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_auto]"
           >
-            <label className="grid gap-1.5 text-sm font-medium">
+            <label className="col-span-2 grid min-w-0 gap-1.5 text-sm font-medium lg:col-span-1">
+              Ciudad
+              <Input name="city" placeholder="¿En qué ciudad buscás?" />
+            </label>
+            <label className="grid min-w-0 gap-1.5 text-sm font-medium">
               Operación
               <Select name="operation">
-                <option value="">Todas las operaciones</option>
+                <option value="">Todas</option>
                 {OPERATION_TYPES.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
@@ -67,14 +71,10 @@ export function Home() {
                 ))}
               </Select>
             </label>
-            <label className="grid gap-1.5 text-sm font-medium">
-              Ciudad
-              <Input name="city" placeholder="¿En qué ciudad buscás?" />
-            </label>
-            <label className="grid gap-1.5 text-sm font-medium">
+            <label className="grid min-w-0 gap-1.5 text-sm font-medium">
               Tipo de propiedad
               <Select name="type">
-                <option value="">Todos los tipos</option>
+                <option value="">Todos</option>
                 {PROPERTY_TYPES.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
@@ -82,16 +82,16 @@ export function Home() {
                 ))}
               </Select>
             </label>
-            <Button type="submit" className="sm:w-auto">
+            <Button type="submit" className="col-span-2 lg:col-span-1">
               Buscar
             </Button>
           </form>
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-6xl px-4">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <h2 className="font-display text-2xl font-semibold text-foreground">
+      <section className="mx-auto w-full max-w-6xl px-5 pt-10 sm:px-6 sm:pt-12">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">
             Explorá propiedades
           </h2>
           <Link
@@ -101,7 +101,7 @@ export function Home() {
             Ver todas las propiedades
           </Link>
         </div>
-        <PropertyGrid status={status} properties={properties} error={error} skeletonCount={4} />
+        <PropertyGrid status={status} properties={properties} error={error} skeletonCount={3} />
       </section>
     </div>
   )
