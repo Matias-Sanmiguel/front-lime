@@ -5,6 +5,7 @@ import { apiFetch, ApiError } from '@/api/client'
 import { formatPrice, formatArea } from '@/lib/format'
 import { getPropertyImages, imageUrl } from '@/api/properties.js'
 import { operationTypeLabel, propertyTypeLabel } from '@/lib/property-enums'
+import { FavoriteButton } from '@/components/favorites/FavoriteButton'
 
 interface PropertyImage {
   id: number
@@ -128,7 +129,10 @@ export function PropertyDetail() {
         <PropertyGallery key={property.id} images={property.images} />
 
         <div>
-          <h1 className="mb-2 text-2xl font-bold sm:text-3xl">{property.title}</h1>
+         <div className="mb-2 flex items-start justify-between gap-4">
+          <h1 className="text-2xl font-bold sm:text-3xl">{property.title}</h1>
+          <FavoriteButton property={property} className={undefined} />
+          </div>
           <p className="mb-4 text-gray-500">
             {property.address}, {property.city}, {property.province}
           </p>
