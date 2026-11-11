@@ -2,6 +2,7 @@ import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { PropertyDetail } from '../src/pages/PropertyDetail'
+import { AuthProvider } from '../src/auth/AuthContext.jsx'
 import { TestStore } from './TestStore'
 import { PropertyGallery } from '../src/components/properties/PropertyGallery'
 import { getProperty, getPropertyImages } from '../src/api/properties'
@@ -61,11 +62,13 @@ afterEach(() => {
 const mountDetail = (state) =>
   render(
     <TestStore>
-      <MemoryRouter initialEntries={[{ pathname: '/propiedad/7', state }]}>
-        <Routes>
-          <Route path="/propiedad/:id" element={<PropertyDetail />} />
-        </Routes>
-      </MemoryRouter>
+      <AuthProvider>
+        <MemoryRouter initialEntries={[{ pathname: '/propiedad/7', state }]}>
+          <Routes>
+            <Route path="/propiedad/:id" element={<PropertyDetail />} />
+          </Routes>
+        </MemoryRouter>
+      </AuthProvider>
     </TestStore>,
   )
 

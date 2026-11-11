@@ -1,9 +1,11 @@
 import { Link, Outlet } from 'react-router-dom'
 import { Navbar } from '@/components/layout/Navbar'
+import { CartSync } from '@/components/cart/CartSync'
 
 export default function App() {
   return (
     <div className="flex min-h-screen flex-col">
+      <CartSync />
       <Navbar />
       <main className="flex-1">
         <Outlet />
