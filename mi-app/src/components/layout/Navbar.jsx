@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useAuth } from '@/auth/AuthContext.jsx'
 import { apiFetch } from '@/api/client'
 import { FavoritesCounter } from '@/components/favorites/FavoritesCounter'
+import { CartCounter } from '@/components/cart/CartCounter'
 import { Brand } from './Brand'
 
 const navLinkClassName = ({ isActive }) =>
@@ -49,6 +50,7 @@ export function Navbar() {
           </NavLink>
           {isAuthenticated ? (
             <>
+              <CartCounter />
               <NavLink
                 to={user?.role === 'USER' ? '/panel/perfil' : '/panel'}
                 className={navLinkClassName}

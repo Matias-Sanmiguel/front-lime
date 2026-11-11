@@ -1,5 +1,6 @@
 import { useParams, useLocation, Link } from 'react-router-dom'
 import { InquiryForm } from '@/components/InquiryForm'
+import { AddToCartButton } from '@/components/cart/AddToCartButton'
 import { FavoriteButton } from '@/components/favorites/FavoriteButton'
 import { PropertyGallery } from '@/components/properties/PropertyGallery'
 import { Button } from '@/components/ui/button'
@@ -124,6 +125,7 @@ export function PropertyDetail() {
             tabIndex={-1}
             className="scroll-mt-24 rounded-lg border border-border bg-surface p-6 md:sticky md:top-24"
           >
+            <AddToCartButton key={property.id} propertyId={property.id} className="mb-6" />
             <InquiryForm key={property.id} propertyId={property.id} />
           </div>
         </aside>

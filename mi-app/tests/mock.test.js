@@ -237,3 +237,67 @@ test('deleted property IDs are not reused and inquiries never transfer to anothe
   assert.notEqual(next.id, created.id)
   assert.equal((await apiFetch('/api/v1/me/inquiries')).totalElements, 0)
 })
+test('cart endpoints: requieren sesión y cumplen el contrato (201 datos, 404, 409)', async () => {
+  await assert.rejects(apiFetch('/api/v1/me/cart/items'), { status: 401 })
+  await assert.rejects(
+    apiFetch('/api/v1/me/cart/items', { method: 'POST', body: { propertyId: 1 } }),
+    {
+      status: 401,
+    },
+  )
+  await login()
+  assert.deepEqual(await apiFetch('/api/v1/me/cart/items'), [])
+
+  const item = await apiFetch('/api/v1/me/cart/items', { method: 'POST', body: { propertyId: 1 } })
+  assert.equal(item.propertyId, 1)
+  assert.ok(item.id && item.propertyTitle && item.createdAt)
+  assert.deepEqual(await apiFetch('/api/v1/me/cart/items'), [item])
+
+  await assert.rejects(
+    apiFetch('/api/v1/me/cart/items', { method: 'POST', body: { propertyId: 1 } }),
+    {
+      status: 409,
+    },
+  )
+  await assert.rejects(
+    apiFetch('/api/v1/me/cart/items', { method: 'POST', body: { propertyId: 9999 } }),
+    {
+      status: 404,
+    },
+  )
+  // el aviso 3 está pausado: no se puede agregar
+  await assert.rejects(
+    apiFetch('/api/v1/me/cart/items', { method: 'POST', body: { propertyId: 3 } }),
+    {
+      status: 404,
+    },
+  )
+  await assert.rejects(apiFetch('/api/v1/me/cart/items', { method: 'POST', body: {} }), {
+    status: 400,
+  })
+
+  assert.equal(await apiFetch(`/api/v1/me/cart/items/${item.id}`, { method: 'DELETE' }), null)
+  await assert.rejects(apiFetch(`/api/v1/me/cart/items/${item.id}`, { method: 'DELETE' }), {
+    status: 404,
+  })
+  assert.deepEqual(await apiFetch('/api/v1/me/cart/items'), [])
+})
+test('cart: cada usuario ve solo el suyo y borrar un aviso lo saca de los carritos', async () => {
+  await login()
+  const own = await apiFetch('/api/v1/properties', {
+    method: 'POST',
+    body: {
+      title: 'Para borrar',
+      currency: 'USD',
+      price: 10,
+      city: 'CABA',
+      type: 'HOUSE',
+      operation: 'SALE',
+    },
+  })
+  await apiFetch(`/api/v1/properties/${own.id}/publish`, { method: 'POST' })
+  await apiFetch('/api/v1/me/cart/items', { method: 'POST', body: { propertyId: own.id } })
+  assert.equal((await apiFetch('/api/v1/me/cart/items')).length, 1)
+  await apiFetch(`/api/v1/properties/${own.id}`, { method: 'DELETE' })
+  assert.deepEqual(await apiFetch('/api/v1/me/cart/items'), [])
+})

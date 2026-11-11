@@ -1,7 +1,7 @@
 import { ApiError } from './errors.js'
 import { readSearchFilters, validateSearch } from '../lib/property-search.js'
 
-const DATA_VERSION = '2026-10-20-v2'
+const DATA_VERSION = '2026-11-11-v3'
 const KEY = `lime.mock.${DATA_VERSION}`
 
 let fallback = null
@@ -60,6 +60,8 @@ async function database() {
     users: [auth.user],
     passwords: {},
     session: null,
+    carts: {},
+    nextCartItemId: 1,
   }
 }
 function page(items, params, sort = 'newest') {
@@ -236,6 +238,36 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
       ),
     )
   }
+  const cartRoute = pathname.match(/^\/api\/v1\/me\/cart\/items(?:\/([^/]+))?$/)
+  if (cartRoute) {
+    signed()
+    const cart = (db.carts[user.id] ||= [])
+    const [, itemId] = cartRoute
+    if (!itemId && method === 'GET') return finish(cart)
+    if (!itemId && method === 'POST') {
+      const propertyId = Number(body.propertyId)
+      if (!Number.isInteger(propertyId) || propertyId < 1)
+        fail(400, 'Indicá la propiedad a agregar')
+      const property = db.properties.find((p) => p.id === propertyId)
+      if (!property || property.status !== 'PUBLISHED') fail(404, 'Aviso no encontrado')
+      if (cart.some((item) => item.propertyId === propertyId))
+        fail(409, 'La propiedad ya está en tu carrito')
+      const item = {
+        id: db.nextCartItemId++,
+        propertyId,
+        propertyTitle: property.title,
+        createdAt: now(),
+      }
+      cart.push(item)
+      return finish(item)
+    }
+    if (itemId && method === 'DELETE') {
+      const index = cart.findIndex((item) => String(item.id) === itemId)
+      if (index < 0) fail(404, 'Elemento del carrito no encontrado')
+      cart.splice(index, 1)
+      return finish(null)
+    }
+  }
   if (pathname.startsWith('/api/v1/me/inquiries')) {
     signed()
     const own = db.inquiries.filter((i) =>
@@ -348,6 +380,8 @@ export async function mockFetch(path, { method = 'GET', body = {} } = {}) {
     }
     if (!sub && method === 'DELETE') {
       db.properties = db.properties.filter((x) => x !== p)
+      for (const owner of Object.keys(db.carts))
+        db.carts[owner] = db.carts[owner].filter((item) => item.propertyId !== p.id)
       return finish(null)
     }
     if (sub === 'publish' && method === 'POST') {
