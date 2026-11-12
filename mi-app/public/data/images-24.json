@@ -1,0 +1,20 @@
+[
+  {
+    "id": 203,
+    "url": "https://images.unsplash.com/photo-1599809275671-b5942cabc7a2?w=1200",
+    "createdAt": "2026-11-02T16:00:00Z",
+    "updatedAt": "2026-11-02T16:00:00Z"
+  },
+  {
+    "id": 204,
+    "url": "https://images.unsplash.com/photo-1416331108676-a22ccb276e35?w=1200",
+    "createdAt": "2026-11-02T16:00:00Z",
+    "updatedAt": "2026-11-02T16:00:00Z"
+  },
+  {
+    "id": 205,
+    "url": "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1200",
+    "createdAt": "2026-11-02T16:00:00Z",
+    "updatedAt": "2026-11-02T16:00:00Z"
+  }
+]
