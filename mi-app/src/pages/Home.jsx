@@ -41,11 +41,11 @@ export function Home() {
 
   return (
     <div className="pb-16">
-      <section className="bg-surface">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-5 pt-12 pb-10 sm:px-6 sm:pt-16 sm:pb-14">
+      <section className="bg-lime-wash">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-5 pt-12 pb-12 sm:px-6 sm:pt-16 sm:pb-16">
           <div className="max-w-3xl text-center">
             <h1 className="text-balance font-display text-[clamp(2.5rem,5vw,4rem)] font-semibold leading-[1.06] tracking-[-0.04em] text-foreground">
-              Encontrá tu próximo lugar
+              Encontrá tu próximo <span className="lime-highlight">lugar</span>
             </h1>
             <p className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
               Casas, departamentos y más. Elegí dónde querés vivir y compará las opciones.
@@ -54,7 +54,7 @@ export function Home() {
 
           <form
             onSubmit={handleQuickSearch}
-            className="grid w-full grid-cols-2 items-end gap-4 rounded-lg bg-background p-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_auto]"
+            className="grid w-full grid-cols-2 items-end gap-4 rounded-lg bg-surface p-5 shadow-[0_12px_32px_rgb(61_90_20_/_10%)] lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_auto]"
           >
             <label className="col-span-2 grid min-w-0 gap-1.5 text-sm font-medium lg:col-span-1">
               Ciudad

@@ -324,12 +324,13 @@
 }
 
 .panel .btn-primary {
-  background: var(--ink);
-  color: var(--on-ink);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-weight: 600;
 }
 
 .panel .btn-primary:not(:disabled):hover {
-  opacity: 0.88;
+  background: var(--primary-hover);
 }
 
 .panel .btn-secondary {

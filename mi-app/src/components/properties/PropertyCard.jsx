@@ -48,17 +48,24 @@ export function PropertyCard({ property }) {
         className="group block h-full rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         <Card className="property-card h-full overflow-hidden border-0">
-          {cover && failedCover !== cover ? (
-            <img
-              src={cover}
-              alt={title}
-              loading="lazy"
-              onError={() => setFailedCover(cover)}
-              className="aspect-[4/3] w-full rounded-t-lg object-cover"
-            />
-          ) : (
-            <ImagePlaceholder />
-          )}
+          <div className="relative">
+            {cover && failedCover !== cover ? (
+              <img
+                src={cover}
+                alt={title}
+                loading="lazy"
+                onError={() => setFailedCover(cover)}
+                className="aspect-[4/3] w-full rounded-t-lg object-cover"
+              />
+            ) : (
+              <ImagePlaceholder />
+            )}
+            {operation != null && (
+              <span className="absolute left-3 top-3 inline-flex min-h-7 items-center rounded-pill bg-brand-lime px-3 text-xs font-semibold text-foreground shadow-[0_2px_8px_rgb(29_29_31_/_18%)]">
+                {operationTypeLabel(operation)}
+              </span>
+            )}
+          </div>
           <CardContent className="flex flex-col gap-3 p-5 sm:p-6">
             <p className="font-sans text-2xl font-semibold tracking-[-0.02em] tabular-nums text-foreground">
               {formatPrice(price, currency) ?? 'Precio a consultar'}
@@ -96,11 +103,9 @@ export function PropertyCard({ property }) {
             <h3 className="line-clamp-2 font-sans text-sm font-normal text-muted-foreground">
               {title}
             </h3>
-            <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-              {operation != null && <span>{operationTypeLabel(operation)}</span>}
-              {operation != null && type != null && <span aria-hidden="true">·</span>}
-              {type != null && <span>{propertyTypeLabel(type)}</span>}
-            </div>
+            {type != null && (
+              <p className="mt-1 text-xs text-muted-foreground">{propertyTypeLabel(type)}</p>
+            )}
           </CardContent>
         </Card>
       </Link>

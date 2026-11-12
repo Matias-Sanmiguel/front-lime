@@ -50,7 +50,7 @@ Desplegar primero el backend con filtros de moneda/orden y portadas, y luego est
 
 Todos los nombres, cuentas, avisos y consultas son ficticios. Las fotos externas son ilustrativas; no representan anuncios reales. Algunas propiedades no tienen fotos, para mostrar también ese estado.
 
-El mock conserva los cambios de demostración en `sessionStorage` durante la pestaña, incluyendo registro, avisos, consultas leídas y fotos. Se puede volver a la semilla borrando los datos del sitio (`lime.mock.v1` y `lime.session`). Las contraseñas de cuentas creadas se guardan como hashes para la demostración; esto **no constituye autenticación de producción**. Los permisos reales corresponden al backend.
+El mock conserva los cambios de demostración en `sessionStorage` durante la pestaña, incluyendo registro, avisos, consultas leídas y fotos. Se puede volver a la semilla borrando los datos del sitio (`lime.mock.<versión>` y `lime.session`). Las contraseñas de cuentas creadas se guardan como hashes para la demostración; esto **no constituye autenticación de producción**. Los permisos reales corresponden al backend.
 
 ## Figma y compatibilidad
 

@@ -14,14 +14,14 @@ export function FavoriteButton({ property, className = '' }) {
       aria-pressed={isFavorite}
       aria-label={isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
       className={cn(
-        'flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border/60 bg-surface text-foreground transition-colors hover:bg-background',
+        'flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border/60 bg-surface text-foreground transition-colors hover:bg-lime-wash aria-pressed:border-brand-rind/40 aria-pressed:bg-lime-wash',
         className,
       )}
     >
       <Heart
         className={cn(
           'h-[18px] w-[18px]',
-          isFavorite ? 'fill-foreground text-foreground' : 'text-foreground',
+          isFavorite ? 'fill-brand-lime text-foreground' : 'text-foreground',
         )}
         aria-hidden="true"
       />

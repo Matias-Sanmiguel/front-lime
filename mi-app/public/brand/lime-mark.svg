@@ -1,4 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
-  <path d="M9 8v18a6 6 0 0 0 6 6h17" stroke="#1d1d1f" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M25 8h7v7" stroke="#527a24" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <mask id="lime-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48">
+      <rect width="48" height="48" fill="#fff"/>
+      <path d="M0 0h48v26.5L24 5 0 26.5z" fill="#000"/>
+      <path d="M3 27 24 8l21 19" stroke="#000" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M5.5 27h37M24 27 37.08 40.08M24 27v18M24 27 10.92 40.08" stroke="#000" stroke-width="2.4" stroke-linecap="round"/>
+    </mask>
+  </defs>
+  <g mask="url(#lime-cut)">
+    <circle cx="24" cy="27" r="19.25" stroke="#5b9a17" stroke-width="2.5"/>
+    <circle cx="24" cy="27" r="16.5" fill="#9fe03a"/>
+  </g>
+  <path d="M3 27 24 8l21 19" stroke="#1d1d1f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

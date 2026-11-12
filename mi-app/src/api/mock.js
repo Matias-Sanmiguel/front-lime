@@ -1,7 +1,7 @@
 import { ApiError } from './errors.js'
 import { readSearchFilters, validateSearch } from '../lib/property-search.js'
 
-const DATA_VERSION = '2026-11-11-v3'
+const DATA_VERSION = '2026-11-11-v4'
 const KEY = `lime.mock.${DATA_VERSION}`
 
 let fallback = null

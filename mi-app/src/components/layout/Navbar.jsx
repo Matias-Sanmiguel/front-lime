@@ -7,7 +7,7 @@ import { CartCounter } from '@/components/cart/CartCounter'
 import { Brand } from './Brand'
 
 const navLinkClassName = ({ isActive }) =>
-  `inline-flex min-h-10 items-center rounded-full px-2 text-xs font-medium transition-colors sm:px-3 sm:text-[13px] ${isActive ? 'bg-background text-foreground' : 'text-muted-foreground hover:text-foreground'}`
+  `inline-flex min-h-10 items-center rounded-full px-2 text-xs font-medium transition-colors sm:px-3 sm:text-[13px] ${isActive ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground'}`
 
 export function Navbar() {
   const { isAuthenticated, user, logout } = useAuth()
@@ -74,7 +74,7 @@ export function Navbar() {
           ) : (
             <NavLink
               to="/login"
-              className="inline-flex min-h-10 items-center rounded-full bg-primary px-3 text-xs font-medium text-primary-foreground hover:opacity-85 sm:px-4 sm:text-[13px]"
+              className="inline-flex min-h-10 items-center rounded-full bg-primary px-3 text-xs font-semibold text-primary-foreground transition-colors hover:bg-primary-hover sm:px-4 sm:text-[13px]"
             >
               Ingresar
             </NavLink>

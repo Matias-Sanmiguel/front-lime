@@ -40,7 +40,7 @@ export function PropertyDetail() {
         </p>
         <Link
           to={search}
-          className="inline-flex rounded-md bg-primary px-6 py-3 text-primary-foreground"
+          className="inline-flex rounded-md bg-primary px-6 py-3 font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
         >
           Buscar otras propiedades
         </Link>
@@ -133,7 +133,7 @@ export function PropertyDetail() {
       <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-surface px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:hidden">
         <a
           href="#consulta"
-          className="flex min-h-11 items-center justify-center rounded-md bg-primary px-4 py-3 font-medium text-primary-foreground"
+          className="flex min-h-11 items-center justify-center rounded-md bg-primary px-4 py-3 font-semibold text-primary-foreground"
         >
           Consultar por esta propiedad
         </a>

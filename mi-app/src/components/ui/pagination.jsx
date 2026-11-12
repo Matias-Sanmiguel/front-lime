@@ -19,7 +19,7 @@ export function PaginationItem({ active, className, children, ...props }) {
       className={cn(
         'h-9 min-w-9 rounded-sm px-3 text-sm font-medium transition-colors',
         active
-          ? 'bg-primary text-primary-foreground'
+          ? 'bg-primary font-semibold text-primary-foreground'
           : 'text-foreground hover:bg-border/40',
         className,
       )}

@@ -33,7 +33,7 @@ export function Favorites() {
           </p>
           <Link
             to="/buscar"
-            className="mt-2 inline-flex min-h-11 items-center rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground"
+            className="mt-2 inline-flex min-h-11 items-center rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
           >
             Buscar propiedades
           </Link>

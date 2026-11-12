@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import { selectCartCount } from '@/store/cartSlice'
 
-// Mismo estilo que FavoritesCounter (bg-accent es el lima de DESIGN.md).
+// Mismo estilo que FavoritesCounter.
 export function CartCounter() {
   const count = useSelector(selectCartCount)
   if (count === 0) return null
@@ -11,7 +11,7 @@ export function CartCounter() {
       Carrito
       <span
         aria-label={`${count} ${count === 1 ? 'propiedad' : 'propiedades'} en tu carrito`}
-        className="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-accent px-1.5 text-xs font-semibold text-foreground"
+        className="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-brand-lime px-1.5 text-xs font-semibold text-foreground"
       >
         {count}
       </span>
