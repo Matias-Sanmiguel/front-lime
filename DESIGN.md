@@ -7,13 +7,19 @@ colors:
   foreground: "#1d1d1f"
   muted-foreground: "#65656b"
   border: "#dcdce1"
-  primary: "#1d1d1f"
-  primary-foreground: "#ffffff"
+  primary: "#9fe03a"
+  primary-hover: "#8ccf24"
+  primary-foreground: "#1d1d1f"
+  lime-wash: "#f1f8e4"
+  footer: "#1d1d1f"
+  footer-foreground: "#b9b9bd"
   accent: "#d5eeaa"
   accent-foreground: "#1d1d1f"
   accent-ink: "#527a24"
   danger: "#b72e35"
   warning: "#b25e09"
+  brand-lime: "#9fe03a"
+  brand-rind: "#5b9a17"
 typography:
   display:
     fontFamily: "Inter, system-ui, 'Segoe UI', Roboto, sans-serif"
@@ -105,20 +111,28 @@ components:
 
 Este nombre describe la implementación; no se presenta como una elección textual del usuario. La dirección confirmada es una identidad nueva, minimalista y linda, con referencia estética Apple y logo propio. Reemplaza el mundo editorial anterior: blancos y grises fríos, tipografía sans serif y fotografías de propiedades como protagonistas.
 
-La calma visual surge del espacio, de una jerarquía breve y de controles familiares. El lima suave y su verde de contraste son una elección de implementación pendiente de la preferencia cromática del usuario. Este documento es la referencia visual del frontend; los valores normativos están en el frontmatter y se corresponden con el código actual.
+La calma visual surge del espacio, de una jerarquía breve y de controles familiares. El usuario pidió que el lima resalte más: el lima vivo es el color de la acción y de la región de marca, sobre una base de blancos, grises y grafito. Este documento es la referencia visual del frontend; los valores normativos están en el frontmatter y se corresponden con el código actual.
 
 **Key Characteristics:**
-- Superficies claras y contraste de grafito.
+- Superficies claras, texto grafito y lima vivo para actuar.
 - Una sola familia tipográfica: Inter.
 - Fotografías protagonistas y datos fáciles de comparar.
-- Logo geométrico propio, abierto y de trazos redondeados.
+- Logo propio: media rodaja de lima bajo un techo, que se lee como casa.
 - Movimiento breve y profundidad discreta.
 
 ## Colors
 
 ### Primary
 
-El grafito es el color de las acciones primarias, con texto blanco. El lima suave acompaña la selección de texto; el verde de contraste identifica enlaces, foco y la esquina del símbolo. El acento sigue siendo una decisión de implementación, no una preferencia confirmada del usuario.
+El lima vivo (`primary`) es el color de las acciones primarias, siempre con texto grafito en peso 600 (10.6:1). Al pasar el puntero se profundiza a `primary-hover`; no usar opacidad, que lo lava. El lima suave (`accent`) marca la ruta activa de la navegación, los avisos publicados y la selección de texto; el verde de contraste (`accent-ink`) identifica enlaces y foco.
+
+### Brand
+
+El símbolo usa `brand-lime` para la pulpa y `brand-rind` para la cáscara. `brand-lime` también se usa como superficie de pequeños elementos de marca: la etiqueta de operación sobre la foto de cada tarjeta, el contador y el corazón de favoritos, y el resaltador bajo la palabra clave del título de inicio (`.lime-highlight`). Nunca como color de texto.
+
+### Regiones
+
+`lime-wash` tiñe el hero de inicio: es la única región de color amplia y lleva el buscador sobre una tarjeta blanca con sombra verdosa. El pie usa `footer` (grafito) con texto `footer-foreground` y el símbolo con techo blanco; sus enlaces pasan a lima al pasar el puntero.
 
 ### Neutral
 
@@ -126,7 +140,7 @@ El fondo gris frío separa las zonas de contenido de las superficies blancas. El
 
 Los tokens danger y warning se reservan para estados semánticos. La hoja global conserva un modo oscuro opt-in mediante la clase dark, sin selector visible; sus valores heredados no constituyen una segunda identidad aprobada. El sistema documentado aquí es el claro.
 
-**The Contrast Rule.** Usar grafito para la acción primaria y verde de contraste para el texto acentuado; el lima suave no funciona como texto sobre blanco.
+**The Contrast Rule.** El lima es fondo, nunca texto: lleva texto grafito encima. Para texto acentuado sobre blanco o `lime-wash`, usar verde de contraste (4.6:1 sobre `lime-wash`).
 
 ## Typography
 
@@ -152,13 +166,13 @@ La sombra de tarjeta es `0 10px 30px rgb(29 29 31 / 8%)`. La transición de somb
 
 Los campos y botones usan el radio sm; las tarjetas y el buscador usan lg. La navegación y las etiquetas son cápsulas. Las fotografías de las tarjetas se recortan a 4:3 y sus esquinas superiores siguen el contenedor.
 
-El símbolo de Lime es una L abierta, con una esquina verde independiente arriba a la derecha. Se construye como SVG original con trazos redondeados; acompaña la palabra lime en minúsculas. El símbolo ocupa 32 px y el nombre 1.6 rem, con peso 600 y espaciado de -0.04 em. Usar el componente Brand como fuente de la marca.
+El símbolo de Lime es media rodaja de lima bajo un techo a dos aguas de trazo redondeado: la silueta completa se lee como una casa. La pulpa se divide en gajos por cortes transparentes y la cáscara la rodea, separada por una franja vacía; el techo se recorta de la fruta con un margen libre. Es un SVG original con máscara; el techo usa `currentColor` para adaptarse al modo oscuro. Acompaña la palabra lime en minúsculas. El símbolo ocupa 32 px y el nombre 1.6 rem, con peso 600 y espaciado de -0.04 em. Usar el componente Brand (o BrandMark para el símbolo solo) como fuente de la marca; `public/brand/lime-mark.svg` y `public/favicon.svg` son sus copias estáticas.
 
 ## Components
 
 ### Buttons
 
-La variante primaria usa grafito y blanco; secondary añade un borde; ghost conserva el fondo transparente; link usa verde y subrayado al pasar el puntero. El tamaño base tiene 44 px de alto. El primario baja a 90 % de opacidad al pasar el puntero; secondary y ghost toman el color de borde al 40 %. El foco del botón usa un anillo de 2 px con separación de 2 px. El estado deshabilitado usa opacidad de 50 % y no recibe eventos de puntero.
+La variante primaria usa lima vivo con texto grafito semibold; secondary añade un borde; ghost conserva el fondo transparente; link usa verde y subrayado al pasar el puntero. El tamaño base tiene 44 px de alto. El primario se profundiza a `primary-hover` al pasar el puntero; secondary y ghost toman el color de borde al 40 %. El foco del botón usa un anillo de 2 px con separación de 2 px. El estado deshabilitado usa opacidad de 50 % y no recibe eventos de puntero.
 
 ### Inputs / Fields
 
@@ -166,7 +180,7 @@ Los campos usan superficie blanca, borde gris y radio sm. Al pasar el puntero el
 
 ### Cards / Containers
 
-El contenedor genérico tiene borde y 16 px de relleno. La tarjeta de propiedad elimina el borde y usa 20 px de relleno interior, que pasan a 24 px en sm. Presenta foto, precio, ubicación y características antes del título y tipo. El botón de favoritos es independiente del enlace de la tarjeta. Una foto ausente muestra un estado explícito.
+El contenedor genérico tiene borde y 16 px de relleno. La tarjeta de propiedad elimina el borde y usa 20 px de relleno interior, que pasan a 24 px en sm. Presenta foto, precio, ubicación y características antes del título y tipo. La operación (Venta, Alquiler, Alquiler temporario) va como cápsula lima arriba a la izquierda de la foto, dentro del enlace. El botón de favoritos es independiente del enlace de la tarjeta. Una foto ausente muestra un estado explícito.
 
 ### Chips
 
@@ -174,11 +188,11 @@ Badge es una cápsula con borde gris, texto de 12 px y peso 500. No atribuirle u
 
 ### Navigation
 
-La cabecera fija conserva marca y enlaces visibles, permite saltos de línea y marca la ruta activa con fondo gris claro. El acceso a sesión usa una cápsula grafito. El contenido de navegación depende de la sesión y del rol; conservar esas diferencias al reutilizar el diseño.
+La cabecera fija conserva marca y enlaces visibles, permite saltos de línea y marca la ruta activa con fondo lima suave. El acceso a sesión usa una cápsula lima vivo. El contenido de navegación depende de la sesión y del rol; conservar esas diferencias al reutilizar el diseño.
 
 ### Brand
 
-Mantener el símbolo abierto y su esquina verde junto a la palabra lime. El SVG es decorativo dentro de una marca con nombre accesible; el enlace de inicio proporciona el destino accesible.
+Mantener el techo y la media rodaja juntos, sin separar ni recolorear sus partes, junto a la palabra lime. El SVG es decorativo dentro de una marca con nombre accesible; el enlace de inicio proporciona el destino accesible.
 
 ## Do's and Don'ts
 
@@ -191,6 +205,6 @@ Mantener el símbolo abierto y su esquina verde junto a la palabra lime. El SVG 
 ### Don't:
 - Don't reintroducir la identidad editorial anterior como norma del frontend.
 - Don't copiar logotipos ni activos propietarios de Apple.
-- Don't presentar el acento lima como una preferencia confirmada del usuario.
+- Don't esparcir lima como decoración: cada uso es acción, estado, orientación o la región del hero.
 - Don't inventar métricas, testimonios o garantías para completar una composición.
 

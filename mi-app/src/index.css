@@ -9,13 +9,19 @@
   --foreground: #1d1d1f; /* ink */
   --muted-foreground: #65656b;
   --border: #dcdce1;
-  --primary: #1d1d1f; /* ink — CTA primario, "lima no carga texto" */
-  --primary-foreground: #ffffff;
+  --primary: #9fe03a; /* lima vivo — CTA primario, siempre con texto grafito */
+  --primary-hover: #8ccf24;
+  --primary-foreground: #1d1d1f;
+  --lime-wash: #f1f8e4; /* región de marca (hero); admite texto muted */
+  --footer: #1d1d1f;
+  --footer-foreground: #b9b9bd;
   --accent: #d5eeaa;
   --accent-foreground: #1d1d1f;
   --accent-ink: #527a24;
   --danger: #b72e35;
   --warning: #b25e09;
+  --brand-lime: #9fe03a; /* pulpa del símbolo; solo gráfico, nunca texto */
+  --brand-rind: #5b9a17;
 
   color-scheme: light;
 }
@@ -31,8 +37,11 @@
   --foreground: #f4f4f1; /* text-dark */
   --muted-foreground: #9a9a96;
   --border: #2c2c2e;
-  --primary: #f4f4f1;
+  --primary: #b8f34b;
+  --primary-hover: #a6e436;
   --primary-foreground: #121212;
+  --lime-wash: #1a2112;
+  --footer: #0b0b0c;
   --accent: #b8f34b; /* el lima sube de intensidad en oscuro, deep-lime desaparece */
   --accent-foreground: #121212;
   --accent-ink: #b8f34b;
@@ -47,6 +56,10 @@
   --color-border: var(--border);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-lime-wash: var(--lime-wash);
+  --color-footer: var(--footer);
+  --color-footer-foreground: var(--footer-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent-ink: var(--accent-ink);
@@ -55,6 +68,8 @@
   --color-input: var(--border);
   --color-ring: var(--accent-ink);
   --color-warning: var(--warning);
+  --color-brand-lime: var(--brand-lime);
+  --color-brand-rind: var(--brand-rind);
 
   --radius-sm: 10px;
   --radius-md: 12px;
@@ -101,6 +116,13 @@ body {
   .property-card:hover {
     transform: none;
   }
+}
+
+.lime-highlight {
+  background-image: linear-gradient(transparent 64%, var(--brand-lime) 64%, var(--brand-lime) 92%, transparent 92%);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding-inline: 0.06em;
 }
 
 ::selection {
