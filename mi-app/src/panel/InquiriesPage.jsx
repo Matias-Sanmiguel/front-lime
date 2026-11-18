@@ -1,60 +1,74 @@
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
-import { apiFetch } from '@/api/client'
-import { ErrorAlert } from './ui.jsx'
+import {
+  fetchInquiries,
+  fetchInquiry,
+  markInquiryRead,
+  selectInquiries,
+  selectInquiriesError,
+  selectInquiriesPage,
+  selectInquiriesStatus,
+  selectInquiriesTotalPages,
+  selectUnreadCount,
+} from '@/store/inquiriesSlice'
 
 const dateFormat = new Intl.DateTimeFormat('es-AR', { dateStyle: 'medium', timeStyle: 'short' })
 export default function InquiriesPage() {
   const { inquiryId } = useParams()
   const [params, setParams] = useSearchParams()
-  const [result, setResult] = useState(null)
-  const [error, setError] = useState(null)
+  const dispatch = useDispatch()
+  const items = useSelector(selectInquiries)
+  const unreadCount = useSelector(selectUnreadCount)
+  const page = useSelector(selectInquiriesPage)
+  const totalPages = useSelector(selectInquiriesTotalPages)
+  const status = useSelector(selectInquiriesStatus)
+  const error = useSelector(selectInquiriesError)
   const [busy, setBusy] = useState(null)
-  const [version, setVersion] = useState(0)
+  const [refreshVersion, setRefreshVersion] = useState(0)
   const [notice, setNotice] = useState('')
   const query = params.toString()
+
   useEffect(() => {
-    let cancelled = false
-    const load = inquiryId
-      ? Promise.all([
-          apiFetch(`/api/v1/me/inquiries/${inquiryId}`),
-          apiFetch('/api/v1/me/inquiries?size=1'),
-        ]).then(([item, inbox]) => ({ ...inbox, content: [item], totalPages: 1 }))
-      : apiFetch(`/api/v1/me/inquiries?${query}`)
-    load
-      .then((data) => {
-        if (!cancelled) {
-          setResult(data)
-          setError(null)
-        }
-      })
-      .catch((err) => {
-        if (!cancelled) setError(err)
-      })
-    return () => {
-      cancelled = true
+    if (inquiryId) {
+      dispatch(fetchInquiry(inquiryId))
+      return
     }
-  }, [query, version, inquiryId])
+    const filters = new URLSearchParams(query)
+    dispatch(
+      fetchInquiries({
+        page: filters.has('page') ? Number(filters.get('page')) : undefined,
+        unreadOnly: filters.has('unreadOnly')
+          ? filters.get('unreadOnly') === 'true'
+          : undefined,
+        propertyId: filters.has('propertyId') ? filters.get('propertyId') : undefined,
+        size: filters.has('size') ? Number(filters.get('size')) : undefined,
+      }),
+    )
+  }, [dispatch, inquiryId, query, refreshVersion])
+
+  const visibleItems = inquiryId
+    ? items.filter((item) => String(item.id) === String(inquiryId))
+    : params.get('unreadOnly') === 'true'
+      ? items.filter((item) => !item.readAt)
+      : items
+  const loading = status === 'loading' && visibleItems.length === 0
+
   function filter(key, value) {
     const next = new URLSearchParams(params)
     if (value) next.set(key, value)
     else next.delete(key)
     if (key !== 'page') next.delete('page')
-    setResult(null)
-    setError(null)
     setParams(next)
   }
+
   async function markRead(id) {
     setBusy(id)
-    setError(null)
     try {
-      await apiFetch(`/api/v1/me/inquiries/${id}`, { method: 'PATCH', body: { read: true } })
+      await dispatch(markInquiryRead(id)).unwrap()
       setNotice('Consulta marcada como leída.')
-      if (result.content.length === 1 && Number(params.get('page')) > 0)
-        filter('page', String(Number(params.get('page')) - 1))
-      else setVersion((value) => value + 1)
-    } catch (err) {
-      setError(err)
+    } catch {
+      setNotice('')
     } finally {
       setBusy(null)
     }
@@ -67,9 +81,7 @@ export default function InquiriesPage() {
         </Link>
         <h1>{inquiryId ? 'Detalle de consulta' : 'Consultas recibidas'}</h1>
         <p className="page-meta">
-          {result
-            ? `Tenés ${result.unreadCount} ${result.unreadCount === 1 ? 'consulta' : 'consultas'} sin leer.`
-            : 'Consultas de tus avisos publicados.'}
+          {`Tenés ${unreadCount} ${unreadCount === 1 ? 'consulta' : 'consultas'} sin leer.`}
         </p>
       </header>
       {!inquiryId && (
@@ -85,8 +97,7 @@ export default function InquiriesPage() {
           <button
             className="btn btn-secondary btn-small"
             onClick={() => {
-              setError(null)
-              setVersion((v) => v + 1)
+              setRefreshVersion((value) => value + 1)
             }}
           >
             Actualizar
@@ -98,13 +109,18 @@ export default function InquiriesPage() {
           {notice}
         </p>
       )}
-      {error && <ErrorAlert title="No pudimos cargar o actualizar las consultas" error={error} />}
-      {!result && !error && (
+      {error && (
+        <div className="alert alert-error" role="alert">
+          <p className="alert-title">No pudimos cargar o actualizar las consultas</p>
+          <p>{error}</p>
+        </div>
+      )}
+      {loading && !error && (
         <p role="status" className="panel-loading">
           Cargando consultas…
         </p>
       )}
-      {result?.content.length === 0 && (
+      {!loading && !error && visibleItems.length === 0 && (
         <section className="panel-card">
           <h2>No hay consultas{params.get('unreadOnly') === 'true' ? ' sin leer' : ''}</h2>
           <p className="muted">
@@ -112,7 +128,7 @@ export default function InquiriesPage() {
           </p>
         </section>
       )}
-      {result?.content.map((item) => (
+      {visibleItems.map((item) => (
         <article key={item.id} className="panel-card inquiry-card">
           <div className="inquiry-heading">
             <div>
@@ -152,22 +168,22 @@ export default function InquiriesPage() {
           )}
         </article>
       ))}
-      {result?.totalPages > 1 && (
+      {!inquiryId && totalPages > 1 && (
         <nav className="inbox-pagination" aria-label="Páginas de consultas">
           <button
             className="btn btn-secondary"
-            disabled={result.page === 0}
-            onClick={() => filter('page', String(result.page - 1))}
+            disabled={page === 0}
+            onClick={() => filter('page', String(page - 1))}
           >
             Anterior
           </button>
           <span>
-            {result.page + 1} de {result.totalPages}
+            {page + 1} de {totalPages}
           </span>
           <button
             className="btn btn-secondary"
-            disabled={result.page + 1 >= result.totalPages}
-            onClick={() => filter('page', String(result.page + 1))}
+            disabled={page + 1 >= totalPages}
+            onClick={() => filter('page', String(page + 1))}
           >
             Siguiente
           </button>

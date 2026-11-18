@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import favoritesReducer from './favoritesSlice'
 import cartReducer from './cartSlice'
+import inquiriesReducer from './inquiriesSlice'
 
 const STORAGE_KEY = 'lime.favorites'
 
@@ -18,6 +19,7 @@ export const store = configureStore({
     favorites: favoritesReducer,
     // El carrito no se persiste en localStorage: la fuente es el backend.
     cart: cartReducer,
+    inquiries: inquiriesReducer,
   },
   preloadedState: loadFavorites(),
 })

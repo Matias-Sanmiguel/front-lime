@@ -1,13 +1,15 @@
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { AuthProvider } from '../src/auth/AuthContext.jsx'
+import { AuthProvider, useAuth } from '../src/auth/AuthContext.jsx'
 import { Register } from '../src/pages/Register.jsx'
 import MyPropertiesPage from '../src/panel/MyPropertiesPage.jsx'
 import InquiriesPage from '../src/panel/InquiriesPage.jsx'
 import PropertyImages from '../src/panel/PropertyImages.jsx'
-import { useState } from 'react'
+import { Navbar } from '../src/components/layout/Navbar.jsx'
+import { useEffect, useState } from 'react'
 import { apiFetch } from '../src/api/client.js'
+import { TestStore } from './TestStore'
 import { readFile } from 'node:fs/promises'
 import { webcrypto } from 'node:crypto'
 
@@ -26,15 +28,25 @@ afterEach(() => {
 })
 const mount = (component) =>
   render(
-    <MemoryRouter>
-      <AuthProvider>{component}</AuthProvider>
-    </MemoryRouter>,
+    <TestStore>
+      <MemoryRouter>
+        <AuthProvider>{component}</AuthProvider>
+      </MemoryRouter>
+    </TestStore>,
   )
 const signIn = () =>
   apiFetch('/api/v1/auth/login', {
     method: 'POST',
     body: { email: 'lime@test.com', password: '12345678' },
   })
+function SignedIn({ session, children }) {
+  const { login } = useAuth()
+  useEffect(() => {
+    login(session.token, session.user)
+  }, [login, session])
+  return children
+}
+
 test('register form validates and submits a complete agency account', async () => {
   mount(<Register />)
   fireEvent.click(screen.getByRole('button', { name: 'Crear cuenta' }))
@@ -85,6 +97,27 @@ test('mark read removes card from unread filter and survives reload', async () =
   await screen.findByText('Tenés 1 consulta sin leer.')
   expect(screen.queryByRole('heading', { name: /Sofía Gómez/ })).toBeNull()
   expect((await apiFetch('/api/v1/me/inquiries/1')).readAt).toBeTruthy()
+})
+test('inquiries badge loads for an agency and decrements when an inquiry is read', async () => {
+  const session = await signIn()
+  mount(
+    <SignedIn session={session}>
+      <>
+        <Navbar />
+        <InquiriesPage />
+      </>
+    </SignedIn>,
+  )
+  await screen.findByLabelText('2 consultas sin leer')
+  fireEvent.click(screen.getByLabelText('Solo sin leer'))
+  await screen.findByText('Tenés 2 consultas sin leer.')
+  const card = screen.getByRole('heading', { name: 'Sofía Gómez Nueva' }).closest('article')
+  fireEvent.click(within(card).getByRole('button', { name: 'Marcar como leída' }))
+  await screen.findByLabelText('1 consultas sin leer')
+  expect(screen.queryByRole('heading', { name: /Sofía Gómez/ })).toBeNull()
+  fireEvent.click(screen.getByRole('button', { name: 'Salir' }))
+  await screen.findByRole('link', { name: 'Ingresar' })
+  expect(screen.queryByLabelText(/consultas sin leer/)).toBeNull()
 })
 test('image upload, replacement and deletion preserve ImageResponse contract', async () => {
   await signIn()
