@@ -6,10 +6,11 @@ import {
   imageUrl,
   replacePropertyImage,
 } from '../api/properties'
+import { ACCEPTED_IMAGE_TYPES, imageFileProblem } from '../lib/image-file.js'
 import { ErrorAlert } from './ui.jsx'
 
 // Los mismos tipos que acepta FileStorageService en el backend.
-const ACCEPTED_TYPES = 'image/jpeg,image/png,image/webp'
+const ACCEPTED_TYPES = ACCEPTED_IMAGE_TYPES.join(',')
 
 // Las fotos se guardan en el momento (no esperan al "Guardar cambios" del form):
 // cada alta, reemplazo o baja es su propio request contra /images.
@@ -35,11 +36,29 @@ export default function PropertyImages({ propertyId, images, setImages, onForbid
     event.target.value = ''
     setFailure(null)
 
+    // Se validan antes de subir: los inválidos se informan y el resto sigue su camino.
+    const valid = []
+    const rejected = []
+    for (const file of files) {
+      const problem = imageFileProblem(file)
+      if (problem) {
+        rejected.push(`«${file.name}»: ${problem}`)
+      } else {
+        valid.push(file)
+      }
+    }
+    if (rejected.length > 0) {
+      setFailure({
+        title: 'No se subieron algunas fotos',
+        error: new ApiError(0, rejected.join(' ')),
+      })
+    }
+
     let current = null
     try {
-      for (const [index, file] of files.entries()) {
+      for (const [index, file] of valid.entries()) {
         current = file
-        setProgress(`Subiendo ${index + 1} de ${files.length}…`)
+        setProgress(`Subiendo ${index + 1} de ${valid.length}…`)
         const created = await addPropertyImage(propertyId, file)
         setImages((previous) => [...previous, created])
       }
@@ -64,6 +83,14 @@ export default function PropertyImages({ propertyId, images, setImages, onForbid
 
     const imageId = replaceTarget.current
     setFailure(null)
+    const problem = imageFileProblem(file)
+    if (problem) {
+      setFailure({
+        title: 'No se pudo reemplazar la foto',
+        error: new ApiError(0, `«${file.name}»: ${problem}`),
+      })
+      return
+    }
     setProgress('Reemplazando la foto…')
     try {
       const updated = await replacePropertyImage(propertyId, imageId, file)
