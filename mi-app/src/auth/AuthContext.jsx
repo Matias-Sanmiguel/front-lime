@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { setUnauthorizedHandler } from '../api/client.js'
 
 const STORAGE_KEY = 'lime.session'
 const AuthContext = createContext(null)
@@ -46,7 +47,12 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     listeners.add(setSessionState)
-    return () => listeners.delete(setSessionState)
+    // Si el backend responde 401 con un token enviado, la sesión venció: se cierra.
+    setUnauthorizedHandler(clearSession)
+    return () => {
+      listeners.delete(setSessionState)
+      setUnauthorizedHandler(null)
+    }
   }, [])
 
   const login = useCallback((token, user) => {
