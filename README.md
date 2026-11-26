@@ -62,7 +62,7 @@ Los favoritos usan Redux Toolkit (`favoritesSlice`) y persistencia local en el n
 
 **Solución elegida:** el token de sesión se guarda en `sessionStorage` (clave `lime.session`, ver `mi-app/src/auth/AuthContext.jsx`) y se envía en cada pedido como header `Authorization: Bearer` (`mi-app/src/api/client.js`). Es el nivel "fácil" del enunciado, pero más acotado que `localStorage`: se borra al cerrar la pestaña y no se comparte entre pestañas del navegador. `localStorage` se usa únicamente para datos no sensibles: favoritos (clave `lime.favorites`, `mi-app/src/store/store.js`) y, próximamente, el tema (clave `lime.theme`).
 
-**Riesgo:** XSS. Si un script malicioso se ejecutara en la página, podría leer `sessionStorage` o `localStorage` igual que el resto del DOM, ya que ninguno de los dos es inaccesible a JavaScript.
+**Riesgo:** XSS. Si un script malicioso se ejecutara en la página, podría leer sessionStorage o localStorage, porque ambos son accesibles desde JavaScript.
 
 **Mitigación de XSS:**
 - React escapa por defecto el contenido que renderiza; no se usa `dangerouslySetInnerHTML` en el proyecto.
