@@ -9,6 +9,7 @@ import { FavoritesCounter } from '@/components/favorites/FavoritesCounter'
 import { CartCounter } from '@/components/cart/CartCounter'
 import { InquiriesCounter } from './InquiriesCounter'
 import { Brand } from './Brand'
+import { ThemeToggle } from './ThemeToggle'
 
 const navLinkClassName = ({ isActive }) =>
   `inline-flex min-h-10 items-center rounded-full px-2 text-xs font-medium transition-colors sm:px-3 sm:text-[13px] ${isActive ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground'}`
@@ -63,6 +64,7 @@ export function Navbar() {
             Favoritos
             <FavoritesCounter />
           </NavLink>
+          <ThemeToggle />
           {isAuthenticated ? (
             <>
               <CartCounter />

@@ -7,7 +7,9 @@ import { SessionBootstrap } from './auth/SessionBootstrap.jsx'
 import { store } from './store/store'
 import { router } from './router'
 import './index.css'
+import { applyTheme, getStoredTheme } from './theme'
 
+applyTheme(getStoredTheme())
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
