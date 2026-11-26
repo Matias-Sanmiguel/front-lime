@@ -43,7 +43,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     listeners.add(setSessionState)
     // Si el backend responde 401 con un token enviado, la sesión venció: se cierra.
-    setUnauthorizedHandler(clearSession)
+    setUnauthorizedHandler(() => setSession(null))
     return () => {
       listeners.delete(setSessionState)
       setUnauthorizedHandler(null)
