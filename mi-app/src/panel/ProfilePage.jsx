@@ -4,7 +4,7 @@ import { apiFetch } from '@/api/client'
 import { useAuth } from '@/auth/AuthContext.jsx'
 import { ErrorAlert, Notice } from './ui.jsx'
 export default function ProfilePage() {
-  const { token, login } = useAuth()
+  const { login } = useAuth()
   const [profile, setProfile] = useState(null),
     [error, setError] = useState(null),
     [notice, setNotice] = useState(''),
@@ -37,7 +37,7 @@ export default function ProfilePage() {
     try {
       const updated = await apiFetch('/api/v1/me', { method: 'PATCH', body })
       setProfile(updated)
-      login(token, updated)
+      login(updated)
       setNotice('Perfil actualizado.')
       event.target.reset()
     } catch (e) {

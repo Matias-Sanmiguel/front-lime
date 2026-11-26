@@ -44,7 +44,7 @@ export function Register() {
           agencyName: values.role === 'AGENCY' ? values.agencyName.trim() : null,
         },
       })
-      login(session.token, session.user)
+      login(session.user)
       navigate(values.role === 'AGENCY' ? '/panel' : '/buscar')
     } catch (err) {
       setError(err.detail || 'No pudimos crear tu cuenta. Intentá nuevamente.')

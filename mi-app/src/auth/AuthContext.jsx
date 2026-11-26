@@ -3,10 +3,13 @@ import { createContext, useCallback, useContext, useEffect, useState } from 'rea
 const STORAGE_KEY = 'lime.session'
 const AuthContext = createContext(null)
 
+// El token vive en una cookie HttpOnly que maneja el navegador; JavaScript no
+// puede leerla. Acá solo se recuerda el perfil del usuario (nombre, rol) para
+// mostrar la UI sin parpadeos. No es una credencial.
 function readStoredSession() {
   try {
-    const raw = sessionStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : null
+    const parsed = JSON.parse(sessionStorage.getItem(STORAGE_KEY))
+    return parsed?.user ? { user: parsed.user } : null
   } catch {
     return null
   }
@@ -15,19 +18,15 @@ function readStoredSession() {
 function writeStoredSession(session) {
   try {
     if (session) {
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(session))
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ user: session.user }))
     } else {
       sessionStorage.removeItem(STORAGE_KEY)
     }
   } catch {
-    // sessionStorage puede no estar disponible (modo privado, etc.); la sesión
-    // simplemente no persiste entre recargas en ese caso.
+    // sin sessionStorage la UI simplemente no recuerda el perfil entre recargas
   }
 }
 
-// Estado y accesores fuera de React: el cliente de API (api/client.js) necesita
-// leer el token y poder forzar un logout en un 401 sin ser parte del árbol de
-// componentes. AuthProvider se suscribe a los mismos cambios para re-renderizar.
 let currentSession = readStoredSession()
 const listeners = new Set()
 
@@ -35,10 +34,6 @@ function setSession(session) {
   currentSession = session
   writeStoredSession(session)
   listeners.forEach((listener) => listener(session))
-}
-
-function clearSession() {
-  setSession(null)
 }
 
 export function AuthProvider({ children }) {
@@ -49,18 +44,17 @@ export function AuthProvider({ children }) {
     return () => listeners.delete(setSessionState)
   }, [])
 
-  const login = useCallback((token, user) => {
-    setSession({ token, user })
+  const login = useCallback((user) => {
+    setSession({ user })
   }, [])
 
   const logout = useCallback(() => {
-    clearSession()
+    setSession(null)
   }, [])
 
   const value = {
     user: session?.user ?? null,
-    token: session?.token ?? null,
-    isAuthenticated: Boolean(session?.token),
+    isAuthenticated: Boolean(session?.user),
     login,
     logout,
   }

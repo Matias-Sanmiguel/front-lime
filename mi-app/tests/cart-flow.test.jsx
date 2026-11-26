@@ -38,7 +38,7 @@ function SignedIn({ children }) {
     let active = true
     loginApi().then((session) => {
       if (!active) return
-      login(session.token, session.user)
+      login(session.user)
       setReady(true)
     })
     return () => {
