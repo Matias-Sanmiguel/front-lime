@@ -13,12 +13,7 @@ export function setUnauthorizedHandler(handler) {
 // en ambos modos; VITE_USE_MOCK=false habilita el transporte HTTP real.
 export async function apiFetch(path, { method = 'GET', body } = {}) {
   if (import.meta.env?.VITE_USE_MOCK !== 'false') return mockFetch(path, { method, body })
-  let token
-  try {
-    token = JSON.parse(sessionStorage.getItem('lime.session'))?.token
-  } catch {
-    /* sin sesión */
-  }
+
   const headers = { 'X-Requested-With': 'XMLHttpRequest' }
   const multipart = body instanceof FormData
   if (body != null && !multipart) headers['Content-Type'] = 'application/json'
@@ -30,9 +25,10 @@ export async function apiFetch(path, { method = 'GET', body } = {}) {
   })
   if (!response.ok) {
     const problem = await response.json().catch(() => ({}))
-    // Un 401 con token enviado es una sesión vencida o inválida: se cierra para que la UI
-    // pida iniciar sesión. Un 401 sin token (por ejemplo un login fallido) no la toca.
-    if (response.status === 401 && token) onUnauthorized?.()
+        // Un 401 fuera de /auth es una sesión vencida o inválida (la cookie expiró o la
+    // revocaron): se cierra para que la UI pida iniciar sesión. Un 401 de login o
+    // registro (credenciales incorrectas) no la toca.
+    if (response.status === 401 && !path.startsWith('/api/v1/auth/')) onUnauthorized?.()
     throw new ApiError(response.status, problem.detail || 'No pudimos completar la operación')
   }
   return response.status === 204 ? null : response.json()
