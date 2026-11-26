@@ -27,7 +27,7 @@ export function Login() {
         method: 'POST',
         body: { email: email.trim(), password },
       })
-      login(session.token, session.user)
+      login(session.user)
       navigate(session.user.role === 'USER' ? '/buscar' : '/panel')
     } catch (err) {
       setError(err instanceof ApiError && err.detail ? err.detail : 'No pudimos iniciar sesión')

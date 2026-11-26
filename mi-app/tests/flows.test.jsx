@@ -42,7 +42,7 @@ const signIn = () =>
 function SignedIn({ session, children }) {
   const { login } = useAuth()
   useEffect(() => {
-    login(session.token, session.user)
+    login(session.user)
   }, [login, session])
   return children
 }

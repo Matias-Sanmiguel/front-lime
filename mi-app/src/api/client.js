@@ -19,13 +19,13 @@ export async function apiFetch(path, { method = 'GET', body } = {}) {
   } catch {
     /* sin sesión */
   }
-  const headers = {}
-  if (token) headers.Authorization = `Bearer ${token}`
+  const headers = { 'X-Requested-With': 'XMLHttpRequest' }
   const multipart = body instanceof FormData
   if (body != null && !multipart) headers['Content-Type'] = 'application/json'
   const response = await fetch(`${import.meta.env.VITE_API_URL || ''}${path}`, {
     method,
     headers,
+    credentials: 'include',
     body: body == null ? undefined : multipart ? body : JSON.stringify(body),
   })
   if (!response.ok) {
