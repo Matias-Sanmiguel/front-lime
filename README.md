@@ -58,6 +58,22 @@ La identidad vigente está documentada en [DESIGN.md](./DESIGN.md): Inter, super
 
 Los favoritos usan Redux Toolkit (`favoritesSlice`) y persistencia local en el navegador; no se sincronizan con una cuenta del backend.
 
+## Persistencia de sesión y seguridad
+
+**Solución elegida:** el token de sesión se guarda en `sessionStorage` (clave `lime.session`, ver `mi-app/src/auth/AuthContext.jsx`) y se envía en cada pedido como header `Authorization: Bearer` (`mi-app/src/api/client.js`). Es el nivel "fácil" del enunciado, pero más acotado que `localStorage`: se borra al cerrar la pestaña y no se comparte entre pestañas del navegador. `localStorage` se usa únicamente para datos no sensibles: favoritos (clave `lime.favorites`, `mi-app/src/store/store.js`) y, próximamente, el tema (clave `lime.theme`).
+
+**Riesgo:** XSS. Si un script malicioso se ejecutara en la página, podría leer `sessionStorage` o `localStorage` igual que el resto del DOM, ya que ninguno de los dos es inaccesible a JavaScript.
+
+**Mitigación de XSS:**
+- React escapa por defecto el contenido que renderiza; no se usa `dangerouslySetInnerHTML` en el proyecto.
+- El token expira a las 24 h (configurado en el backend).
+- El logout invalida el token en el backend mediante una denylist, aunque el navegador aún lo tuviera guardado.
+- Mejora futura (no implementada): Content Security Policy (CSP).
+
+**CSRF:** no aplica a este esquema. El token viaja en un header que arma explícitamente el cliente (`Authorization`), y los navegadores no adjuntan headers personalizados por sí solos en pedidos entre sitios, a diferencia de las cookies. Por eso el backend tiene `csrf.disable()`. Si en el futuro se migrara el token a una cookie, habría que reactivar la protección CSRF y usar el atributo `SameSite`.
+
+**Alternativa más avanzada (no implementada):** cookies `HttpOnly`, que impiden que JavaScript lea el token incluso ante un XSS exitoso. Requiere cambios en el backend (emitir `Set-Cookie`, validar `SameSite`/CSRF) y no se adoptó en esta entrega por el alcance del TPO.
+
 ## Verificación
 
 ```sh
